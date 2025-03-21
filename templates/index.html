@@ -1,0 +1,12 @@
+<html>
+<head>
+  <title>tite</title>
+</head>
+<body>
+  <a href="/tite">tite 2</a>
+
+  {% for item in list %}
+    <a href={{ 'profile/' + item }}><marquee scrollamount={{ range(1, 51) | random }}>{{ item }}</marquee></a>
+  {% endfor %}
+</body>
+</html>
