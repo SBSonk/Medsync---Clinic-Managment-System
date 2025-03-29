@@ -1,4 +1,4 @@
-from flask import Flask, render_template, abort
+from flask import Flask, render_template, abort, url_for
 
 app = Flask(__name__)
 
@@ -20,3 +20,6 @@ def profile(name=None):
     else:
         return render_template('profile.html', person=name)
     
+
+if __name__ == "__main__":
+    app.run(debug=True)
