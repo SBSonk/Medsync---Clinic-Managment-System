@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AuthLayout from "../layouts/AuthLayout";
 
-const Login = () => {
+const ResetPassword = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -11,7 +11,7 @@ const Login = () => {
 
     // Temporary mock authentication logic
     if (username === "admin" && password === "password123") {
-      alert("Login successful! (Placeholder)");
+      alert("ResetPassword successful! (Placeholder)");
       window.location.href = "/dashboard";
     } else {
       setError("Invalid credentials (Mock Data)");
@@ -19,7 +19,7 @@ const Login = () => {
   };
 
   return (
-    <AuthLayout title="LOGIN">
+    <AuthLayout title="ResetPassword">
       <form onSubmit={handleSubmit}>
         <label>Username</label>
         <input
@@ -43,12 +43,8 @@ const Login = () => {
 
         <button type="submit">Log In</button>
       </form>
-
-      <a href="/forgot-password" className="forgot-password">
-        Forgot password?
-      </a>
     </AuthLayout>
   );
 };
 
-export default Login;
+export default ResetPassword;

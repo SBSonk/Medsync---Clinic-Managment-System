@@ -4,7 +4,9 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import axios from "axios";
 import Login from "./pages/Login";
-import "./styles/Login.css";
+import ForgotPassword from "./pages/ForgotPasword";
+import ResetPassword from "./pages/ResetPassword";
+import "./styles/AuthLayout.css";
 
 function App() {
   const [count, setCount] = useState(0);
