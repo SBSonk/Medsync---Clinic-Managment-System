@@ -1,6 +1,4 @@
 import enum
-from contextlib import nullcontext
-
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey, Enum, Date, DateTime, Numeric
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -46,15 +44,11 @@ class Patient(db.Model):
     emergency_contact_id: Mapped[int] = mapped_column(ForeignKey('emergency_contact.patient_id'), nullable=False)
     next_appointment_id: Mapped[int] = mapped_column(ForeignKey('appointment.id'))
 
-    # todo: add relation to emergencyContact
-
 class EmergencyContact(db.Model):
     __tablename__ = 'emergency_contact'
     patient_id: Mapped[int] = mapped_column(ForeignKey('patient.id'), primary_key=True)
     person_id: Mapped[int] = mapped_column(ForeignKey('person.id'), nullable=False)
     relation: Mapped[str] = mapped_column(db.String(16), nullable=False)
-
-    # todo: add relation to patient
 
 class Appointment(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -73,15 +67,11 @@ class Employee(db.Model):
 
     shift_id: Mapped[int] = mapped_column(ForeignKey('employee_shift.employee_id'), nullable=False)
 
-    # todo: add relationship to shift
-
 class EmployeeShift(db.Model):
     __tablename__ = 'employee_shift'
 
     employee_id: Mapped[int] = mapped_column(ForeignKey('employee.id'), primary_key=True)
     schedule: Mapped[str] = mapped_column(db.String(255), nullable=False)
-
-    # todo: add relationship to employee
 
 class Inventory(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
