@@ -1,26 +1,28 @@
-import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import axios from "axios"
+import { useState, useEffect } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import axios from "axios";
+import Login from "./pages/Login";
+import "./styles/Login.css";
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [array, setArray] = useState([])
+  const [count, setCount] = useState(0);
+  const [array, setArray] = useState([]);
 
   const fetchAPI = async () => {
-    const response = await axios.get("http://127.0.0.1:8080/api/users")
-    console.log(response.data.users)
-    setArray(response.data.users)
-  }
+    const response = await axios.get("http://127.0.0.1:8080/api/users");
+    console.log(response.data.users);
+    setArray(response.data.users);
+  };
 
   useEffect(() => {
-    fetchAPI()
-  }, [])
+    fetchAPI();
+  }, []);
 
   return (
     <>
-      <div>
+      {/* <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
@@ -43,9 +45,13 @@ function App() {
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
-      </p>
+      </p> */}
+
+      <div>
+        <Login />
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
