@@ -1,11 +1,13 @@
 import enum
 from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 from sqlalchemy import ForeignKey, Enum, Date, DateTime, Numeric
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 import datetime
 
 db = SQLAlchemy()
+bcrypt = Bcrypt()
 
 class Gender(enum.Enum):
     MALE = "Male"
@@ -20,6 +22,19 @@ class User(db.Model):
     role: Mapped[str] = mapped_column(db.String(50), nullable=False)
 
     person_id: Mapped[int] = mapped_column(ForeignKey('person.id'))
+
+    def set_password(self, password: str):
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password: str):
+        return bcrypt.check_password_hash(self.password, password)
+    
+    def __init__(self, username: str, password: str, role: str, person_id: int):
+        self.username = username
+        self.set_password(password)
+        self.role = role
+        self.person_id = person_id
+        
 
 class Person(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
