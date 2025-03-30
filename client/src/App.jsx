@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPasword";
@@ -21,11 +22,13 @@ function App() {
   }, []);
 
   return (
-    <>
-      <div>
-        <Login />
-      </div>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
+      </Routes>
+    </Router>
   );
 }
 

@@ -1,31 +1,34 @@
 import React, { useState } from "react";
 import AuthLayout from "../layouts/AuthLayout";
+import { Link } from "react-router-dom";
 
 const ForgotPassword = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    alert("Password reset link sent to " + username);
+    alert("Password reset link sent to " + Email);
   };
 
   return (
     <AuthLayout title="Forgot Password">
       <form onSubmit={handleSubmit}>
-        <label>Username</label>
+        <label>Email</label>
         <input
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter username"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter email"
           required
         />
 
         <a href="/forgot-password" className="forgot-password">
           Cancel
         </a>
-        <button type="submit">Reset Password</button>
+        <Link to="/resetpassword">
+          <button type="submit">Reset Password</button>
+        </Link>
       </form>
     </AuthLayout>
   );

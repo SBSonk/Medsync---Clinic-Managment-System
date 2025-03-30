@@ -2,46 +2,48 @@ import React, { useState } from "react";
 import AuthLayout from "../layouts/AuthLayout";
 
 const ResetPassword = () => {
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Temporary mock authentication logic
-    if (username === "admin" && password === "password123") {
-      alert("ResetPassword successful! (Placeholder)");
-      window.location.href = "/dashboard";
-    } else {
-      setError("Invalid credentials (Mock Data)");
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
     }
+
+    // Temporary success message (replace with API call)
+    alert("Password reset successful! (Placeholder)");
+    window.location.href = "/login"; // Redirect to login after reset
   };
 
   return (
-    <AuthLayout title="ResetPassword">
+    <AuthLayout title="Reset Password">
       <form onSubmit={handleSubmit}>
-        <label>Username</label>
+        <label>New password</label>
         <input
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter username"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Enter new password"
           required
         />
 
-        <label>Password</label>
+        <label>Confirm new password</label>
         <input
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          placeholder="Confirm new password"
           required
         />
 
         {error && <p className="error-message">{error}</p>}
 
-        <button type="submit">Log In</button>
+        <button type="submit">Reset Password</button>
       </form>
     </AuthLayout>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
 
 const Login = () => {
@@ -44,9 +45,9 @@ const Login = () => {
         <button type="submit">Log In</button>
       </form>
 
-      <a href="/forgot-password" className="forgot-password">
+      <Link className="forgot-password" to={"/forgotpassword"}>
         Forgot password?
-      </a>
+      </Link>
     </AuthLayout>
   );
 };
