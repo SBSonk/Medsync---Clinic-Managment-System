@@ -81,6 +81,12 @@ html {
   font-size: small;
 }
 
+.cancel {
+  padding: 12px;
+  text-align: left;
+  color: #444;
+}
+
 .auth-branding {
   flex: 1;
   background: $button-light;

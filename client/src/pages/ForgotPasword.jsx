@@ -23,12 +23,14 @@ const ForgotPassword = () => {
           required
         />
 
-        <a href="/forgot-password" className="forgot-password">
-          Cancel
-        </a>
-        <Link to="/resetpassword">
-          <button type="submit">Reset Password</button>
-        </Link>
+        <div>
+          <a href="/login" className="cancel">
+            Cancel
+          </a>
+          <Link to="/resetpassword">
+            <button type="submit">Reset Password</button>
+          </Link>
+        </div>
       </form>
     </AuthLayout>
   );
