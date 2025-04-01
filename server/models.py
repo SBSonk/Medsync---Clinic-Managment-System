@@ -17,6 +17,7 @@ class Gender(enum.Enum):
 
 class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
+    email: Mapped[str] = mapped_column(db.String(255), nullable=False, unique=True)
     username: Mapped[str] = mapped_column(db.String(255), nullable=False, unique=True)
     password: Mapped[str] = mapped_column(db.String(255), nullable=False)
     role: Mapped[str] = mapped_column(db.String(50), nullable=False)
@@ -29,7 +30,8 @@ class User(db.Model):
     def check_password(self, password: str):
         return bcrypt.check_password_hash(self.password, password)
     
-    def __init__(self, username: str, password: str, role: str, person_id: int):
+    def __init__(self, email: str, username: str, password: str, role: str, person_id: int):
+        self.email = email
         self.username = username
         self.set_password(password)
         self.role = role
