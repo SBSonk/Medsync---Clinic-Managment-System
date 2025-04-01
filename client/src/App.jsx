@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import axios from "axios";
-import Login from "./pages/Login";
-import ForgotPassword from "./pages/ForgotPasword";
-import ResetPassword from "./pages/ResetPassword";
+import Login from "./pages/auth/Login";
+import ForgotPassword from "./pages/auth/ForgotPasword";
+import ResetPassword from "./pages/auth/ResetPassword";
 import "./styles/AuthLayout.css";
+import AdminLayout from "./layouts/AdminLayout";
+import Employees from "./pages/admin/employees/Employees";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -24,7 +26,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Employees />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
       </Routes>

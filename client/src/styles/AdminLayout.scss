@@ -1,0 +1,31 @@
+@import "./Variables";
+
+.admin-layout {
+  display: flex;
+}
+
+.admin-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.admin-content {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  min-height: 80vh;
+  overflow: hidden;
+
+  p {
+    color: black;
+  }
+
+  h1 {
+    color: black;
+  }
+
+  th {
+    color: black;
+  }
+}

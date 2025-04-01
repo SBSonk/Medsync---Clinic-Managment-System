@@ -1,14 +1,24 @@
 import React, { useState } from "react";
-import AuthLayout from "../layouts/AuthLayout";
-import { Link } from "react-router-dom";
+import AuthLayout from "../../layouts/AuthLayout";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate(); // Allows navigation programmatically
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    alert("Password reset link sent to " + Email);
+    if (!email.trim()) {
+      setError("Please enter your email.");
+      return;
+    }
+
+    alert("Password reset link sent to " + email);
+
+    // Redirect user to reset password page after successful message
+    navigate("/resetpassword");
   };
 
   return (
@@ -23,13 +33,13 @@ const ForgotPassword = () => {
           required
         />
 
+        {error && <p className="errorMessage">{error}</p>}
+
         <div>
           <a href="/login" className="cancel">
             Cancel
           </a>
-          <Link to="/resetpassword">
-            <button type="submit">Reset Password</button>
-          </Link>
+          <button type="submit">Reset Password</button>
         </div>
       </form>
     </AuthLayout>

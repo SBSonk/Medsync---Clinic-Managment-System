@@ -1,0 +1,12 @@
+$primaryBg: #0a0a4a;
+$secondary-color: #e0e0e0;
+$button-dark: #222; // Changed from full black for better contrast
+$button-light: #fff;
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: $primaryBg; // Ensures full background coverage
+}

@@ -1,21 +1,36 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import AuthLayout from "../layouts/AuthLayout";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import AuthLayout from "../../layouts/AuthLayout";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
-    // Temporary mock authentication logic
-    if (username === "admin" && password === "password123") {
-      alert("Login successful! (Placeholder)");
-      window.location.href = "/dashboard";
-    } else {
-      setError("Invalid credentials (Mock Data)");
+    try {
+      const response = await axios.post("http://127.0.0.1:8080/api/login", {
+        username,
+        password,
+      });
+
+      const { access_token, role } = response.data;
+
+      localStorage.setItem("token", access_token);
+      localStorage.setItem("role", role);
+
+      if (role === "admin") {
+        navigate("/admin/dashboard");
+      } else if (role === "employee") {
+        navigate("/employee/dashboard");
+      }
+    } catch (err) {
+      setError("Invalid username or password");
     }
   };
 
@@ -40,14 +55,12 @@ const Login = () => {
           required
         />
 
-        {error && <p className="error-message">{error}</p>}
+        <div className="errorContainer">
+          {error && <p className="errorMessage">{error}</p>}
+        </div>
 
         <button type="submit">Log In</button>
       </form>
-
-      <Link className="forgot-password" to={"/forgotpassword"}>
-        Forgot password?
-      </Link>
     </AuthLayout>
   );
 };

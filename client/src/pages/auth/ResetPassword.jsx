@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AuthLayout from "../layouts/AuthLayout";
+import AuthLayout from "../../layouts/AuthLayout";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -41,7 +41,9 @@ const ResetPassword = () => {
           required
         />
 
-        {error && <p className="error-message">{error}</p>}
+        <div className="errorContainer">
+          {error && <p className="errorMessage">{error}</p>}
+        </div>
 
         <button type="submit">Reset Password</button>
       </form>
