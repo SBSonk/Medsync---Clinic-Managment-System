@@ -5,7 +5,7 @@ import "../styles/SearchBar.css";
 
 const SearchBar = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchBy, setSearchBy] = useState("name");
+  const [searchBy, setSearchBy] = useState("");
 
   const searchOptions = [
     { value: "id", label: "ID" },

@@ -12,7 +12,6 @@ const AdminLayout = ({ title, children }) => {
         <br />
         <SearchBar />
       </div>
-      <br />
       <div className="adminBox">
         <div className="adminContent">{children}</div>
       </div>

@@ -1,7 +1,7 @@
 .search-bar-container {
   display: flex;
   align-items: center;
-  gap: 20px; /* Add space between input and select */
+  gap: 10px; /* Add space between input and select */
 }
 
 .search-input-container {
@@ -24,7 +24,7 @@
 
 .search-icon {
   font-size: 22px;
-  padding: 5px;
+  padding: 6px;
   color: black;
 }
 

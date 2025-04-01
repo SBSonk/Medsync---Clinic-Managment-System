@@ -6,7 +6,6 @@ import Login from "./pages/auth/Login";
 import ForgotPassword from "./pages/auth/ForgotPasword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import "./styles/AuthLayout.css";
-import AdminLayout from "./layouts/AdminLayout";
 import Employees from "./pages/admin/employees/Employees";
 
 function App() {

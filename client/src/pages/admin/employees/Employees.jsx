@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AdminLayout from "../../../layouts/AdminLayout";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
-import "../../../styles/AdminLayout.css"; // Ensure your styles are properly applied
+import "../../../styles/AdminLayout.css"; // Ensure styles are properly applied
 
 const Employees = () => {
   const navigate = useNavigate();
@@ -35,40 +35,56 @@ const Employees = () => {
     },
     {
       id: 6,
-      name: "Michael Brown",
-      occupation: "Pharmacist",
-      department: "Pharmacy",
+      name: "Sarah Wilson",
+      occupation: "Lab Technician",
+      department: "Pathology",
     },
     {
       id: 7,
-      name: "Michael Brown",
-      occupation: "Pharmacist",
-      department: "Pharmacy",
+      name: "Sarah Wilson",
+      occupation: "Lab Technician",
+      department: "Pathology",
     },
     {
-      id: 5,
-      name: "Michael Brown",
-      occupation: "Pharmacist",
-      department: "Pharmacy",
+      id: 8,
+      name: "Sarah Wilson",
+      occupation: "Lab Technician",
+      department: "Pathology",
     },
     {
-      id: 5,
-      name: "Michael Brown",
-      occupation: "Pharmacist",
-      department: "Pharmacy",
+      id: 9,
+      name: "Sarah Wilson",
+      occupation: "Lab Technician",
+      department: "Pathology",
     },
     {
-      id: 5,
-      name: "Michael Brown",
-      occupation: "Pharmacist",
-      department: "Pharmacy",
+      id: 10,
+      name: "Sarah Wilson",
+      occupation: "Lab Technician",
+      department: "Pathology",
     },
   ];
 
   const [employees, setEmployees] = useState(mockEmployees);
 
+  const handleView = (row) => {
+    alert(`Viewing details for ${row.name}`);
+  };
+
+  const handleEdit = (row) => {
+    alert(`Editing ${row.name}`);
+  };
+
+  const handleDelete = (row) => {
+    if (window.confirm(`Are you sure you want to delete ${row.name}?`)) {
+      setEmployees((prevEmployees) =>
+        prevEmployees.filter((emp) => emp.id !== row.id)
+      );
+    }
+  };
+
   const columns = [
-    { name: "ID", selector: (row) => row.id, width: "10%", center: true },
+    { name: "ID", selector: (row) => row.id, width: "15%", center: true },
     { name: "Name", selector: (row) => row.name, width: "20%" },
     { name: "Occupation", selector: (row) => row.occupation, width: "20%" },
     { name: "Department", selector: (row) => row.department, width: "20%" },
@@ -90,42 +106,31 @@ const Employees = () => {
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-      width: "20%", // Reduce width to avoid excessive space
-      center: true, // Align actions to center
+      width: "20%",
+      center: true,
     },
   ];
 
-  const handleView = (row) => {
-    alert(`Viewing details for ${row.name}`);
-  };
-
-  const handleEdit = (row) => {
-    alert(`Editing ${row.name}`);
-  };
-
-  const handleDelete = (row) => {
-    if (window.confirm(`Are you sure you want to delete ${row.name}?`)) {
-      setEmployees((prevEmployees) =>
-        prevEmployees.filter((emp) => emp.id !== row.id)
-      );
-    }
+  const customStyles = {
+    headRow: { style: { fontSize: "16px", fontWeight: "bold" } },
+    rows: { style: { fontSize: "14px" } },
+    tableWrapper: {
+      style: {
+        maxHeight: "450px",
+        overflowY: "auto",
+      },
+    },
   };
 
   return (
     <AdminLayout title="Employees">
       <div className="adminBox">
         <div className="adminContent">
-          <div className="top-actions"></div>
           <div className="table-container">
             <DataTable
               columns={columns}
               data={employees}
-              fixedHeader
-              fixedHeaderScrollHeight="450px"
-              customStyles={{
-                headRow: { style: { fontSize: "16px", fontWeight: "bold" } },
-                rows: { style: { fontSize: "14px" } },
-              }}
+              customStyles={customStyles}
             />
           </div>
         </div>
