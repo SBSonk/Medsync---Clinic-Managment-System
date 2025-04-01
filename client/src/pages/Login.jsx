@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "../styles/Login.css";
-import medsync from "../assets/medsync.svg";
+import { Link } from "react-router-dom";
+import AuthLayout from "../layouts/AuthLayout";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -20,39 +20,35 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        {/* Left Section: Form */}
-        <div className="login-form">
-          <form onSubmit={handleSubmit}>
-            <label>Username</label>
-            <input
-              type="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter username"
-              required
-            />
-            <label>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              required
-            />
-            {error && <p className="error-message">{error}</p>}
-            <button type="submit">Log In</button>
-          </form>
-        </div>
+    <AuthLayout title="LOGIN">
+      <form onSubmit={handleSubmit}>
+        <label>Username</label>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Enter username"
+          required
+        />
 
-        {/* Right Section: Branding & Role Selection */}
-        <div className="login-branding">
-          <img src={medsync} className="logo" alt="medsync logo" />
-          <p>LOGIN</p>
-        </div>
-      </div>
-    </div>
+        <label>Password</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Enter password"
+          required
+        />
+
+        {error && <p className="error-message">{error}</p>}
+
+        <button type="submit">Log In</button>
+      </form>
+
+      <Link className="forgot-password" to={"/forgotpassword"}>
+        Forgot password?
+      </Link>
+    </AuthLayout>
   );
 };
 
