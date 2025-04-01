@@ -1,7 +1,18 @@
 body,
 html {
   height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
   background-color: #0a0a4a;
+  overflow: hidden;
+  position: fixed;
+}
+
+iconify-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  color: black;
+  font-size: 32px;
 }/*# sourceMappingURL=Variables.css.map */

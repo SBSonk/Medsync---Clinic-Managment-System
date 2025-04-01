@@ -36,22 +36,24 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    color: black;
+    color: black; /* Default color */
     text-decoration: none;
     font-size: 16px;
     padding: 10px;
     border-radius: 5px;
 
     &:hover {
-      background: #f0f0f0;
+      background: $linkColor; /* Hover background */
+    }
+
+    &:active {
+      background: $linkColor; /* Active background */
     }
   }
-}
 
-iconify-icon {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  color: black;
-  font-size: 32px;
+  /* Apply styles to the active link */
+  .activeLink {
+    background: $linkColor; /* Same background as hover */
+    font-weight: bold; /* Optional, to make it stand out */
+  }
 }

@@ -2,11 +2,23 @@ $primaryBg: #0a0a4a;
 $secondary-color: #e0e0e0;
 $button-dark: #222; // Changed from full black for better contrast
 $button-light: #fff;
+$linkColor: #e6e6fa;
 
 body,
 html {
   height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
   background-color: $primaryBg; // Ensures full background coverage
+  overflow: hidden;
+  position: fixed;
+}
+
+iconify-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  color: black;
+  font-size: 32px;
 }

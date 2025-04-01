@@ -8,7 +8,6 @@ function Sidebar({ children }) {
       <div className="sidebarHeader">
         <img src={medsync} className="sidebarLogo" alt="medsync logo" />
       </div>
-      <br />
       {/* User Role and Navigation */}
       <div className="sidebarMenu">{children}</div>
     </div>

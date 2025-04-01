@@ -5,17 +5,16 @@ import "../styles/AdminLayout.css"; // Add styles
 
 const AdminLayout = ({ title, children }) => {
   return (
-    <div className="admin-layout">
-      {/* Sidebar */}
+    <div className="adminContainer">
       <AdminSidebar />
-
-      {/* Main Content */}
-      <div>
-        <h1 className="admin-title">{title}</h1>
+      <div className="adminHeader">
+        <p className="adminTitle">{title}</p>
         <br />
         <SearchBar />
-        <br />
-        <div className="admin-content">{children}</div>
+      </div>
+      <br />
+      <div className="adminBox">
+        <div className="adminContent">{children}</div>
       </div>
     </div>
   );

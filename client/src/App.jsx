@@ -10,9 +10,6 @@ import AdminLayout from "./layouts/AdminLayout";
 import Employees from "./pages/admin/employees/Employees";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [array, setArray] = useState([]);
-
   const fetchAPI = async () => {
     const response = await axios.get("http://127.0.0.1:8080/api/users");
     console.log(response.data.users);
@@ -26,7 +23,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Employees />} />
+        <Route path="/admin/employees" element={<Employees />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
       </Routes>
