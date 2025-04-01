@@ -21,7 +21,7 @@ with app.app_context():
     if "person" not in inspector.get_table_names():  # 🔹 Check for a specific table
         db.create_all()
         database_defaults.populate_people(db)
-        default_admin = User('admin', 'tite', 'master betlog', 2)
+        default_admin = User('test@email.com', 'admin', 'tite', 'master betlog', 2)
         db.session.add(default_admin)
         db.session.commit()
         

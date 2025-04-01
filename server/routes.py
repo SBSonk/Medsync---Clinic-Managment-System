@@ -24,7 +24,7 @@ def register():
     data = request.get_json()
 
     try:
-        user = models.User(data['username'], data['password'], data['role'], data['person_id'])
+        user = models.User(data['email'], data['username'], data['password'], data['role'], data['person_id'])
         db.session.add(user)
         db.session.commit()
 
@@ -32,7 +32,22 @@ def register():
     except:
         return jsonify({'message': 'Account creation failed...'})
 
-# Get all
+# Get all   
+
+@api.route('/api/users', methods=['GET'])
+@jwt_required()
+def users():
+    all_users = db.session.query(models.User).all()
+
+    user_list = [{
+            'id': u.id,
+            'email': u.email,
+            'username': u.username,
+            'role': u.role
+        } for u in all_users]  
+    
+    return jsonify(user_list)
+
 
 @api.route('/api/people', methods=['GET'])
 @jwt_required()
@@ -143,4 +158,35 @@ def get_emergency_contact():
         })
     else:   
         return jsonify({'message': f'emergency contact with id ({data['id']}) not found.'})
+    
+@api.route('/api/get-employee-info', methods=['POST'])
+@jwt_required
+def get_employee_info():
+    data = request.get_json()
+
+    e = db.session.query(models.Employee).filter_by(id=data['id']).first()
+    if e is not None:
+        return jsonify({
+            'id': e.id,
+            'person_id': e.person_id,
+            'occupation': e.occupation,
+            'department': e.department,
+            'schedule': e.shift_id
+        })
+    else:
+        return jsonify({'message': f'employee with id ({data['id']}) not found.'})
+    
+@api.route('/api/get-shift-info', methods=['POST'])
+@jwt_required
+def get_shift_info():
+    data = request.get_json()
+
+    s = db.session.query(models.EmployeeShift).filter_by(id=data['id']).first()
+    if s is not None:
+        return jsonify({
+            'employee_id': s.employee_id,
+            'schedule': s.schedule
+        })
+    else:
+        return jsonify({'message': f'employee_shift with id ({data['id']}) not found.'})
     
