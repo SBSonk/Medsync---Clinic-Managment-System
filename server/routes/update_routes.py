@@ -13,7 +13,7 @@ def update_person():
     data = request.get_json()
 
     # Find the person by ID
-    p = db.session.query(models.Person).filter_by(id=data['id'])).first()
+    p = db.session.get(models.Person, data['id'])
     
     if p is None:
         return jsonify({'message': f'Person with id ({data[id]}) not found.'}), 404
@@ -54,86 +54,103 @@ def update_person():
 # @jwt_required()
 def update_employee():
     data = request.get_json()
+    employee = db.session.get(models.Employee, data['id'])
+    
+    if not employee:
+        return jsonify({"message": f"Employee with ID {data['id']} not found."}), 404
 
-    try:        
-        employee = models.Employee(
-            person_id = data['person_id'],
-            occupation = data['occupation'],
-            department = data['department']
-        )
+    try:
+        if 'person_id' in data:
+            employee.person_id = data['person_id']
+        if 'occupation' in data:
+            employee.occupation = data['occupation']
+        if 'department' in data:
+            employee.department = data['department']
 
+        # Update shift schedule if provided
         if 'schedule' in data:
-            employee.shift = models.EmployeeShift(
-                schedule = data['schedule']
-            )
+            if employee.shift:
+                employee.shift.schedule = data['schedule']  # Update existing shift
+            else:
+                employee.shift = models.EmployeeShift(schedule=data['schedule'])  # Create new shift
 
-        db.session.add(employee)
         db.session.commit()
+        return jsonify({"message": "Employee updated successfully"}), 200
 
-        return jsonify(
-            {"message": "employee updated successfully"}
-        ), 201
-    except:
-        return jsonify(
-            {"message": "failed to update employee..."}
-        ), 500
+    except Exception as e:
+        db.session.rollback() 
+        return jsonify({"message": f"Failed to update employee with id: {data['id']}"}), 500
 
 @update.route('/api/update-patient', methods=['PUT'])
 # @jwt_required()
 def update_patient():
     data = request.get_json()
+    patient = db.session.get(models.Patient, data['id'])
+    
+    if not patient:
+        return jsonify({"message": f"Patient with ID {data['id']} not found."}), 404
 
     try:
-        patient = models.Patient(
-            height = data['height'],
-            weight = data['weight'],
-            blood_type = data['blood_type'],
-            allergies = data['allergies'],
-            medical_history = data['medical_history'],
-            family_history = data['family_history'],
-            person_id = data['person_id'],
-            next_appointment_id = data['next_appointment_id']
-        )
+        if 'height' in data:
+            patient.height = data['height']
+        if 'weight' in data:
+            patient.weight = data['weight']
+        if 'blood_type' in data:
+            patient.blood_type = data['blood_type']
+        if 'allergies' in data:
+            patient.allergies = data['allergies']
+        if 'medical_history' in data:
+            patient.medical_history = data['medical_history']
+        if 'family_history' in data:
+            patient.family_history = data['family_history']
 
-        if 'emergency_contact_person_id' in data and 'emergency_contact_relation' in data:
+        # Update emergency contact if pos
+        if patient.emergency_contact:
+            if 'emergency_contact_person_id' in data:
+                patient.emergency_contact.person_id = data['emergency_contact_person_id']
+            
+            if 'emergency_contact_relation' in data:
+                patient.emergency_contact.relation = data['emergency_contact_relation']
+        elif 'emergency_contact_person_id' in data and 'emergency_contact_relation' in data:
             patient.emergency_contact = models.EmergencyContact(
                 person_id = data['emergency_contact_person_id'],
                 relation = data['emergency_contact_relation']
             )
 
-        db.session.add(patient)
         db.session.commit()
+        return jsonify({"message": "Patient updated successfully"}), 200
 
-        return jsonify(
-            {"message": "patient updated successfully"}
-        ), 201
-    except:
-        return jsonify(
-            {"message": "failed to update patient..."}
-        ), 500
+    except Exception as e:
+        db.session.rollback() 
+        return jsonify({"message": f"Failed to update patient with id: {data['id']}"}), 500
     
 @update.route('/api/update-appointment', methods=['PUT'])
 # @jwt_required()
 def update_appointment():
     data = request.get_json()
-
+    appointment = db.session.get(models.Appointment, data['id'])
+    
+    if not appointment:
+        return jsonify({"message": f"Appointment with ID {data['id']} not found."}), 404
     try:
-        a = models.Appointment(
-            type = data['type'],
-            patient_id = data['patient_id'],
-            doctor_id = data['doctor_id'],
-            date_time = datetime.strptime(data['date_time'], '%m-%d-%Y-%H-%M'),
-            status = data['status'],
-            note = data['note']
-        )
-
-        db.session.add(a)
+        if 'type' in data:
+            appointment.type = data['type']
+        if 'patient_id' in data:
+            appointment.patient_id = data['patient_id']
+        if 'doctor_id' in data:
+            appointment.doctor_id = data['doctor_id']
+        if 'date_time' in data:
+            try:
+                appointment.date_time = datetime.strptime(data['date_time'], '%m-%d-%Y-%H-%M')
+            except ValueError:
+                return jsonify({"message": "Invalid date format. Use MM-DD-YYYY-HH-MM"}), 400
+        if 'status' in data:
+            appointment.status = data['status']
+        if 'note' in data:
+            appointment.note = data['note']
         db.session.commit()
+        return jsonify({"message": "Appointment updated successfully"}), 200
 
-        return jsonify(
-            {"message": "appointment updated successfully"}
-        ), 201
-    except:
-        return jsonify(
-            {"message": "failed to update appointment..."}
-        ), 500
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": f"Failed to update appointment with id {data['id']}"}), 500
