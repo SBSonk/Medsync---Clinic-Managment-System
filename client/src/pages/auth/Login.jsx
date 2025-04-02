@@ -22,7 +22,8 @@ const Login = () => {
       const { access_token, role } = response.data;
       
       localStorage.setItem("token", access_token);
-      localStorage.setItem("role", 'admin');
+      localStorage.setItem("role", "default");
+      // localStorage.setItem("role", "admin");
       // localStorage.setItem("role", role);
 
       // if (role === "admin") {

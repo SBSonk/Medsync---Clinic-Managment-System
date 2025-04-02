@@ -6,8 +6,12 @@ import "../../../styles/AdminLayout.css";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    setIsAdmin(role === "admin" ? true : false);
+
     const fetchEmployees = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
@@ -57,12 +61,18 @@ const Employees = () => {
           >
             <iconify-icon icon="mdi:pencil"></iconify-icon>
           </button>
-          <button
+
+          {
+            isAdmin && (
+              <button
             className="delete-btn"
             onClick={() => alert(`Deleting ${row.name}`)}
           >
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>
+            )
+          }
+          
         </div>
       ),
       ignoreRowClick: true,
@@ -87,6 +97,7 @@ const Employees = () => {
   };
 
   return (
+
     <AdminLayout title="Employees">
       <div className="adminBox">
         <div className="adminContent">

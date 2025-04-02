@@ -1,40 +1,13 @@
-from flask import Blueprint, jsonify, request, make_response
-from flask_jwt_extended import create_access_token, jwt_required, JWTManager
+from flask import Blueprint, jsonify, request
+from flask_jwt_extended import jwt_required
 from models import db
 import models
 
-api = Blueprint('api', __name__)
-
-@api.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'GET':
-        return jsonify({'message': 'Please use POST to login.'})
-    
-    data = request.get_json()
-    user: models.User = models.User.query.filter_by(username=data['username']).first()
-
-    if user and user.check_password(data['password']):
-        return jsonify({'message': 'Authorization success!', 'access_token': create_access_token(identity=str(user.id))})
-    else: 
-        return jsonify({'message': 'Authorization failed...'})
-    
-@api.route('/register', methods=['POST'])
-@jwt_required()
-def register():
-    data = request.get_json()
-
-    try:
-        user = models.User(data['email'], data['username'], data['password'], data['role'], data['person_id'])
-        db.session.add(user)
-        db.session.commit()
-
-        return jsonify({'message': 'Account successfully created!'})
-    except:
-        return jsonify({'message': 'Account creation failed...'})
+get = Blueprint('get', __name__)
 
 # Get all   
 
-@api.route('/api/users', methods=['GET'])
+@get.route('/api/users', methods=['GET'])
 @jwt_required()
 def users():
     all_users = db.session.query(models.User).all()
@@ -46,10 +19,9 @@ def users():
             'role': u.role
         } for u in all_users]  
     
-    return jsonify(user_list)
+    return jsonify(user_list), 200
 
-
-@api.route('/api/people', methods=['GET'])
+@get.route('/api/people', methods=['GET'])
 @jwt_required()
 def people():
     all_people = db.session.query(models.Person).all()
@@ -64,9 +36,9 @@ def people():
             'address': p.address
         } for p in all_people]  
     
-    return jsonify(people_list)
+    return jsonify(people_list), 200
 
-@api.route('/api/patients', methods=['GET'])
+@get.route('/api/patients', methods=['GET'])
 @jwt_required()
 def patients():
     all_patients = db.session.query(models.Patient).all()
@@ -84,9 +56,9 @@ def patients():
         'next_appointment_id': p.next_appointment_id
     } for p in all_patients]
 
-    return jsonify(patients_list)
+    return jsonify(patients_list), 200
 
-@api.route('/api/employees', methods=['GET'])
+@get.route('/api/employees', methods=['GET'])
 @jwt_required()
 def employees():
     all_employees = db.session.query(models.Employee).all()
@@ -99,11 +71,11 @@ def employees():
         'schedule': e.shift_id
     } for e in all_employees]
 
-    return jsonify(employees_list)
+    return jsonify(employees_list), 200
 
 # Get by ID 
 
-@api.route('/api/get-user-info', methods=['POST'])
+@get.route('/api/get-user-info', methods=['POST'])
 @jwt_required()
 def get_user_info():
     data = request.get_json()
@@ -115,12 +87,11 @@ def get_user_info():
             'email': u.email,
             'username': u.username,
             'role': u.role
-        })
+        }), 200
     else:
-        return jsonify({'message': f'user with id ({data['id']}) not found.'})
-    
+        return jsonify({'message': f'user with id ({data['id']}) not found.'}), 200
 
-@api.route('/api/get-person-info', methods=['POST'])
+@get.route('/api/get-person-info', methods=['POST'])
 @jwt_required()
 def get_person_info():
     data = request.get_json()
@@ -135,11 +106,11 @@ def get_person_info():
             'date_of_birth': p.date_of_birth,
             'contact_no': p.contact_no,
             'address': p.address
-        })
+        }), 200
     else:
-        return jsonify({'message': f'person with id ({data['id']}) not found.'})
+        return jsonify({'message': f'person with id ({data['id']}) not found.'}), 200
     
-@api.route('/api/get-patient-info', methods=['POST'])
+@get.route('/api/get-patient-info', methods=['POST'])
 @jwt_required()
 def get_patient_info():
     data = request.get_json()
@@ -157,11 +128,11 @@ def get_patient_info():
             'family_history': p.family_history,
             'emergency_contact_id': p.emergency_contact_id,
             'next_appointment_id': p.next_appointment_id
-        })
+        }), 200
     else:
-        return jsonify({'message': f'patient with id ({data['id']}) not found.'})
+        return jsonify({'message': f'patient with id ({data['id']}) not found.'}), 200
     
-@api.route('/api/get-emergency-contact', methods=['POST'])
+@get.route('/api/get-emergency-contact', methods=['POST'])
 @jwt_required()
 def get_emergency_contact():
     data = request.get_json()
@@ -172,11 +143,11 @@ def get_emergency_contact():
             'patient_id': p.patient_id,
             'person_id': p.person_id,
             'relation': p.relation
-        })
+        }), 200
     else:   
-        return jsonify({'message': f'emergency contact with id ({data['id']}) not found.'})
+        return jsonify({'message': f'emergency contact with id ({data['id']}) not found.'}), 200
     
-@api.route('/api/get-employee-info', methods=['POST'])
+@get.route('/api/get-employee-info', methods=['POST'])
 @jwt_required()
 def get_employee_info():
     data = request.get_json()
@@ -189,11 +160,11 @@ def get_employee_info():
             'occupation': e.occupation,
             'department': e.department,
             'schedule': e.shift_id
-        })
+        }), 200
     else:
-        return jsonify({'message': f'employee with id ({data['id']}) not found.'})
+        return jsonify({'message': f'employee with id ({data['id']}) not found.'}), 200
     
-@api.route('/api/get-shift-info', methods=['POST'])
+@get.route('/api/get-shift-info', methods=['POST'])
 @jwt_required()
 def get_shift_info():
     data = request.get_json()
@@ -203,9 +174,6 @@ def get_shift_info():
         return jsonify({
             'employee_id': s.employee_id,
             'schedule': s.schedule
-        })
+        }), 200
     else:
-        return jsonify({'message': f'employee_shift with id ({data['id']}) not found.'})
-    
-# Creation routes
-@
+        return jsonify({'message': f'employee_shift with id ({data['id']}) not found.'}), 200

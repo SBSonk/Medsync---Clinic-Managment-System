@@ -43,7 +43,7 @@ class Person(db.Model):
     first_name: Mapped[str] = mapped_column(db.String(50), nullable=False)
     last_name: Mapped[str] = mapped_column(db.String(50), nullable=False)
     gender: Mapped[Enum] = mapped_column(Enum(Gender), nullable=False)
-    date_of_birth: Mapped[datetime.date] = mapped_column(Date, nullable=False)
+    date_of_birth: Mapped[datetime.date] = mapped_column(Date, nullable=False) # MM-DD-YYYY
     contact_no: Mapped[str] = mapped_column(db.String(31), nullable=False)
     address: Mapped[str] = mapped_column(db.String(255), nullable=False)
 
@@ -58,7 +58,7 @@ class Patient(db.Model):
     family_history: Mapped[str] = mapped_column(db.String(255))
 
     person_id: Mapped[int] = mapped_column(ForeignKey('person.id'), nullable=False)
-    emergency_contact_id: Mapped[int] = mapped_column(ForeignKey('emergency_contact.patient_id'), nullable=False)
+    emergency_contact_id: Mapped[int] = mapped_column(ForeignKey('emergency_contact.patient_id'))
     next_appointment_id: Mapped[int] = mapped_column(ForeignKey('appointment.id'))
 
 class EmergencyContact(db.Model):
@@ -72,7 +72,7 @@ class Appointment(db.Model):
     type: Mapped[str] = mapped_column(db.String(30), nullable=False)
     patient_id: Mapped[int] = mapped_column(ForeignKey('patient.id'), nullable=False)
     doctor_id: Mapped[int] = mapped_column(ForeignKey('employee.id'), nullable=False)
-    date_time: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=False)
+    date_time: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=False) # MM-DD-YY-HH-MM
     status: Mapped[str] = mapped_column(db.String(10), nullable=False)
     note: Mapped[str] = mapped_column(db.String(255), nullable=False)
 
