@@ -58,8 +58,7 @@
 
   /* Hide scrollbar for Chrome, Safari */
   &::-webkit-scrollbar {
-    width: 0px; /* Completely hides scrollbar */
-    scrollbar-color: white;
+    display: none;
   }
 
   /* Hide scrollbar for Firefox */
