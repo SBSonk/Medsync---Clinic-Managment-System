@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Response, request
 from flask_cors import CORS
 from models import db, bcrypt, User
 from routes import api
@@ -8,9 +8,10 @@ import database_defaults
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'uhm, i like corndogs?'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///medsync.sqlite3'
-app.register_blueprint(api)
 
-cors = CORS(app, origins='*')
+CORS(app, origins=['http://localhost:5173'], methods=["GET", "POST", "OPTIONS"])
+
+app.register_blueprint(api)
 
 jwt = JWTManager(app)
 bcrypt.init_app(app)
@@ -25,5 +26,10 @@ with app.app_context():
         db.session.add(default_admin)
         db.session.commit()
         
+@app.before_request # fixes cors error
+def basic_authentication():
+    if request.method.lower() == 'options':
+        return Response()
+
 if __name__ == "__main__":
     app.run(debug=True, port=8080)
