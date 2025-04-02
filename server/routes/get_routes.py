@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required
 from models import db
 import models
@@ -75,12 +75,10 @@ def employees():
 
 # Get by ID 
 
-@get.route('/api/get-user-info', methods=['POST'])
+@get.route('/api/get-user-info/<id>', methods=['GET'])
 @jwt_required()
-def get_user_info():
-    data = request.get_json()
-
-    u = db.session.query(models.Person).filter_by(id=data['id']).first()
+def get_user_info(id):
+    u = db.session.query(models.User).filter_by(id=id).first()
     if u is not None:
         return jsonify({
             'id': u.id,
@@ -89,14 +87,12 @@ def get_user_info():
             'role': u.role
         }), 200
     else:
-        return jsonify({'message': f'user with id ({data['id']}) not found.'}), 200
+        return jsonify({'message': f'user with id ({id}) not found.'}), 404
 
-@get.route('/api/get-person-info', methods=['POST'])
+@get.route('/api/get-person-info/<id>', methods=['GET'])
 @jwt_required()
-def get_person_info():
-    data = request.get_json()
-
-    p = db.session.query(models.Person).filter_by(id=data['id']).first()
+def get_person_info(id):
+    p = db.session.query(models.Person).filter_by(id=id).first()
     if p is not None:
         return jsonify({
             'id': p.id,
@@ -108,14 +104,12 @@ def get_person_info():
             'address': p.address
         }), 200
     else:
-        return jsonify({'message': f'person with id ({data['id']}) not found.'}), 200
+        return jsonify({'message': f'person with id ({id}) not found.'}), 404
     
-@get.route('/api/get-patient-info', methods=['POST'])
+@get.route('/api/get-patient-info/<id>', methods=['GET'])
 @jwt_required()
-def get_patient_info():
-    data = request.get_json()
-
-    p = db.session.query(models.Patient).filter_by(id=data['id']).first()
+def get_patient_info(id):
+    p = db.session.query(models.Patient).filter_by(id=id).first()
     if p is not None:
         return jsonify({
             'id': p.id,
@@ -126,54 +120,44 @@ def get_patient_info():
             'allergies': p.allergies,
             'medical_history': p.medical_history,
             'family_history': p.family_history,
-            'emergency_contact_id': p.emergency_contact_id,
             'next_appointment_id': p.next_appointment_id
         }), 200
     else:
-        return jsonify({'message': f'patient with id ({data['id']}) not found.'}), 200
+        return jsonify({'message': f'patient with id ({id}) not found.'}), 404
     
-@get.route('/api/get-emergency-contact', methods=['POST'])
+@get.route('/api/get-emergency-contact/<patient_id>', methods=['GET'])
 @jwt_required()
-def get_emergency_contact():
-    data = request.get_json()
-
-    p = db.session.query(models.EmergencyContact).filter_by(id=data['id']).first()
+def get_emergency_contact(patient_id):
+    p = db.session.query(models.EmergencyContact).filter_by(id=patient_id).first()
     if p is not None:
         return jsonify({
-            'patient_id': p.patient_id,
             'person_id': p.person_id,
             'relation': p.relation
         }), 200
     else:   
-        return jsonify({'message': f'emergency contact with id ({data['id']}) not found.'}), 200
+        return jsonify({'message': f'emergency contact with patient_id ({patient_id}) not found.'}), 404
     
-@get.route('/api/get-employee-info', methods=['POST'])
+@get.route('/api/get-employee-info/<id>', methods=['GET'])
 @jwt_required()
-def get_employee_info():
-    data = request.get_json()
-
-    e = db.session.query(models.Employee).filter_by(id=data['id']).first()
+def get_employee_info(id):
+    e = db.session.query(models.Employee).filter_by(id=id).first()
     if e is not None:
         return jsonify({
             'id': e.id,
             'person_id': e.person_id,
             'occupation': e.occupation,
             'department': e.department,
-            'schedule': e.shift_id
         }), 200
     else:
-        return jsonify({'message': f'employee with id ({data['id']}) not found.'}), 200
+        return jsonify({'message': f'employee with id ({id}) not found.'}), 404
     
-@get.route('/api/get-shift-info', methods=['POST'])
+@get.route('/api/get-shift-info/<employee_id>', methods=['GET'])
 @jwt_required()
-def get_shift_info():
-    data = request.get_json()
-
-    s = db.session.query(models.EmployeeShift).filter_by(id=data['id']).first()
+def get_shift_info(employee_id):
+    s = db.session.query(models.EmployeeShift).filter_by(id=employee_id).first()
     if s is not None:
         return jsonify({
-            'employee_id': s.employee_id,
             'schedule': s.schedule
         }), 200
     else:
-        return jsonify({'message': f'employee_shift with id ({data['id']}) not found.'}), 200
+        return jsonify({'message': f'employee_shift with employee_id ({employee_id}) not found.'}), 404

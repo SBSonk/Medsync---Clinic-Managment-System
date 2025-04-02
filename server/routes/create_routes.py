@@ -29,6 +29,7 @@ def create_person():
             {"message": "user created successfully"}
         ), 201
     except:
+        db.session.rollback()
         return jsonify(
             {"message": "failed to create user..."}
         ), 500
@@ -57,6 +58,7 @@ def create_employee():
             {"message": "employee created successfully"}
         ), 201
     except:
+        db.session.rollback()
         return jsonify(
             {"message": "failed to create employee..."}
         ), 500
@@ -91,6 +93,7 @@ def create_patient():
             {"message": "patient created successfully"}
         ), 201
     except:
+        db.session.rollback()
         return jsonify(
             {"message": "failed to create patient..."}
         ), 500
@@ -117,6 +120,7 @@ def create_appointment():
             {"message": "appointment created successfully"}
         ), 201
     except:
+        db.session.rollback()
         return jsonify(
             {"message": "failed to create appointment..."}
         ), 500

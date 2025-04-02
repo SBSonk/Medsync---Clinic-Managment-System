@@ -30,4 +30,5 @@ def register():
 
         return jsonify({'message': 'Account successfully created!'}), 201
     except:
+        db.session.rollback()
         return jsonify({'message': 'Account creation failed...'}), 500
