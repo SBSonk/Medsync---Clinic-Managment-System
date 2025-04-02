@@ -38,15 +38,19 @@ def create_person():
 def create_employee():
     data = request.get_json()
 
-    try:
-        e = models.Employee(
+    try:        
+        employee = models.Employee(
             person_id = data['person_id'],
             occupation = data['occupation'],
-            department = data['department'],
-            shift_id = data['shift_id']
+            department = data['department']
         )
 
-        db.session.add(e)
+        if 'schedule' in data:
+            employee.shift = models.EmployeeShift(
+                schedule = data['schedule']
+            )
+
+        db.session.add(employee)
         db.session.commit()
 
         return jsonify(
@@ -63,7 +67,7 @@ def create_patient():
     data = request.get_json()
 
     try:
-        p = models.Patient(
+        patient = models.Patient(
             height = data['height'],
             weight = data['weight'],
             blood_type = data['blood_type'],
@@ -71,11 +75,16 @@ def create_patient():
             medical_history = data['medical_history'],
             family_history = data['family_history'],
             person_id = data['person_id'],
-            emergency_contact_id = data['emergency_contact_id'],
             next_appointment_id = data['next_appointment_id']
         )
 
-        db.session.add(p)
+        if 'emergency_contact_person_id' in data and 'emergency_contact_relation' in data:
+            patient.emergency_contact = models.EmergencyContact(
+                person_id = data['emergency_contact_person_id'],
+                relation = data['emergency_contact_relation']
+            )
+
+        db.session.add(patient)
         db.session.commit()
 
         return jsonify(
@@ -84,29 +93,6 @@ def create_patient():
     except:
         return jsonify(
             {"message": "failed to create patient..."}
-        ), 500
-    
-@create.route('/api/create-emergency-contact', methods=['POST'])
-# @jwt_required()
-def create_emergency_contact():
-    data = request.get_json()
-
-    try:
-        e = models.EmergencyContact(
-            patient_id = data['patient_id'],
-            person_id = data['person_id'],
-            relation = data['relation']
-        )
-
-        db.session.add(e)
-        db.session.commit()
-
-        return jsonify(
-            {"message": "emergency contact created successfully"}
-        ), 201
-    except:
-        return jsonify(
-            {"message": "failed to create emergency contact..."}
         ), 500
     
 @create.route('/api/create-appointment', methods=['POST'])
@@ -134,26 +120,3 @@ def create_appointment():
         return jsonify(
             {"message": "failed to create appointment..."}
         ), 500
-
-@create.route('/api/create-employee-shift', methods=['POST'])
-# @jwt_required()
-def create_employee_shift():
-    data = request.get_json()
-
-    try:
-        es = models.EmployeeShift(
-            employee_id = data['employee_id'],
-            schedule = data['schedule']
-        )
-
-        db.session.add(es)
-        db.session.commit()
-
-        return jsonify(
-            {"message": "employee shift created successfully"}
-        ), 201
-    except:
-        return jsonify(
-            {"message": "failed to create employee shift..."}
-        ), 500
-
