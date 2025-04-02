@@ -67,7 +67,7 @@ def people():
     return jsonify(people_list)
 
 @api.route('/api/patients', methods=['GET'])
-@jwt_required
+@jwt_required()
 def patients():
     all_patients = db.session.query(models.Patient).all()
 
@@ -86,8 +86,8 @@ def patients():
 
     return jsonify(patients_list)
 
-@api.route('api/employees', methods=['GET'])
-@jwt_required
+@api.route('/api/employees', methods=['GET'])
+@jwt_required()
 def employees():
     all_employees = db.session.query(models.Employee).all()
 
@@ -104,7 +104,7 @@ def employees():
 # Get by ID 
 
 @api.route('/api/get-person-info', methods=['POST'])
-@jwt_required   
+@jwt_required()
 def get_person_info():
     data = request.get_json()
 
@@ -123,7 +123,7 @@ def get_person_info():
         return jsonify({'message': f'person with id ({data['id']}) not found.'})
     
 @api.route('/api/get-patient-info', methods=['POST'])
-@jwt_required
+@jwt_required()
 def get_patient_info():
     data = request.get_json()
 
@@ -145,7 +145,7 @@ def get_patient_info():
         return jsonify({'message': f'patient with id ({data['id']}) not found.'})
     
 @api.route('/api/get-emergency-contact', methods=['POST'])
-@jwt_required
+@jwt_required()
 def get_emergency_contact():
     data = request.get_json()
 
@@ -160,7 +160,7 @@ def get_emergency_contact():
         return jsonify({'message': f'emergency contact with id ({data['id']}) not found.'})
     
 @api.route('/api/get-employee-info', methods=['POST'])
-@jwt_required
+@jwt_required()
 def get_employee_info():
     data = request.get_json()
 
@@ -177,7 +177,7 @@ def get_employee_info():
         return jsonify({'message': f'employee with id ({data['id']}) not found.'})
     
 @api.route('/api/get-shift-info', methods=['POST'])
-@jwt_required
+@jwt_required()
 def get_shift_info():
     data = request.get_json()
 
