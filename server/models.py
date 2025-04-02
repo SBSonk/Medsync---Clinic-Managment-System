@@ -19,7 +19,7 @@ class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(db.String(255), nullable=False, unique=True)
     username: Mapped[str] = mapped_column(db.String(255), nullable=False, unique=True)
-    password: Mapped[str] = mapped_column(db.String(255), nullable=False)
+    password: Mapped[str] = mapped_column(db.String(50), nullable=False) # bcrypt hash has a max of 54 chars.
     role: Mapped[str] = mapped_column(db.String(50), nullable=False)
 
     person_id: Mapped[int] = mapped_column(ForeignKey('person.id'), unique=True)
