@@ -1,0 +1,72 @@
+body,
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #0a0a4a;
+  overflow: hidden;
+  position: fixed;
+}
+
+iconify-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  color: black;
+  font-size: 32px;
+}
+
+.sidebar {
+  height: 100%;
+  width: 240px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  overflow-x: hidden;
+  padding-top: 16px;
+}
+
+.sidebarLogo {
+  width: 10em;
+}
+
+.sidebarHeader {
+  text-align: center;
+}
+
+.sidebarMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+}
+
+.sidebarLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  /* Apply styles to the active link */
+}
+.sidebarLinks a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: black; /* Default color */
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 5px;
+}
+.sidebarLinks a:hover {
+  background: #e6e6fa; /* Hover background */
+}
+.sidebarLinks a:active {
+  background: #e6e6fa; /* Active background */
+}
+.sidebarLinks .activeLink {
+  background: #e6e6fa; /* Same background as hover */
+  font-weight: bold; /* Optional, to make it stand out */
+}/*# sourceMappingURL=Sidebar.css.map */

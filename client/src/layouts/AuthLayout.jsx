@@ -4,13 +4,13 @@ import medsync from "../assets/medsync.svg";
 
 const AuthLayout = ({ title, children }) => {
   return (
-    <div className="auth-container">
-      <div className="auth-box">
+    <div className="authContainer">
+      <div className="authBox">
         {/* Left Side: Form */}
-        <div className="auth-form">{children}</div>
+        <div className="authForm">{children}</div>
 
         {/* Right Side: Branding */}
-        <div className="auth-branding">
+        <div className="authBranding">
           <img src={medsync} className="logo" alt="medsync logo" />
           <hr />
           <p>{title}</p>

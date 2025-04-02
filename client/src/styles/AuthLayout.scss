@@ -1,23 +1,12 @@
-$primaryBg: #0a0a4a;
-$secondary-color: #e0e0e0;
-$button-dark: #222; // Changed from full black for better contrast
-$button-light: #fff;
+@import "./variables";
 
-body,
-html {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: $primaryBg; // Ensures full background coverage
-}
-
-.auth-container {
+.authContainer {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.auth-box {
+.authBox {
   display: flex;
   width: 750px;
   height: 380px;
@@ -27,7 +16,7 @@ html {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.auth-form {
+.authForm {
   flex: 1;
   background: $secondary-color;
   padding: 40px;
@@ -72,7 +61,7 @@ html {
   }
 }
 
-.forgot-password {
+.forgotPassword {
   margin-top: 15px;
   padding: 5px;
   text-align: left;
@@ -87,7 +76,18 @@ html {
   color: #444;
 }
 
-.auth-branding {
+.errorContainer {
+  height: 2px;
+  display: flex;
+  align-items: center;
+
+  .errorMessage {
+    color: red;
+    margin: 0;
+  }
+}
+
+.authBranding {
   flex: 1;
   background: $button-light;
   display: flex;

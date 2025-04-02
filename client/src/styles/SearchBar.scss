@@ -1,0 +1,43 @@
+.search-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Add space between input and select */
+}
+
+.search-input-container {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.search-input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px;
+  border-radius: 5px;
+  background-color: white;
+  outline: none;
+  color: black;
+  width: 200px; /* Adjust width of the input */
+}
+
+.search-icon {
+  font-size: 22px;
+  padding: 6px;
+  color: black;
+}
+
+.search-select-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-select {
+  width: 150px; /* Set width for the select dropdown */
+  min-width: 130px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: black;
+  background-color: white;
+}
