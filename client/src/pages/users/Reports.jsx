@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from "react";
-import AdminLayout from "../../../layouts/AdminLayout";
+import MainLayout from "../../layouts/MainLayout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
-import "../../../styles/AdminLayout.css";
+import "../../styles/MainLayout.css";
 
-const Employees = () => {
-  const [employees, setEmployees] = useState([]);
+const Reports = () => {
+  const [reports, setReports] = useState([]);
 
   useEffect(() => {
-    const fetchEmployees = async () => {
+    const fetchReports = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MzU5OTA2MiwianRpIjoiMjYzOGY3YWMtODU4Zi00YzA3LWFiYjktMTk2ZjAzNDIzYzBlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3NDM1OTkwNjIsImNzcmYiOiJhOGQ5NjRjMi1jMWE3LTQxNzMtOWQ3NC01NTVlZjBiMTE2OTgifQ.I5PjbXpj5DyWZZkk2jEHJgrePsaKkIuvgVPo98CivJg`,
           },
         });
-        setEmployees(response.data);
+        setReports(response.data);
       } catch (error) {
-        console.error("Error fetching employees:", error);
+        console.error("Error fetching Reports:", error);
       }
     };
 
-    fetchEmployees();
+    fetchReports();
   }, []);
 
   const columns = [
@@ -87,20 +87,20 @@ const Employees = () => {
   };
 
   return (
-    <AdminLayout title="Employees">
-      <div className="adminBox">
-        <div className="adminContent">
+    <MainLayout title="Reports">
+      <div className="mainBox">
+        <div className="mainContent">
           <div className="table-container">
             <DataTable
               columns={columns}
-              data={employees}
+              data={reports}
               customStyles={customStyles}
             />
           </div>
         </div>
       </div>
-    </AdminLayout>
+    </MainLayout>
   );
 };
 
-export default Employees;
+export default Reports;

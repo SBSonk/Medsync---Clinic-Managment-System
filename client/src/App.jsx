@@ -6,7 +6,12 @@ import Login from "./pages/auth/Login";
 import ForgotPassword from "./pages/auth/ForgotPasword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import "./styles/AuthLayout.css";
-import Employees from "./pages/admin/employees/Employees";
+import Employees from "./pages/users/Employees";
+import Account from "./pages/users/Account";
+import Patients from "./pages/users/Patients";
+import Appointments from "./pages/users/Appointments";
+import Reports from "./pages/users/Reports";
+import Inventory from "./pages/users/Inventory";
 
 function App() {
   const fetchAPI = async () => {
@@ -23,7 +28,12 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/admin/account" element={<Account />} />
+        <Route path="/admin/patients" element={<Patients />} />
         <Route path="/admin/employees" element={<Employees />} />
+        <Route path="/admin/appointments" element={<Appointments />} />
+        <Route path="/admin/inventory" element={<Inventory />} />
+        <Route path="/admin/reports" element={<Reports />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
       </Routes>

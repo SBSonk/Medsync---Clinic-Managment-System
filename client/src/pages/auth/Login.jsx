@@ -14,15 +14,15 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await axios.post("http://127.0.0.1:8080/login", {
+      const response = await axios.post("http://localhost:8080/login", {
         username,
-        password
+        password,
       });
 
       const { access_token, role } = response.data;
-      
+
       localStorage.setItem("token", access_token);
-      localStorage.setItem("role", 'admin');
+      localStorage.setItem("role", "admin");
       // localStorage.setItem("role", role);
 
       // if (role === "admin") {
@@ -31,7 +31,7 @@ const Login = () => {
       //   navigate("/employee/dashboard");
       // }
 
-      navigate("/admin/employees")
+      navigate("/admin/employees");
     } catch (err) {
       setError("Invalid username or password");
     }
@@ -62,7 +62,9 @@ const Login = () => {
           {error && <p className="errorMessage">{error}</p>}
         </div>
 
-        <button type="submit" onClick={handleSubmit}>Log In</button>
+        <button type="submit" onClick={handleSubmit}>
+          Log In
+        </button>
       </form>
 
       <a href="/forgotpassword" className="forgotPassword">

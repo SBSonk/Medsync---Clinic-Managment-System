@@ -1,6 +1,6 @@
 @import "./Variables";
 
-.adminContainer {
+.mainContainer {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -8,14 +8,14 @@
   overflow: hidden;
 }
 
-.adminHeader {
+.mainHeader {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 10px;
   padding-left: 15vw;
 
-  .adminTitle {
+  .mainTitle {
     padding-top: 3vh;
     margin: 0;
     font-size: 35px;
@@ -25,7 +25,7 @@
   }
 }
 
-.adminBox {
+.mainBox {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,7 +36,7 @@
   overflow: hidden;
 }
 
-.adminContent {
+.mainContent {
   display: flex;
   flex-direction: column;
   align-items: center;

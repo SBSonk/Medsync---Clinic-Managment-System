@@ -17,7 +17,7 @@ iconify-icon {
   font-size: 32px;
 }
 
-.adminContainer {
+.mainContainer {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -25,14 +25,14 @@ iconify-icon {
   overflow: hidden;
 }
 
-.adminHeader {
+.mainHeader {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 10px;
   padding-left: 15vw;
 }
-.adminHeader .adminTitle {
+.mainHeader .mainTitle {
   padding-top: 3vh;
   margin: 0;
   font-size: 35px;
@@ -41,7 +41,7 @@ iconify-icon {
   color: white;
 }
 
-.adminBox {
+.mainBox {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -52,7 +52,7 @@ iconify-icon {
   overflow: hidden;
 }
 
-.adminContent {
+.mainContent {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -117,4 +117,4 @@ iconify-icon {
 .delete-btn:hover {
   background-color: red;
   opacity: 0.8;
-}/*# sourceMappingURL=AdminLayout.css.map */
+}/*# sourceMappingURL=MainLayout.css.map */

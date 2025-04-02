@@ -208,4 +208,3 @@ def get_shift_info():
         return jsonify({'message': f'employee_shift with id ({data['id']}) not found.'})
     
 # Creation routes
-@
