@@ -103,6 +103,23 @@ def employees():
 
 # Get by ID 
 
+@api.route('/api/get-user-info', methods=['POST'])
+@jwt_required()
+def get_user_info():
+    data = request.get_json()
+
+    u = db.session.query(models.Person).filter_by(id=data['id']).first()
+    if u is not None:
+        return jsonify({
+            'id': u.id,
+            'email': u.email,
+            'username': u.username,
+            'role': u.role
+        })
+    else:
+        return jsonify({'message': f'user with id ({data['id']}) not found.'})
+    
+
 @api.route('/api/get-person-info', methods=['POST'])
 @jwt_required()
 def get_person_info():
@@ -190,3 +207,4 @@ def get_shift_info():
     else:
         return jsonify({'message': f'employee_shift with id ({data['id']}) not found.'})
     
+# Creation routes

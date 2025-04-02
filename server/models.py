@@ -22,7 +22,7 @@ class User(db.Model):
     password: Mapped[str] = mapped_column(db.String(255), nullable=False)
     role: Mapped[str] = mapped_column(db.String(50), nullable=False)
 
-    person_id: Mapped[int] = mapped_column(ForeignKey('person.id'))
+    person_id: Mapped[int] = mapped_column(ForeignKey('person.id'), unique=True)
 
     def set_password(self, password: str):
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
