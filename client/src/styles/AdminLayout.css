@@ -78,8 +78,7 @@ iconify-icon {
   -ms-overflow-style: none;
 }
 .table-container::-webkit-scrollbar {
-  width: 0px; /* Completely hides scrollbar */
-  scrollbar-color: white;
+  display: none;
 }
 
 .action-buttons {
