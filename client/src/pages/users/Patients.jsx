@@ -90,7 +90,7 @@ const Patients = () => {
 
   return (
     <MainLayout title="Patients">
-      <SearchBar />
+      <SearchBar onSearch={console.log('tite')}/>
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import axios from "axios";
 import Login from "./pages/auth/Login";
-import ForgotPassword from "./pages/auth/ForgotPasword";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import "./styles/AuthLayout.css";
 import Employees from "./pages/users/Employees";
@@ -33,7 +33,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MainLayout />} />
+        <Route path="/" element={<Navigate to='/login' replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/edit" element={<PatientForm />} />
         {/* <Route path="/login" element={<Login />} /> */}
