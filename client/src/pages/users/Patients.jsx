@@ -3,8 +3,7 @@ import MainLayout from "../../layouts/MainLayout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/MainLayout.css";
-import { Link, Navigate } from "react-router-dom";
-import SearchBar from "../../components/SearchBar";
+import { Link } from "react-router-dom";
 
 const Patients = () => {
   const [patients, setPatients] = useState([]);
@@ -12,12 +11,30 @@ const Patients = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/people", {
+        // Fetch all patients
+        const response = await axios.get("http://localhost:8080/api/patients", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token")
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
           },
         });
-        setPatients(response.data);
+
+        // For each patient, fetch their person details
+        const patientsWithPersonDetails = await Promise.all(
+          response.data.map(async (patient) => {
+            const personRes = await axios.get(
+              `http://localhost:8080/api/get-person-info/${patient.person_id}`,
+              {
+                headers: {
+                  Authorization:
+                    "Bearer " + localStorage.getItem("access_token"),
+                },
+              }
+            );
+            return { ...patient, person: personRes.data };
+          })
+        );
+
+        setPatients(patientsWithPersonDetails);
       } catch (error) {
         console.error("Error fetching Patients:", error);
       }
@@ -27,43 +44,77 @@ const Patients = () => {
   }, []);
 
   const columns = [
-    { name: "ID", selector: (row) => row.id, width: "5%", center: true, sortable: true},
-    { name: "First Name", selector: (row) => row.first_name, width: "10%", sortable: true, center: true},
-    { name: "Last Name", selector: (row) => row.last_name, width: "10%", sortable: true, center:true},
+    {
+      name: "ID",
+      selector: (row) => row.id,
+      width: "5%",
+      center: true,
+      sortable: true,
+    },
+    {
+      name: "First Name",
+      selector: (row) => row.person.first_name,
+      width: "10%",
+      sortable: true,
+      center: true,
+    },
+    {
+      name: "Last Name",
+      selector: (row) => row.person.last_name,
+      width: "10%",
+      sortable: true,
+      center: true,
+    },
     {
       name: "Gender",
-      selector: (row) => row.gender,
+      selector: (row) => row.person.gender,
       width: "10%",
       center: true,
-      sortable: true 
+      sortable: true,
     },
     {
       name: "Date of Birth",
-      selector: (row) => row.date_of_birth,
-      width: "10%", 
+      selector: (row) => row.person.date_of_birth,
+      width: "10%",
       sortable: true,
-      center: true
+      center: true,
     },
-    { name: "Contact No", selector: (row) => row.contact_no, width: "10%", sortable: true, center: true  },
-    { name: "Address", selector: (row) => row.address, width: "30%", sortable: true, center: true  },
+    {
+      name: "Contact No",
+      selector: (row) => row.person.contact_no,
+      width: "10%",
+      sortable: true,
+      center: true,
+    },
+    {
+      name: "Address",
+      selector: (row) => row.person.address,
+      width: "30%",
+      sortable: true,
+      center: true,
+    },
     {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
           <button
             className="view-btn"
-            onClick={() => alert(`Viewing ${row.name}`)}
+            onClick={() =>
+              alert(`Viewing ${row.person.first_name} ${row.person.last_name}`)
+            }
           >
             <iconify-icon icon="mdi:eye"></iconify-icon>
           </button>
-          <Link to="/edit">
-            <button className="edit-btn" onClick={() => handleEdit(row.id)}>
+          <Link to={`/edit/${row.id}`}>
+            <button className="edit-btn">
               <iconify-icon icon="mdi:pencil"></iconify-icon>
             </button>
           </Link>
           <button
             className="delete-btn"
-            onClick={() => alert(`Deleting ${row.name}`)}
+            onClick={() =>
+              alert(`Deleting ${row.person.first_name} ${row.person.last_name}`)
+            }
           >
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>
@@ -82,11 +133,11 @@ const Patients = () => {
     rows: {
       style: {
         fontSize: "14px",
-        borderBottom: "1px solid #ddd", // Add border for rows
+        borderBottom: "1px solid #ddd",
       },
     },
     tableWrapper: {
-      style: { maxHeight: "450px", overflowY: "auto", overflowX: "auto" }, // Ensure horizontal scrolling is enabled
+      style: { maxHeight: "450px", overflowY: "auto", overflowX: "auto" },
     },
   };
 

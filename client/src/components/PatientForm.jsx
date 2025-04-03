@@ -1,98 +1,136 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
-import "../styles/FormLayout.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "../styles/FormLayout.css";
 
 const PatientForm = () => {
-  const { id } = useParams();
-  const [patient, setPatient] = useState({});
-  const [people, setPeople] = useState([]);
-  const [formData, setFormData] = useState({});
-  const { control, handleSubmit, register, setValue } = useForm();
+  const { id } = useParams(); // Use useParams to get the 'id' from the URL
+  const { register, handleSubmit, setValue, watch } = useForm();
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    const fetchPatient = async () => {
+    const fetchPatientAndPerson = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/patients/${id}`,
+        // Fetch patient info first
+        const patientRes = await axios.get(
+          `http://localhost:8080/api/get-patient-info/${id}`,
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token"),
             },
           }
         );
-        setPatient(response.data);
-        setFormData(response.data);
-        // Set initial form values
-        setValue("first_name", response.data.first_name);
-        setValue("last_name", response.data.last_name);
-        setValue("gender", response.data.gender);
-        setValue("date_of_birth", new Date(response.data.date_of_birth));
-        setValue("contact_no", response.data.contact_no);
-        setValue("address", response.data.address);
-        setValue("height", response.data.height);
-        setValue("weight", response.data.weight);
-        setValue("blood_type", response.data.blood_type);
-        setValue("allergies", response.data.allergies);
-        setValue("medical_history", response.data.medical_history);
-        setValue("family_history", response.data.family_history);
-        setValue(
-          "emergency_contact_person_id",
-          response.data.emergency_contact_person_id
-        );
+        const patientData = patientRes.data;
+
+        if (patientData && patientData.person_id) {
+          // Now use person_id from patient info to fetch person details
+          const personRes = await axios.get(
+            `http://localhost:8080/api/get-person-info/${patientData.person_id}`,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("access_token"),
+              },
+            }
+          );
+          const personData = personRes.data;
+
+          // Fetch emergency contact info
+          const emergencyContactRes = await axios.get(
+            `http://localhost:8080/api/get-emergency-contact/${id}`,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("access_token"),
+              },
+            }
+          );
+          const emergencyContactData = emergencyContactRes.data;
+
+          // Populate form fields with the retrieved data
+          setValue("firstName", personData.first_name || "");
+          setValue("lastName", personData.last_name || "");
+          setValue("gender", personData.gender || "");
+          setValue(
+            "dateOfBirth",
+            personData.date_of_birth ? new Date(personData.date_of_birth) : null
+          );
+          setValue("contactNo", personData.contact_no || "");
+          setValue("address", personData.address || "");
+          setValue("height", patientData.height || "");
+          setValue("weight", patientData.weight || "");
+          setValue("bloodType", patientData.blood_type || "");
+          setValue("allergies", patientData.allergies || "");
+          setValue("medicalHistory", patientData.medical_history || "");
+          setValue("familyHistory", patientData.family_history || "");
+          setValue("emergencyContact", emergencyContactData.person_id || "");
+          setValue("emergencyRelation", emergencyContactData.relation || "");
+        }
       } catch (error) {
-        console.error("Error fetching patient:", error);
+        console.error("Error fetching patient details:", error);
       }
     };
 
-    const fetchPeople = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/api/people", {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
-          },
-        });
-        setPeople(response.data);
-      } catch (error) {
-        console.error("Error fetching people:", error);
-      }
-    };
-
-    fetchPatient();
-    fetchPeople();
+    fetchPatientAndPerson();
   }, [id, setValue]);
 
   const onSubmit = async (data) => {
     try {
-      // First, update the patient
-      await axios.put("http://localhost:8080/api/update-patient", data, {
+      const patientData = {
+        id,
+        height: data.height,
+        weight: data.weight,
+        blood_type: data.bloodType,
+        allergies: data.allergies,
+        medical_history: data.medicalHistory,
+        family_history: data.familyHistory,
+        emergency_contact_id: data.emergencyContact,
+      };
+
+      const personData = {
+        id,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        gender: data.gender,
+        date_of_birth: data.dateOfBirth,
+        contact_no: data.contactNo,
+        address: data.address,
+      };
+
+      // Update patient data
+      await axios.put("http://localhost:8080/api/update-patient", patientData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
       });
 
-      // Now, update the person's data
-      const personData = {
-        id: data.emergency_contact_person_id,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        gender: data.gender,
-        date_of_birth: data.date_of_birth,
-        contact_no: data.contact_no,
-        address: data.address,
-      };
-
+      // Update person data
       await axios.put("http://localhost:8080/api/update-person", personData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
       });
 
-      alert("Patient updated successfully");
+      // If emergency contact has changed, update it
+      if (data.emergencyContact) {
+        await axios.put(
+          `http://localhost:8080/api/update-emergency-contact/${id}`,
+          {
+            person_id: data.emergencyContact,
+            relation: data.emergencyRelation,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token"),
+            },
+          }
+        );
+      }
+
+      alert("Patient updated successfully!");
+      setIsEditing(false);
     } catch (error) {
       console.error("Error updating patient:", error);
     }
@@ -107,101 +145,107 @@ const PatientForm = () => {
               <label>First Name:</label>
               <input
                 type="text"
-                {...register("first_name", { required: true })}
+                {...register("firstName")}
+                disabled={!isEditing}
               />
+
               <label>Last Name:</label>
               <input
                 type="text"
-                {...register("last_name", { required: true })}
+                {...register("lastName")}
+                disabled={!isEditing}
               />
-              <br />
 
               <label>Gender:</label>
-              <div>
-                <label>
-                  <input
-                    type="radio"
-                    value="MALE"
-                    {...register("gender", { required: true })}
-                  />
-                  Male
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="FEMALE"
-                    {...register("gender", { required: true })}
-                  />
-                  Female
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="NON-BINARY"
-                    {...register("gender", { required: true })}
-                  />
-                  Non-Binary
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="OTHER"
-                    {...register("gender", { required: true })}
-                  />
-                  Other
-                </label>
-              </div>
+              <select {...register("gender")} disabled={!isEditing}>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="NON-BINARY">Non-Binary</option>
+                <option value="OTHER">Other</option>
+              </select>
 
               <label>Date of Birth:</label>
-              <Controller
-                name="date_of_birth"
-                control={control}
-                render={({ field }) => (
-                  <DatePicker
-                    {...field}
-                    selected={field.value}
-                    onChange={(date) => setValue("date_of_birth", date)}
-                    dateFormat="MM-dd-yyyy"
-                    className="date-picker"
-                    required
-                  />
-                )}
+              <DatePicker
+                selected={watch("dateOfBirth")}
+                onChange={(date) => setValue("dateOfBirth", date)}
+                dateFormat="MM-dd-yyyy"
+                disabled={!isEditing}
               />
-              <br />
 
               <label>Contact Number:</label>
               <input
                 type="text"
-                {...register("contact_no", { required: true })}
+                {...register("contactNo")}
+                disabled={!isEditing}
               />
-              <br />
+
               <label>Address:</label>
-              <input type="text" {...register("address", { required: true })} />
+              <input
+                type="text"
+                {...register("address")}
+                disabled={!isEditing}
+              />
+
               <label>Height:</label>
-              <input type="text" {...register("height", { required: true })} />
+              <input
+                type="text"
+                {...register("height")}
+                disabled={!isEditing}
+              />
+
               <label>Weight:</label>
-              <input type="text" {...register("weight", { required: true })} />
+              <input
+                type="text"
+                {...register("weight")}
+                disabled={!isEditing}
+              />
+
               <label>Blood Type:</label>
-              <input type="text" {...register("blood_type")} />
+              <input
+                type="text"
+                {...register("bloodType")}
+                disabled={!isEditing}
+              />
+
               <label>Allergies:</label>
-              <input type="text" {...register("allergies")} />
+              <input
+                type="text"
+                {...register("allergies")}
+                disabled={!isEditing}
+              />
+
               <label>Medical History:</label>
-              <input type="text" {...register("medical_history")} />
+              <input
+                type="text"
+                {...register("medicalHistory")}
+                disabled={!isEditing}
+              />
+
               <label>Family History:</label>
-              <input type="text" {...register("family_history")} />
+              <input
+                type="text"
+                {...register("familyHistory")}
+                disabled={!isEditing}
+              />
+
               <label>Emergency Contact:</label>
-              <select {...register("emergency_contact_person_id")}>
-                <option value="">Select Contact</option>
-                {people.map((person) => (
-                  <option key={person.id} value={person.id}>
-                    {person.first_name} {person.last_name}
-                  </option>
-                ))}
-              </select>
+              <input
+                type="text"
+                {...register("emergencyContact")}
+                disabled={!isEditing}
+              />
+
               <label>Relation:</label>
-              <input type="text" {...register("emergency_contact_relation")} />
-              <br />
-              <button type="submit">Save Changes</button>
+              <input
+                type="text"
+                {...register("emergencyRelation")}
+                disabled={!isEditing}
+              />
+              <button type="button" onClick={() => setIsEditing(!isEditing)}>
+                {isEditing ? "Cancel" : "Edit"}
+              </button>
+
+              {isEditing && <button type="submit">Save Changes</button>}
             </form>
           </div>
         </div>
