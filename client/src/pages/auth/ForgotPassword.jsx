@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import AuthLayout from "../../layouts/AuthLayout";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate(); // Allows navigation programmatically
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email.trim()) {
@@ -15,10 +16,9 @@ const ForgotPassword = () => {
       return;
     }
 
-    alert("Password reset link sent to " + email);
+    const response = await axios.post('http://127.0.0.1:8080/recovery-get-user', {'email': email}); 
 
-    // Redirect user to reset password page after successful message
-    navigate("/resetpassword");
+    navigate("/resetpassword", { state: response.data });
   };
 
   return (
