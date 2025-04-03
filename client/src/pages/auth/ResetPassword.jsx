@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AuthLayout from "../../layouts/AuthLayout";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ResetPassword = () => {
@@ -11,6 +11,7 @@ const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ const ResetPassword = () => {
 
     // Temporary success message (replace with API call)
     alert("Password reset successful!");
-    window.location.href = "/login"; // Redirect to login after reset
+    navigate('/', {replace: true}) // Redirect to login after reset
   };
 
   return (
