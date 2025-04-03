@@ -19,7 +19,9 @@ def create_person():
             gender = models.Gender[data['gender']],
             date_of_birth = datetime.strptime(data['date_of_birth'], "%d-%m-%Y").date(),
             contact_no = data['contact_no'],
-            address = data['address']
+            address = data['address'],
+            security_question = data['security_question'],
+            security_answer = data['security_answer']
         )
 
         db.session.add(p)

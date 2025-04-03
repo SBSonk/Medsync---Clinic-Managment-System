@@ -5,6 +5,24 @@ import models
 delete = Blueprint('delete', __name__)
 
 # Creation routes
+@delete.route('/api/user/<id>', methods=['DELETE'])
+# @jwt_required()
+def delete_user(id):
+    u = db.session.query(models.User).filter_by(id=id).first()
+
+    if u is not None:
+        try:
+            db.session.remove(u)
+            db.session.commit()
+            return jsonify(
+                {"message": "user deleted successfully"}
+            ), 200
+        except:
+            db.session.rollback()
+            return jsonify({"message": "failed to delete user..."}), 500
+        
+    return jsonify({f"message": "user with id {id} does not exist."}), 404 
+
 @delete.route('/api/delete-person/<id>', methods=['DELETE'])
 # @jwt_required()
 def delete_person(id):
@@ -16,13 +34,13 @@ def delete_person(id):
             db.session.remove(p)
             db.session.commit()
             return jsonify(
-                {"message": "user deleted successfully"}
+                {"message": "person deleted successfully"}
             ), 200
         except:
             db.session.rollback()
-            return jsonify({"message": "failed to delete user..."}), 500
+            return jsonify({"message": "failed to delete person..."}), 500
         
-    return jsonify({f"message": "user with id {id} does not exist."}), 404 
+    return jsonify({f"message": "person with id {id} does not exist."}), 404 
     
 @delete.route('/api/delete-employee/<id>', methods=['DELETE'])
 # @jwt_required()

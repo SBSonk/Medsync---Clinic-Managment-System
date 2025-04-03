@@ -16,7 +16,8 @@ def users():
             'id': u.id,
             'email': u.email,
             'username': u.username,
-            'role': u.role
+            'role': u.role,
+            'security_question': u.security_question
         } for u in all_users]  
     
     return jsonify(user_list), 200
@@ -84,7 +85,8 @@ def get_user_info(id):
             'id': u.id,
             'email': u.email,
             'username': u.username,
-            'role': u.role
+            'role': u.role,
+            'security_question': u.security_question
         }), 200
     else:
         return jsonify({'message': f'user with id ({id}) not found.'}), 404

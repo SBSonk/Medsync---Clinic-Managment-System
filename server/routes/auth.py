@@ -24,7 +24,7 @@ def register():
     data = request.get_json()
 
     try:
-        user = models.User(data['email'], data['username'], data['password'], data['role'], data['person_id'])
+        user = models.User(data['email'], data['username'], data['password'], data['role'], data['person_id'], data['security_question'], data['security_answer'])
         db.session.add(user)
         db.session.commit()
 
