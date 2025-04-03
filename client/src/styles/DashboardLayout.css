@@ -1,0 +1,184 @@
+body,
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #0a0a4a;
+  overflow: hidden;
+  position: fixed;
+}
+
+iconify-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  color: black;
+  font-size: 32px;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.mainHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  padding-left: 15vw;
+}
+.mainHeader .mainTitle {
+  padding-top: 3vh;
+  margin: 0;
+  font-size: 35px;
+  text-align: left;
+  font-weight: 500;
+  color: white;
+}
+
+.mainBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 85vw;
+  height: calc(100vh - 80px);
+  padding-left: 5vw;
+  overflow: hidden;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.topRow {
+  display: flex;
+  -moz-column-gap: 15px;
+       column-gap: 15px;
+}
+
+.middleRow {
+  display: flex;
+  -moz-column-gap: 15px;
+       column-gap: 15px;
+}
+
+.bottomRow {
+  display: flex;
+  -moz-column-gap: 15px;
+       column-gap: 15px;
+}
+
+.totalPatients, .totalEmployees, .totalAppointments, .totalInventory {
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  width: 210px;
+  height: 100px;
+  -moz-column-gap: 5px;
+       column-gap: 5px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.totalPatients .icon, .totalEmployees .icon, .totalAppointments .icon, .totalInventory .icon {
+  padding: 10px;
+  width: 55px;
+  height: 55px;
+}
+.totalPatients .text, .totalEmployees .text, .totalAppointments .text, .totalInventory .text {
+  text-align: left;
+  font-size: 12px;
+}
+.totalPatients .text h1, .totalEmployees .text h1, .totalAppointments .text h1, .totalInventory .text h1 {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+.totalPatients .text p, .totalEmployees .text p, .totalAppointments .text p, .totalInventory .text p {
+  margin-top: 0;
+}
+
+.recentAppointments, .lowStockInventory, .expiringInventory {
+  width: calc(100% - 15vw);
+  max-width: 75%;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  height: 175px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin: 0 auto;
+  /* Hide scrollbar for Chrome, Safari */
+  /* Hide scrollbar for Firefox */
+  scrollbar-width: none;
+  /* Hide scrollbar for Internet Explorer/Edge */
+  -ms-overflow-style: none;
+}
+.recentAppointments::-webkit-scrollbar, .lowStockInventory::-webkit-scrollbar, .expiringInventory::-webkit-scrollbar {
+  display: none;
+}
+
+.availableEmployees, .todaysAppointments {
+  width: 418px;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  height: 175px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin: 0 auto;
+  /* Hide scrollbar for Chrome, Safari */
+  /* Hide scrollbar for Firefox */
+  scrollbar-width: none;
+  /* Hide scrollbar for Internet Explorer/Edge */
+  -ms-overflow-style: none;
+}
+.availableEmployees::-webkit-scrollbar, .todaysAppointments::-webkit-scrollbar {
+  display: none;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+.action-buttons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 5px;
+  transition: background 0.2s ease-in-out;
+}
+.action-buttons button:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+.action-buttons button iconify-icon {
+  color: black;
+  font-size: 18px;
+}
+
+.view-btn:hover {
+  background-color: lightblue;
+}
+
+.edit-btn:hover {
+  background-color: yellow;
+}
+
+.delete-btn:hover {
+  background-color: red;
+  opacity: 0.8;
+}/*# sourceMappingURL=DashboardLayout.css.map */

@@ -8,6 +8,7 @@ import ResetPassword from "./pages/auth/ResetPassword";
 import "./styles/AuthLayout.css";
 import Employees from "./pages/users/Employees";
 import Account from "./pages/users/Account";
+import Dashboard from "./pages/users/Dashboard";
 import Patients from "./pages/users/Patients";
 import Appointments from "./pages/users/Appointments";
 import Reports from "./pages/users/Reports";
@@ -30,6 +31,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/admin/account" element={<Account />} />
+        <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/patients" element={<Patients />} />
         <Route path="/admin/employees" element={<Employees />} />
         <Route path="/admin/appointments" element={<Appointments />} />
