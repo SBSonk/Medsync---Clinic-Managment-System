@@ -31,6 +31,7 @@ with app.app_context():
         db.create_all()
         database_defaults.populate_people(db)
         database_defaults.populate_inventory(db)
+        database_defaults.populate_patients(db)
         a = User('test@email.com', 'admin', 'tite', 'admin', 2, 'why did the chicken cross the road?', 'to get to the other side!')
         b = User('test2@email.com', 'employee', 'tite', 'employee', 3, 'marco', 'polo')
         db.session.add(a)
