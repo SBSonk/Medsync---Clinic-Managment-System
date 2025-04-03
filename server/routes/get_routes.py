@@ -53,7 +53,7 @@ def patients():
         'allergies': p.allergies,
         'medical_history': p.medical_history,
         'family_history': p.family_history,
-        'emergency_contact_id': p.emergency_contact_id,
+        # 'emergency_contact_id': p.emergency_contact_id,
         'next_appointment_id': p.next_appointment_id
     } for p in all_patients]
 
