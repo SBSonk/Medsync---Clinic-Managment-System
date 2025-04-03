@@ -46,7 +46,7 @@ function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/create/person" element={<PersonForm />} />
         <Route path="/create/user" element={<UserForm />} />
-        {/* <Route path="/edit/:id" element={<PatientForm />} /> */}
+        <Route path="/edit/:patient_id/:person_id" element={<PatientForm />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />

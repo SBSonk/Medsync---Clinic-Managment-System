@@ -7,8 +7,16 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
 
+function formatDate(date) {
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${month}-${day}-${year}`;
+}
+
 const PatientForm = () => {
-  const { id: patient_id } = useParams(); // Use useParams to get the 'id' from the URL
+  const { patient_id, person_id } = useParams(); // Use useParams to get the 'id' from the URL
   const { register, handleSubmit, setValue, watch } = useForm();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -29,7 +37,7 @@ const PatientForm = () => {
         if (patientData && patientData.person_id) {
           // Now use person_id from patient info to fetch person details
           const personRes = await axios.get(
-            `http://localhost:8080/api/get-person-info/${patientData.person_id}`,
+            `http://localhost:8080/api/get-person-info/${person_id}`,
             {
               headers: {
                 Authorization: "Bearer " + localStorage.getItem("access_token"),
@@ -39,17 +47,17 @@ const PatientForm = () => {
           const personData = personRes.data;
 
           // Fetch emergency contact info
-          // const emergencyContactRes = await axios.get(
-          //   `http://localhost:8080/api/get-emergency-contact/${patient_id}`,
-          //   {
-          //     headers: {
-          //       Authorization: "Bearer " + localStorage.getItem("access_token"),
-          //     },
-          //   }
-          // );
+          const emergencyContactRes = await axios.get(
+            `http://localhost:8080/api/get-emergency-contact/${patient_id}`,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("access_token"),
+              },
+            }
+          );
           
           // emergencyContactData.then
-          // const emergencyContactData = emergencyContactRes.data;
+          const emergencyContactData = emergencyContactRes.data;
 
           // Populate form fields with the retrieved data
           setValue("firstName", personData.first_name || "");
@@ -68,10 +76,10 @@ const PatientForm = () => {
           setValue("medicalHistory", patientData.medical_history || "");
           setValue("familyHistory", patientData.family_history || "");
 
-          // if (emergencyContactData ) {
-          //   setValue("emergencyContact", emergencyContactData.person_id || "");
-          //   setValue("emergencyRelation", emergencyContactData.relation || "");
-          // }
+          if (emergencyContactData ) {
+            setValue("emergencyContact", emergencyContactData.person_id || "");
+            setValue("emergencyRelation", emergencyContactData.relation || "");
+          }
         }
       } catch (error) {
         console.error("Error fetching patient details:", error);
@@ -90,22 +98,23 @@ const PatientForm = () => {
         blood_type: data.bloodType,
         allergies: data.allergies,
         medical_history: data.medicalHistory,
-        family_history: data.familyHistory,
-        emergency_contact_id: data.emergencyContact,
+        family_history: data.familyHistory
       };
 
       const personData = {
-        id: patient_id,
+        id: person_id,
         first_name: data.firstName,
         last_name: data.lastName,
         gender: data.gender,
-        date_of_birth: data.dateOfBirth,
+        date_of_birth: formatDate(data.dateOfBirth),
         contact_no: data.contactNo,
         address: data.address,
       };
 
+      console.log(patientData);
+
       // Update patient data
-      await axios.put("http://localhost:8080/api/update-patient", patientData, {
+      await axios.put("http://127.0.0.1:8080/api/update-patient", patientData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -132,7 +141,7 @@ const PatientForm = () => {
       //       },
       //     }
       //   );
-      // }
+      // } I ACTUALLY DONT REMEMBER IF I HAVE AN UPDATE
 
       alert("Patient updated successfully!");
       setIsEditing(false);
@@ -173,7 +182,7 @@ const PatientForm = () => {
               <DatePicker
                 selected={watch("dateOfBirth")}
                 onChange={(date) => setValue("dateOfBirth", date)}
-                dateFormat="MM-dd-yyyy"
+                dateFormat="dd-MM-yyyy"
                 disabled={!isEditing}
               />
 

@@ -11,8 +11,8 @@ const Patients = () => {
 
   const navigate = useNavigate();
 
-  const handleEdit = (id) => {
-    navigate(`/edit/${id}`);
+  const handleEdit = (patient_id, person_id) => {
+    navigate(`/edit/${patient_id}/${person_id}`);
   };
 
   useEffect(() => {
@@ -124,7 +124,7 @@ const Patients = () => {
           >
             <iconify-icon icon="mdi:eye"></iconify-icon>
           </button>
-          <button onClick={() => handleEdit(row.id)} className="edit-btn">
+          <button onClick={() => handleEdit(row.id, row.person_id)} className="edit-btn">
             <iconify-icon icon="mdi:pencil"></iconify-icon>
           </button>
           <button
