@@ -13,6 +13,8 @@ import Appointments from "./pages/users/Appointments";
 import Reports from "./pages/users/Reports";
 import Inventory from "./pages/users/Inventory";
 
+import Add from './pages/users/Add'
+
 function App() {
   const fetchAPI = async () => {
     const response = await axios.get("http://127.0.0.1:8080/api/users");
@@ -32,9 +34,11 @@ function App() {
         <Route path="/admin/account" element={<Account />} />
         <Route path="/admin/patients" element={<Patients />} />
         <Route path="/admin/employees" element={<Employees />} />
+        <Route path="/admin/add" element={<Add />} />
         <Route path="/admin/appointments" element={<Appointments />} />
         <Route path="/admin/inventory" element={<Inventory />} />
         <Route path="/admin/reports" element={<Reports />} />
+        <Route path="/employee/patients" element={<Patients />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
       </Routes>

@@ -14,7 +14,7 @@ def login():
     user: models.User = models.User.query.filter_by(username=data['username']).first()
 
     if user and user.check_password(data['password']):
-        return jsonify({'message': 'Authorization success!', 'access_token': create_access_token(identity=str(user.id))}), 200
+        return jsonify({'message': 'Authorization success!', 'access_token': create_access_token(identity=str(user.id)), 'role': user.role}), 200
     else: 
         return jsonify({'message': 'Authorization failed...'}), 401
     

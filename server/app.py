@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'uhm, i like corndogs?'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///medsync.sqlite3'
 
-CORS(app, origins=['http://localhost:5173'], methods=["GET", "POST", "OPTIONS"])
+CORS(app, origins=['*'], methods=["GET", "POST", "OPTIONS"])
 
 app.register_blueprint(routes.auth.auth)
 app.register_blueprint(routes.create_routes.create)
@@ -30,8 +30,11 @@ with app.app_context():
     if "person" not in inspector.get_table_names():  # 🔹 Check for a specific table
         db.create_all()
         database_defaults.populate_people(db)
-        default_admin = User('test@email.com', 'admin', 'tite', 'master betlog', 2)
-        db.session.add(default_admin)
+        a = User('test@email.com', 'admin', 'tite', 'admin', 2)
+        b = User('test2@email.com', 'employee', 'tite', 'employee', 3)
+        db.session.add(a)
+        db.session.add(b)
+        
         db.session.commit()
         
 @app.before_request # fixes cors error

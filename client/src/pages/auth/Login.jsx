@@ -16,13 +16,13 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:8080/login", {
         username,
-        password,
+        password
       });
 
       const { access_token, role } = response.data;
 
-      localStorage.setItem("token", access_token);
-      localStorage.setItem("role", "admin");
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("role", role);
       // localStorage.setItem("role", role);
 
       // if (role === "admin") {
@@ -31,8 +31,13 @@ const Login = () => {
       //   navigate("/employee/dashboard");
       // }
 
-      navigate("/admin/employees");
+      console.log(localStorage.getItem('access_token'));
+      console.log(localStorage.getItem('role'));
+
+      if (role==='admin') navigate("/admin/employees");
+      if (role==='employee') navigate("/employee/patients");
     } catch (err) {
+      console.log(err);
       setError("Invalid username or password");
     }
   };

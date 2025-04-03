@@ -3,6 +3,7 @@ import MainLayout from "../../layouts/MainLayout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/MainLayout.css";
+import { Navigate } from "react-router-dom";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
@@ -12,7 +13,7 @@ const Employees = () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MzU5OTA2MiwianRpIjoiMjYzOGY3YWMtODU4Zi00YzA3LWFiYjktMTk2ZjAzNDIzYzBlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3NDM1OTkwNjIsImNzcmYiOiJhOGQ5NjRjMi1jMWE3LTQxNzMtOWQ3NC01NTVlZjBiMTE2OTgifQ.I5PjbXpj5DyWZZkk2jEHJgrePsaKkIuvgVPo98CivJg`,
+            Authorization: "Bearer " + localStorage.getItem('access_token'),
           },
         });
         setEmployees(response.data);
@@ -86,6 +87,10 @@ const Employees = () => {
     },
   };
 
+  if (localStorage.get('role') != 'admin') {
+    alert('You don\'t have permission to access page: Employees')
+    return Navigate('/dashboard')
+  } 
   return (
     <MainLayout title="Employees">
       <div className="mainBox">
