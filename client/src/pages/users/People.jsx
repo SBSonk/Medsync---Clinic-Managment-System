@@ -6,63 +6,77 @@ import "../../styles/MainLayout.css";
 import { Link, Navigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
 
-const Users = () => {
-  const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState(users);
+const People = () => {
+  const [people, setPeople] = useState([]);
+  const [filteredPeople, setFilteredPeople] = useState(people);
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearchInputChange = (text) => {
     setSearchQuery(text);
-    const filtered = text === "" ? users : users.filter(
-      (users) =>
-        users.role.toLowerCase().includes(text.toLowerCase()) ||
-        users.email.toLowerCase().includes(text.toLowerCase()) ||
-        users.username.toLowerCase().includes(text.toLowerCase())
+    const filtered = text === "" ? people : people.filter(
+      (patients) =>
+        patients.gender.toLowerCase().includes(text.toLowerCase()) ||
+        patients.last_name.toLowerCase().includes(text.toLowerCase()) ||
+        patients.first_name.toLowerCase().includes(text.toLowerCase()) 
       );
-      setFilteredUsers(filtered);
+    setFilteredPeople(filtered);
   };
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchPatients = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/users", {
+        const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("access_token")
           },
         });
-        setUsers(response.data);
-        setFilteredUsers(response.data)
+        setPeople(response.data);
+        setFilteredPeople(response.data);
       } catch (error) {
-        console.error("Error fetching Users:", error);
+        console.error("Error fetching Patients:", error);
       }
     };
 
-    fetchUsers();
+    fetchPatients();
   }, []);
 
   const columns = [
-    { name: "ID", selector: (row) => row.id, width: "10%", center: true, sortable: true },
-    { name: "Email", selector: (row) => row.email, width: "25%", center: true, sortable: true },
-    { name: "Username", selector: (row) => row.username, width: "20%", center: true, sortable: true },
-    { name: "Role", selector: (row) => row.role, width: "20%", center: true, sortable: true },
+    { name: "ID", selector: (row) => row.id, width: "5%", center: true, sortable: true},
+    { name: "First Name", selector: (row) => row.first_name, width: "10%", sortable: true, center: true},
+    { name: "Last Name", selector: (row) => row.last_name, width: "10%", sortable: true, center:true},
+    {
+      name: "Gender",
+      selector: (row) => row.gender,
+      width: "10%",
+      center: true,
+      sortable: true 
+    },
+    {
+      name: "Date of Birth",
+      selector: (row) => row.date_of_birth,
+      width: "10%", 
+      sortable: true,
+      center: true
+    },
+    { name: "Contact No", selector: (row) => row.contact_no, width: "10%", sortable: true, center: true  },
+    { name: "Address", selector: (row) => row.address, width: "30%", sortable: true, center: true  },
     {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
           <button
             className="view-btn"
-            onClick={() => alert(`Viewing ${row.username}`)}
+            onClick={() => alert(`Viewing ${row.name}`)}
           >
             <iconify-icon icon="mdi:eye"></iconify-icon>
           </button>
-          <button
-            className="edit-btn"
-            onClick={() => alert(`Editing ${row.username}`)}
-          >
-            <iconify-icon icon="mdi:pencil"></iconify-icon>
-          </button>
+          <Link to="/edit">
+            <button className="edit-btn" onClick={() => handleEdit(row.id)}>
+              <iconify-icon icon="mdi:pencil"></iconify-icon>
+            </button>
+          </Link>
           <button
             className="delete-btn"
-            onClick={() => alert(`Deleting ${row.username}`)}
+            onClick={() => alert(`Deleting ${row.name}`)}
           >
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>
@@ -90,14 +104,14 @@ const Users = () => {
   };
 
   return (
-    <MainLayout title="Users">
+    <MainLayout title="People">
       <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">
             <DataTable
               columns={columns}
-              data={filteredUsers}
+              data={filteredPeople}
               customStyles={customStyles}
             />
           </div>
@@ -107,4 +121,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default People;

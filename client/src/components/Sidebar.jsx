@@ -29,6 +29,13 @@ function Sidebar() {
                 ADMIN
               </NavLink>
               <NavLink
+                to="/admin/dashboard"
+                className={isActive("/admin/dashboard") ? "activeLink" : ""}
+              >
+                <iconify-icon icon="clarity:dashboard-line"></iconify-icon>
+                Dashboard
+              </NavLink>
+              <NavLink
                 to="/admin/users"
                 className={isActive("/admin/users") ? "activeLink" : ""}
               >
@@ -36,12 +43,13 @@ function Sidebar() {
                 Users
               </NavLink>
               <NavLink
-                to="/admin/dashboard"
-                className={isActive("/admin/dashboard") ? "activeLink" : ""}
+                to="/admin/people"
+                className={isActive("/admin/people") ? "activeLink" : ""}
               >
-                <iconify-icon icon="clarity:dashboard-line"></iconify-icon>
-                Dashboard
+                <iconify-icon icon="mdi:account"></iconify-icon>
+                People
               </NavLink>
+              
               <NavLink
                 to="/admin/employees"
                 className={isActive("/admin/employees") ? "activeLink" : ""}

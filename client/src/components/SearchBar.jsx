@@ -3,8 +3,7 @@ import Select from "react-select";
 import axios from "axios";
 import "../styles/SearchBar.css";
 
-const SearchBar = ({ onSearch }) => {
-  const [searchQuery, setSearchQuery] = useState("");
+const SearchBar = ({ onChange, value }) => {
   const [searchBy, setSearchBy] = useState("");
 
   const searchOptions = [
@@ -14,33 +13,20 @@ const SearchBar = ({ onSearch }) => {
     { value: "department", label: "Department" },
   ];
 
-  const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
-    onSearch();
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
-  };
-
   return (
     <div className="search-bar-container">
       {/* Search Input Container */}
       <div className="search-input-container">
         <input
           type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyDown={handleKeyDown}
+          value={value}
+          onChange={onChange}
           placeholder="Search..."
           className="search-input"
         />
         <iconify-icon
           icon="mdi:magnify"
           className="search-icon"
-          onClick={handleSearch}
         ></iconify-icon>
       </div>
 

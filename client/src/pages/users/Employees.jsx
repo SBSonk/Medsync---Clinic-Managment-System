@@ -4,10 +4,22 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/MainLayout.css";
 import { Link, Navigate } from "react-router-dom";
+import SearchBar from "../../components/SearchBar";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
+  const [filteredEmployees, setFilteredEmployees] = useState(employees);
+  const [searchQuery, setSearchQuery] = useState('');
 
+  const handleSearchInputChange = (text) => {
+    setSearchQuery(text);
+    const filtered = text === "" ? employees : employees.filter(
+      (employees) =>
+        employees.occupation.toLowerCase().includes(text.toLowerCase())
+      // TODO
+      );
+      setFilteredEmployees(filtered);
+  };
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -17,6 +29,7 @@ const Employees = () => {
           },
         });
         setEmployees(response.data);
+        setFilteredEmployees(response.data);
       } catch (error) {
         console.error("Error fetching employees:", error);
       }
@@ -91,12 +104,13 @@ const Employees = () => {
 
   return (
     <MainLayout title="Employees">
+      <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">
             <DataTable
               columns={columns}
-              data={employees}
+              data={filteredEmployees}
               customStyles={customStyles}
             />
           </div>
