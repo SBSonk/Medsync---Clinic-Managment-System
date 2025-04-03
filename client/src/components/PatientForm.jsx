@@ -3,13 +3,16 @@ import MainLayout from "../layouts/MainLayout";
 import "../styles/FormLayout.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const PatientForm = () => {
   const { id } = useParams();
   const [patient, setPatient] = useState({});
   const [people, setPeople] = useState([]);
   const [formData, setFormData] = useState({});
+  const { control, handleSubmit, register, setValue } = useForm();
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -24,6 +27,23 @@ const PatientForm = () => {
         );
         setPatient(response.data);
         setFormData(response.data);
+        // Set initial form values
+        setValue("first_name", response.data.first_name);
+        setValue("last_name", response.data.last_name);
+        setValue("gender", response.data.gender);
+        setValue("date_of_birth", new Date(response.data.date_of_birth));
+        setValue("contact_no", response.data.contact_no);
+        setValue("address", response.data.address);
+        setValue("height", response.data.height);
+        setValue("weight", response.data.weight);
+        setValue("blood_type", response.data.blood_type);
+        setValue("allergies", response.data.allergies);
+        setValue("medical_history", response.data.medical_history);
+        setValue("family_history", response.data.family_history);
+        setValue(
+          "emergency_contact_person_id",
+          response.data.emergency_contact_person_id
+        );
       } catch (error) {
         console.error("Error fetching patient:", error);
       }
@@ -44,31 +64,26 @@ const PatientForm = () => {
 
     fetchPatient();
     fetchPeople();
-  }, [id]);
+  }, [id, setValue]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     try {
       // First, update the patient
-      await axios.put("http://localhost:8080/api/update-patient", formData, {
+      await axios.put("http://localhost:8080/api/update-patient", data, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
       });
 
-      // Now, update the person's data (you may need to adjust formData to include the necessary fields for the person)
+      // Now, update the person's data
       const personData = {
-        id: formData.emergency_contact_person_id,
-        first_name: formData.first_name,
-        last_name: formData.last_name,
-        gender: formData.gender,
-        date_of_birth: formData.date_of_birth,
-        contact_no: formData.contact_no,
-        address: formData.address,
+        id: data.emergency_contact_person_id,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        gender: data.gender,
+        date_of_birth: data.date_of_birth,
+        contact_no: data.contact_no,
+        address: data.address,
       };
 
       await axios.put("http://localhost:8080/api/update-person", personData, {
@@ -88,116 +103,94 @@ const PatientForm = () => {
       <div className="mainBox">
         <div className="mainContent">
           <div className="formContainer">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <label>First Name:</label>
               <input
                 type="text"
-                name="first_name"
-                value={formData.first_name || ""}
-                onChange={handleChange}
-                required
+                {...register("first_name", { required: true })}
               />
               <label>Last Name:</label>
               <input
                 type="text"
-                name="last_name"
-                value={formData.last_name || ""}
-                onChange={handleChange}
-                required
+                {...register("last_name", { required: true })}
               />
               <br />
+
               <label>Gender:</label>
-              <input
-                type="text"
-                name="height"
-                value={formData.height || ""}
-                onChange={handleChange}
-                required
-              />
-              <br />
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="MALE"
+                    {...register("gender", { required: true })}
+                  />
+                  Male
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="FEMALE"
+                    {...register("gender", { required: true })}
+                  />
+                  Female
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="NON-BINARY"
+                    {...register("gender", { required: true })}
+                  />
+                  Non-Binary
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="OTHER"
+                    {...register("gender", { required: true })}
+                  />
+                  Other
+                </label>
+              </div>
+
               <label>Date of Birth:</label>
-              <input
-                type="text"
-                name="height"
-                value={formData.height || ""}
-                onChange={handleChange}
-                required
+              <Controller
+                name="date_of_birth"
+                control={control}
+                render={({ field }) => (
+                  <DatePicker
+                    {...field}
+                    selected={field.value}
+                    onChange={(date) => setValue("date_of_birth", date)}
+                    dateFormat="MM-dd-yyyy"
+                    className="date-picker"
+                    required
+                  />
+                )}
               />
               <br />
+
               <label>Contact Number:</label>
               <input
                 type="text"
-                name="height"
-                value={formData.height || ""}
-                onChange={handleChange}
-                required
+                {...register("contact_no", { required: true })}
               />
               <br />
               <label>Address:</label>
-              <input
-                type="text"
-                name="height"
-                value={formData.height || ""}
-                onChange={handleChange}
-                required
-              />
-              <br />
+              <input type="text" {...register("address", { required: true })} />
               <label>Height:</label>
-              <input
-                type="text"
-                name="height"
-                value={formData.height || ""}
-                onChange={handleChange}
-                required
-              />
-              <br />
+              <input type="text" {...register("height", { required: true })} />
               <label>Weight:</label>
-              <input
-                type="text"
-                name="weight"
-                value={formData.weight || ""}
-                onChange={handleChange}
-                required
-              />
-              <br />
+              <input type="text" {...register("weight", { required: true })} />
               <label>Blood Type:</label>
-              <input
-                type="text"
-                name="blood_type"
-                value={formData.blood_type || ""}
-                onChange={handleChange}
-              />
-              <br />
+              <input type="text" {...register("blood_type")} />
               <label>Allergies:</label>
-              <input
-                type="text"
-                name="allergies"
-                value={formData.allergies || ""}
-                onChange={handleChange}
-              />
-              <br />
+              <input type="text" {...register("allergies")} />
               <label>Medical History:</label>
-              <input
-                type="text"
-                name="medical_history"
-                value={formData.medical_history || ""}
-                onChange={handleChange}
-              />
-              <br />
+              <input type="text" {...register("medical_history")} />
               <label>Family History:</label>
-              <input
-                type="text"
-                name="family_history"
-                value={formData.family_history || ""}
-                onChange={handleChange}
-              />
-              <br />
+              <input type="text" {...register("family_history")} />
               <label>Emergency Contact:</label>
-              <select
-                name="emergency_contact_person_id"
-                value={formData.emergency_contact_person_id || ""}
-                onChange={handleChange}
-              >
+              <select {...register("emergency_contact_person_id")}>
                 <option value="">Select Contact</option>
                 {people.map((person) => (
                   <option key={person.id} value={person.id}>
@@ -205,14 +198,8 @@ const PatientForm = () => {
                   </option>
                 ))}
               </select>
-              <br />
               <label>Relation:</label>
-              <input
-                type="text"
-                name="emergency_contact_relation"
-                value={formData.emergency_contact_relation || ""}
-                onChange={handleChange}
-              />
+              <input type="text" {...register("emergency_contact_relation")} />
               <br />
               <button type="submit">Save Changes</button>
             </form>

@@ -34,9 +34,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<MainLayout />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/edit" element={<PatientForm />} />
-        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
 
