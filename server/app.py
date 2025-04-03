@@ -1,9 +1,13 @@
 from flask import Flask, Response, request
 from flask_cors import CORS
 from models import db, bcrypt, User
-from routes import api
 from flask_jwt_extended import JWTManager
 import database_defaults
+import routes.auth
+import routes.create_routes
+import routes.delete_routes
+import routes.get_routes
+import routes.update_routes
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'uhm, i like corndogs?'
@@ -11,7 +15,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///medsync.sqlite3'
 
 CORS(app, origins=['http://localhost:5173'], methods=["GET", "POST", "OPTIONS"])
 
-app.register_blueprint(api)
+app.register_blueprint(routes.auth.auth)
+app.register_blueprint(routes.create_routes.create)
+app.register_blueprint(routes.get_routes.get)
+app.register_blueprint(routes.delete_routes.delete)
+# app.register_blueprint(routes.update_routes.update)
 
 jwt = JWTManager(app)
 bcrypt.init_app(app)

@@ -19,7 +19,7 @@ class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(db.String(255), nullable=False, unique=True)
     username: Mapped[str] = mapped_column(db.String(255), nullable=False, unique=True)
-    password: Mapped[str] = mapped_column(db.String(255), nullable=False)
+    password: Mapped[str] = mapped_column(db.String(50), nullable=False) # bcrypt hash has a max of 54 chars.
     role: Mapped[str] = mapped_column(db.String(50), nullable=False)
 
     person_id: Mapped[int] = mapped_column(ForeignKey('person.id'), unique=True)
@@ -43,7 +43,7 @@ class Person(db.Model):
     first_name: Mapped[str] = mapped_column(db.String(50), nullable=False)
     last_name: Mapped[str] = mapped_column(db.String(50), nullable=False)
     gender: Mapped[Enum] = mapped_column(Enum(Gender), nullable=False)
-    date_of_birth: Mapped[datetime.date] = mapped_column(Date, nullable=False)
+    date_of_birth: Mapped[datetime.date] = mapped_column(Date, nullable=False) # MM-DD-YYYY
     contact_no: Mapped[str] = mapped_column(db.String(31), nullable=False)
     address: Mapped[str] = mapped_column(db.String(255), nullable=False)
 
@@ -58,12 +58,12 @@ class Patient(db.Model):
     family_history: Mapped[str] = mapped_column(db.String(255))
 
     person_id: Mapped[int] = mapped_column(ForeignKey('person.id'), nullable=False)
-    emergency_contact_id: Mapped[int] = mapped_column(ForeignKey('emergency_contact.patient_id'), nullable=False)
+    emergency_contact = db.relationship('EmergencyContact', backref='patient', cascade="all, delete-orphan", uselist=False)
     next_appointment_id: Mapped[int] = mapped_column(ForeignKey('appointment.id'))
 
 class EmergencyContact(db.Model):
     __tablename__ = 'emergency_contact'
-    patient_id: Mapped[int] = mapped_column(ForeignKey('patient.id'), primary_key=True)
+    patient_id: Mapped[int] = mapped_column(ForeignKey('patient.id', ondelete="CASCADE"), primary_key=True)
     person_id: Mapped[int] = mapped_column(ForeignKey('person.id'), nullable=False)
     relation: Mapped[str] = mapped_column(db.String(16), nullable=False)
 
@@ -72,7 +72,7 @@ class Appointment(db.Model):
     type: Mapped[str] = mapped_column(db.String(30), nullable=False)
     patient_id: Mapped[int] = mapped_column(ForeignKey('patient.id'), nullable=False)
     doctor_id: Mapped[int] = mapped_column(ForeignKey('employee.id'), nullable=False)
-    date_time: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=False)
+    date_time: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=False) # MM-DD-YY-HH-MM 24HR
     status: Mapped[str] = mapped_column(db.String(10), nullable=False)
     note: Mapped[str] = mapped_column(db.String(255), nullable=False)
 
@@ -82,12 +82,12 @@ class Employee(db.Model):
     occupation: Mapped[str] = mapped_column(db.String(50), nullable=False)
     department: Mapped[str] = mapped_column(db.String(50), nullable=False)
 
-    shift_id: Mapped[int] = mapped_column(ForeignKey('employee_shift.employee_id'), nullable=False)
+    shift = db.relationship('EmployeeShift', backref='employee', cascade="all, delete-orphan", uselist=False)
 
 class EmployeeShift(db.Model):
     __tablename__ = 'employee_shift'
 
-    employee_id: Mapped[int] = mapped_column(ForeignKey('employee.id'), primary_key=True)
+    employee_id: Mapped[int] = mapped_column(ForeignKey('employee.id', ondelete="CASCADE"), primary_key=True)
     schedule: Mapped[str] = mapped_column(db.String(255), nullable=False)
 
 class Inventory(db.Model):
