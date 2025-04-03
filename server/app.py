@@ -30,8 +30,8 @@ with app.app_context():
     if "person" not in inspector.get_table_names():  # 🔹 Check for a specific table
         db.create_all()
         database_defaults.populate_people(db)
-        a = User('test@email.com', 'admin', 'tite', 'admin', 2)
-        b = User('test2@email.com', 'employee', 'tite', 'employee', 3)
+        a = User('test@email.com', 'admin', 'tite', 'admin', 2, 'why did the chicken cross the road?', 'to get to the other side!')
+        b = User('test2@email.com', 'employee', 'tite', 'employee', 3, 'marco', 'polo')
         db.session.add(a)
         db.session.add(b)
         

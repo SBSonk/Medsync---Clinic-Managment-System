@@ -154,3 +154,40 @@ def update_appointment():
     except Exception as e:
         db.session.rollback()
         return jsonify({"message": f"Failed to update appointment with id {data['id']}"}), 500
+
+@update.route('/api/update-user', methods=['PUT'])
+# @jwt_required()
+def update_user():
+    data = request.get_json()
+
+    # Find the user by ID
+    user = db.session.get(models.User, data['id'])
+    
+    if user is None:
+        return jsonify({'message': f'User with id ({data["id"]}) not found.'}), 404
+
+    try:
+        if 'email' in data:
+            user.email = data['email']
+
+        if 'username' in data:
+            user.username = data['username']
+
+        if 'password' in data:
+            user.set_password(data['password'])
+
+        if 'role' in data:
+            user.role = data['role']
+
+        if 'security_question' in data:
+            user.security_question = data['security_question']
+
+        if 'security_answer' in data:
+            user.set_security_answer(data['security_answer'])
+
+        db.session.commit()
+
+        return jsonify({'message': 'Update successful!'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': f'Update failed: {str(e)}'}), 500
