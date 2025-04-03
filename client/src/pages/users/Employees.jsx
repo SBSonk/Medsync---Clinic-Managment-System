@@ -11,11 +11,14 @@ const Employees = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/people", {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem('access_token'),
-          },
-        });
+        const response = await axios.getItem(
+          "http://localhost:8080/api/people",
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token"),
+            },
+          }
+        );
         setEmployees(response.data);
       } catch (error) {
         console.error("Error fetching employees:", error);
@@ -87,10 +90,11 @@ const Employees = () => {
     },
   };
 
-  if (localStorage.get('role') != 'admin') {
-    alert('You don\'t have permission to access page: Employees')
-    return Navigate('/dashboard')
-  } 
+  if (localStorage.getItem("role") != "admin") {
+    alert("You don't have permission to access page: Employees");
+    return Navigate("/dashboard");
+  }
+
   return (
     <MainLayout title="Employees">
       <div className="mainBox">
