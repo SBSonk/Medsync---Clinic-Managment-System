@@ -33,7 +33,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MainLayout />} />
+        <Route path="/" element={<Navigate to='/login' replace />} />
         <Route path="/edit" element={<PatientForm />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
