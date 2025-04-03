@@ -3,9 +3,24 @@ import MainLayout from "../../layouts/MainLayout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/MainLayout.css";
+import SearchBar from "../../components/SearchBar";
 
 const Inventory = () => {
   const [inventory, setInventory] = useState([]);
+  const [filteredInventory, setFilteredInventory] = useState(inventory);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearchInputChange = (text) => {
+    setSearchQuery(text);
+    const filtered = text === "" ? inventory : inventory.filter(
+      (inventory) =>
+        inventory.name.toLowerCase().includes(text.toLowerCase()) ||
+        inventory.type.toLowerCase().includes(text.toLowerCase()) ||
+        inventory.supplier.toLowerCase().includes(text.toLowerCase()) ||
+        inventory.batch_id.includes(text)
+      );
+    setFilteredInventory(filtered);
+  };
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -16,6 +31,7 @@ const Inventory = () => {
           },
         });
         setInventory(response.data);
+        setFilteredInventory(response.data);
       } catch (error) {
         console.error("Error fetching Inventory:", error);
       }
@@ -83,19 +99,22 @@ const Inventory = () => {
   };
 
   return (
-    <MainLayout title="Inventory">
-      <div className="mainBox">
-        <div className="mainContent">
-          <div className="table-container">
-            <DataTable
-              columns={columns}
-              data={inventory}
-              customStyles={customStyles}
-            />
+    <>
+      <MainLayout title="Inventory">
+        <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
+        <div className="mainBox">
+          <div className="mainContent">
+            <div className="table-container">
+              <DataTable
+                columns={columns}
+                data={filteredInventory}
+                customStyles={customStyles}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </MainLayout>
+      </MainLayout>
+    </>
   );
 };
 

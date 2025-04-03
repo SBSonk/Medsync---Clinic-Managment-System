@@ -8,7 +8,18 @@ import SearchBar from "../../components/SearchBar";
 
 const Patients = () => {
   const [patients, setPatients] = useState([]);
+  const [filteredPatients, setFilteredPatients] = useState(patients);
+  const [searchQuery, setSearchQuery] = useState('');
 
+  const handleSearchInputChange = (text) => {
+    setSearchQuery(text);
+    const filtered = text === "" ? patients : patients.filter(
+      (patients) =>
+        patients.gender.toLowerCase().includes(text.toLowerCase())
+      // TODO
+      );
+    setFilteredPatients(filtered);
+  };
   useEffect(() => {
     const fetchPatients = async () => {
       try {
@@ -18,6 +29,7 @@ const Patients = () => {
           },
         });
         setPatients(response.data);
+        setFilteredPatients(response.data);
       } catch (error) {
         console.error("Error fetching Patients:", error);
       }
@@ -92,12 +104,13 @@ const Patients = () => {
 
   return (
     <MainLayout title="Patients">
+      <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">
             <DataTable
               columns={columns}
-              data={patients}
+              data={filteredPatients}
               customStyles={customStyles}
             />
           </div>

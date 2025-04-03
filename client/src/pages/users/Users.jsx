@@ -4,10 +4,23 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/MainLayout.css";
 import { Link, Navigate } from "react-router-dom";
+import SearchBar from "../../components/SearchBar";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState(users);
+  const [searchQuery, setSearchQuery] = useState('');
 
+  const handleSearchInputChange = (text) => {
+    setSearchQuery(text);
+    const filtered = text === "" ? users : users.filter(
+      (users) =>
+        users.role.toLowerCase().includes(text.toLowerCase()) ||
+        users.email.toLowerCase().includes(text.toLowerCase()) ||
+        users.username.toLowerCase().includes(text.toLowerCase())
+      );
+      setFilteredUsers(filtered);
+  };
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -17,6 +30,7 @@ const Users = () => {
           },
         });
         setUsers(response.data);
+        setFilteredUsers(response.data)
       } catch (error) {
         console.error("Error fetching Users:", error);
       }
@@ -77,12 +91,13 @@ const Users = () => {
 
   return (
     <MainLayout title="Users">
+      <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">
             <DataTable
               columns={columns}
-              data={users}
+              data={filteredUsers}
               customStyles={customStyles}
             />
           </div>
