@@ -19,7 +19,7 @@ app.register_blueprint(routes.auth.auth)
 app.register_blueprint(routes.create_routes.create)
 app.register_blueprint(routes.get_routes.get)
 app.register_blueprint(routes.delete_routes.delete)
-# app.register_blueprint(routes.update_routes.update)
+app.register_blueprint(routes.update_routes.update)
 
 jwt = JWTManager(app)
 bcrypt.init_app(app)
