@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import Login from "./pages/auth/Login";
-import ForgotPassword from "./pages/auth/ForgotPasword";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import "./styles/AuthLayout.css";
 import Employees from "./pages/users/Employees";
