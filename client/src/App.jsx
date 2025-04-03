@@ -19,6 +19,7 @@ import MainLayout from "./layouts/MainLayout";
 
 import Add from "./pages/users/Add";
 import Users from "./pages/users/Users";
+import People from "./pages/users/People";
 
 function App() {
   const fetchAPI = async () => {
@@ -44,6 +45,7 @@ function App() {
         <Route path="/admin/users" element={<Users />} />
         <Route path="/admin/account" element={<Account />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/admin/people" element={<People />} />
         <Route path="/admin/patients" element={<Patients />} />
         <Route path="/admin/employees" element={<Employees />} />
         <Route path="/admin/add" element={<Add />} />
