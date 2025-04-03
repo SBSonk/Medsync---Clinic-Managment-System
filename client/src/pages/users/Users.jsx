@@ -3,13 +3,14 @@ import MainLayout from "../../layouts/MainLayout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/MainLayout.css";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState(users);
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   const handleSearchInputChange = (text) => {
     setSearchQuery(text);
@@ -21,6 +22,12 @@ const Users = () => {
       );
       setFilteredUsers(filtered);
   };
+
+  const handleCreateUser = (e) => {
+    navigate('/create/user');
+  }
+
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -92,6 +99,7 @@ const Users = () => {
   return (
     <MainLayout title="Users">
       <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
+      <button onClick={handleCreateUser}>Add new user</button>
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">

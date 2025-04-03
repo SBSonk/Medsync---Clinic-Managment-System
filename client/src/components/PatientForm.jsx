@@ -8,7 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
 
 const PatientForm = () => {
-  const { id } = useParams(); // Use useParams to get the 'id' from the URL
+  const { id: patient_id } = useParams(); // Use useParams to get the 'id' from the URL
   const { register, handleSubmit, setValue, watch } = useForm();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -17,7 +17,7 @@ const PatientForm = () => {
       try {
         // Fetch patient info first
         const patientRes = await axios.get(
-          `http://localhost:8080/api/get-patient-info/${id}`,
+          `http://localhost:8080/api/get-patient-info/${patient_id}`,
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token"),
@@ -39,15 +39,17 @@ const PatientForm = () => {
           const personData = personRes.data;
 
           // Fetch emergency contact info
-          const emergencyContactRes = await axios.get(
-            `http://localhost:8080/api/get-emergency-contact/${id}`,
-            {
-              headers: {
-                Authorization: "Bearer " + localStorage.getItem("access_token"),
-              },
-            }
-          );
-          const emergencyContactData = emergencyContactRes.data;
+          // const emergencyContactRes = await axios.get(
+          //   `http://localhost:8080/api/get-emergency-contact/${patient_id}`,
+          //   {
+          //     headers: {
+          //       Authorization: "Bearer " + localStorage.getItem("access_token"),
+          //     },
+          //   }
+          // );
+          
+          // emergencyContactData.then
+          // const emergencyContactData = emergencyContactRes.data;
 
           // Populate form fields with the retrieved data
           setValue("firstName", personData.first_name || "");
@@ -65,8 +67,11 @@ const PatientForm = () => {
           setValue("allergies", patientData.allergies || "");
           setValue("medicalHistory", patientData.medical_history || "");
           setValue("familyHistory", patientData.family_history || "");
-          setValue("emergencyContact", emergencyContactData.person_id || "");
-          setValue("emergencyRelation", emergencyContactData.relation || "");
+
+          // if (emergencyContactData ) {
+          //   setValue("emergencyContact", emergencyContactData.person_id || "");
+          //   setValue("emergencyRelation", emergencyContactData.relation || "");
+          // }
         }
       } catch (error) {
         console.error("Error fetching patient details:", error);
@@ -74,12 +79,12 @@ const PatientForm = () => {
     };
 
     fetchPatientAndPerson();
-  }, [id, setValue]);
+  }, [patient_id, setValue]);
 
   const onSubmit = async (data) => {
     try {
       const patientData = {
-        id,
+        id: patient_id,
         height: data.height,
         weight: data.weight,
         blood_type: data.bloodType,
@@ -90,7 +95,7 @@ const PatientForm = () => {
       };
 
       const personData = {
-        id,
+        id: patient_id,
         first_name: data.firstName,
         last_name: data.lastName,
         gender: data.gender,
@@ -114,20 +119,20 @@ const PatientForm = () => {
       });
 
       // If emergency contact has changed, update it
-      if (data.emergencyContact) {
-        await axios.put(
-          `http://localhost:8080/api/update-emergency-contact/${id}`,
-          {
-            person_id: data.emergencyContact,
-            relation: data.emergencyRelation,
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
-            },
-          }
-        );
-      }
+      // if (data.emergencyContact) {
+      //   await axios.put(
+      //     `http://localhost:8080/api/update-emergency-contact/${patient_id}`,
+      //     {
+      //       person_id: data.emergencyContact,
+      //       relation: data.emergencyRelation,
+      //     },
+      //     {
+      //       headers: {
+      //         Authorization: "Bearer " + localStorage.getItem("access_token"),
+      //       },
+      //     }
+      //   );
+      // }
 
       alert("Patient updated successfully!");
       setIsEditing(false);

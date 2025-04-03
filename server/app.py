@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'uhm, i like corndogs?'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///medsync.sqlite3'
 
-CORS(app, origins=['*'], methods=["GET", "POST", "OPTIONS"])
+CORS(app, origins=['*', 'http://localhost:5174'], methods=["GET", "POST", "OPTIONS"])
 
 app.register_blueprint(routes.auth.auth)
 app.register_blueprint(routes.create_routes.create)

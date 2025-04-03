@@ -9,7 +9,7 @@ import math
 
 def populate_people(db):
     session = db.session
-    for _ in range(15):
+    for _ in range(25):
         user = RandomUser()
         random_person = models.Person(
             first_name = user.get_first_name(),
@@ -131,7 +131,7 @@ relationship_types = [
 def populate_patients(db):
     session = db.session
     all_people: List = db.session.query(models.Person).all()
-    for _ in range(math.ceil(len(all_people)/2)):
+    for _ in range(10):
         person = random.choice(all_people)
         all_people.remove(person)
         random_patient = models.Patient(
@@ -145,13 +145,12 @@ def populate_patients(db):
             person_id = person.id
         )
 
-        if random.choice([True, False]):
-            emergency_person = random.choice(all_people)
-            all_people.remove(emergency_person)
-            random_patient.emergency_contact = models.EmergencyContact(
-                person_id = emergency_person.id,
-                relation = random.choice(relationship_types)
-            )
+        emergency_person = random.choice(all_people)
+        all_people.remove(emergency_person)
+        random_patient.emergency_contact = models.EmergencyContact(
+            person_id = emergency_person.id,
+            relation = random.choice(relationship_types)
+        )
         session.add(random_patient)
 
     session.commit()
