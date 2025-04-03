@@ -31,7 +31,7 @@ def recovery_get_user(): # email -> returns username, id, security_question
 @auth.route('/recovery-set-password', methods=['POST']) # user.id, security_answer, new_password -> updates if passes security_hash
 def recovery_set_password():
     data = request.get_json()
-    user: models.User = models.User.query.filter(models.User.email == data['email']).first()
+    user: models.User = models.User.query.filter(models.User.id == data['id']).first()
 
     try:
         if user and user.check_security_answer(data['security_answer']):
@@ -39,7 +39,7 @@ def recovery_set_password():
             db.session.commit()
             return jsonify({'message': 'Password successfully updated!'}), 200
         else: 
-            return jsonify({'message': 'User not found...'}), 401
+            return jsonify({'message': 'User not found or incorrect security answer.'}), 401
     except:
         db.session.rollback()
         return jsonify({'message': 'Something went wrong with recovery...'}), 500

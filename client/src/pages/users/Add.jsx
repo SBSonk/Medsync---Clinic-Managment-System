@@ -7,7 +7,7 @@ function Add() {
       <div className="mainContent">
         <div className="table-container">
           
-        </div>
+        </div>  
       </div>
     </div>
   </MainLayout>

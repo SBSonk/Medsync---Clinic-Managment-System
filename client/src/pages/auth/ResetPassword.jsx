@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import AuthLayout from "../../layouts/AuthLayout";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const ResetPassword = () => {
+  const location = useLocation();
+  const { id, username, security_question } = location.state || { username: 'INVALID USER', security_question: 'INVALID QUESTION' };
+
+  const [security_answer, setSecurityAnswer] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Check if passwords match
@@ -15,14 +21,28 @@ const ResetPassword = () => {
       return;
     }
 
+    await axios.post("http://127.0.0.1:8080/recovery-set-password", {'id': id, 'new_password': password, 'security_answer': security_answer});
+
     // Temporary success message (replace with API call)
-    alert("Password reset successful! (Placeholder)");
+    alert("Password reset successful!");
     window.location.href = "/login"; // Redirect to login after reset
   };
 
   return (
     <AuthLayout title="Reset Password">
       <form onSubmit={handleSubmit}>
+        <label>Hello, {username}!</label>
+
+        <label>{security_question}</label>
+        <label>Security Answer</label>
+          <input
+            type="text"
+            value={security_answer}
+            onChange={(e) => setSecurityAnswer(e.target.value)}
+            placeholder="Enter answer"
+            required
+        />
+
         <label>New password</label>
         <input
           type="text"

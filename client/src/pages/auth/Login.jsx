@@ -23,13 +23,6 @@ const Login = () => {
 
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("role", role);
-      // localStorage.setItem("role", role);
-
-      // if (role === "admin") {
-      //   navigate("/admin/dashboard");
-      // } else if (role === "employee") {
-      //   navigate("/employee/dashboard");
-      // }
 
       console.log(localStorage.getItem('access_token'));
       console.log(localStorage.getItem('role'));
