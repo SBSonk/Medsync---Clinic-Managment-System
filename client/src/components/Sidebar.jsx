@@ -76,6 +76,13 @@ function Sidebar() {
                 <iconify-icon icon="carbon:report"></iconify-icon>
                 Reports
               </NavLink>
+              <NavLink
+                to="/logout"
+                className={isActive("/admin") ? "activeLink" : ""}
+              >
+                <iconify-icon icon="material-symbols:logout"></iconify-icon>
+                Logout
+              </NavLink>
             </>
           )}
 
@@ -124,6 +131,13 @@ function Sidebar() {
               >
                 <iconify-icon icon="carbon:report"></iconify-icon>
                 Reports
+              </NavLink>
+              <NavLink
+                to="/logout"
+                className={isActive("/employee") ? "activeLink" : ""}
+              >
+                <iconify-icon icon="material-symbols:logout"></iconify-icon>
+                Logout
               </NavLink>
             </>
           )}
