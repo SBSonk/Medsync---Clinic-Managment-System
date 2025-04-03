@@ -11,7 +11,7 @@ const Users = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/people", {
+        const response = await axios.get("http://localhost:8080/api/users", {
           headers: {
             // Authorization: "Bearer " + localStorage.getItem('access_token'),
             Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MzU5OTA2MiwianRpIjoiMjYzOGY3YWMtODU4Zi00YzA3LWFiYjktMTk2ZjAzNDIzYzBlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3NDM1OTkwNjIsImNzcmYiOiJhOGQ5NjRjMi1jMWE3LTQxNzMtOWQ3NC01NTVlZjBiMTE2OTgifQ.I5PjbXpj5DyWZZkk2jEHJgrePsaKkIuvgVPo98CivJg`,
@@ -27,40 +27,29 @@ const Users = () => {
   }, []);
 
   const columns = [
-    { name: "ID", selector: (row) => row.id, width: "10%", center: true },
-    { name: "First Name", selector: (row) => row.first_name, width: "15%" },
-    { name: "Last Name", selector: (row) => row.last_name, width: "15%" },
-    {
-      name: "Gender",
-      selector: (row) => row.gender,
-      width: "10%",
-      center: true,
-    },
-    {
-      name: "Date of Birth",
-      selector: (row) => row.date_of_birth,
-      width: "15%",
-    },
-    { name: "Contact No", selector: (row) => row.contact_no, width: "15%" },
-    { name: "Address", selector: (row) => row.address, width: "20%" },
+    { name: "ID", selector: (row) => row.id, width: "10%", center: true, sortable: true },
+    { name: "Email", selector: (row) => row.email, width: "25%", center: true, sortable: true },
+    { name: "Username", selector: (row) => row.username, width: "20%", center: true, sortable: true },
+    { name: "Role", selector: (row) => row.role, width: "20%", center: true, sortable: true },
     {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
           <button
             className="view-btn"
-            onClick={() => alert(`Viewing ${row.name}`)}
+            onClick={() => alert(`Viewing ${row.username}`)}
           >
             <iconify-icon icon="mdi:eye"></iconify-icon>
           </button>
-          <Link to="/edit">
-            <button className="edit-btn" onClick={() => handleEdit(row.id)}>
-              <iconify-icon icon="mdi:pencil"></iconify-icon>
-            </button>
-          </Link>
+          <button
+            className="edit-btn"
+            onClick={() => alert(`Editing ${row.username}`)}
+          >
+            <iconify-icon icon="mdi:pencil"></iconify-icon>
+          </button>
           <button
             className="delete-btn"
-            onClick={() => alert(`Deleting ${row.name}`)}
+            onClick={() => alert(`Deleting ${row.username}`)}
           >
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>

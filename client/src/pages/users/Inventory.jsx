@@ -10,7 +10,7 @@ const Inventory = () => {
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/people", {
+        const response = await axios.get("http://localhost:8080/api/inventory", {
           headers: {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MzU5OTA2MiwianRpIjoiMjYzOGY3YWMtODU4Zi00YzA3LWFiYjktMTk2ZjAzNDIzYzBlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3NDM1OTkwNjIsImNzcmYiOiJhOGQ5NjRjMi1jMWE3LTQxNzMtOWQ3NC01NTVlZjBiMTE2OTgifQ.I5PjbXpj5DyWZZkk2jEHJgrePsaKkIuvgVPo98CivJg`,
           },
@@ -25,22 +25,18 @@ const Inventory = () => {
   }, []);
 
   const columns = [
-    { name: "ID", selector: (row) => row.id, width: "10%", center: true },
-    { name: "First Name", selector: (row) => row.first_name, width: "15%" },
-    { name: "Last Name", selector: (row) => row.last_name, width: "15%" },
+    { name: "ID", selector: (row) => row.id, width: "10%", center: true, sortable: true },
+    { name: "Batch ID", selector: (row) => row.batch_id, width: "15%", center: true, sortable: true },
+    { name: "Name", selector: (row) => row.name, width: "20%", center: true, sortable: true },
+    { name: "Type", selector: (row) => row.type, width: "15%", center: true, sortable: true },
+    { name: "Quantity", selector: (row) => row.quantity, width: "10%", center: true, sortable: true },
     {
-      name: "Gender",
-      selector: (row) => row.gender,
-      width: "10%",
-      center: true,
+      name: "Expiration Date",
+      selector: (row) => row.expiration_date,
+      width: "15%", center: true, sortable: true
     },
-    {
-      name: "Date of Birth",
-      selector: (row) => row.date_of_birth,
-      width: "15%",
-    },
-    { name: "Contact No", selector: (row) => row.contact_no, width: "15%" },
-    { name: "Address", selector: (row) => row.address, width: "20%" },
+    { name: "Supplier", selector: (row) => row.supplier, width: "15%", center: true, sortable: true },
+    { name: "Supplier Contact", selector: (row) => row.supplier_contact, width: "15%", center: true, sortable: true },
     {
       name: "Actions",
       cell: (row) => (

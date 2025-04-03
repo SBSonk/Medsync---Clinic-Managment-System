@@ -18,6 +18,7 @@ import PatientForm from "./components/PatientForm";
 import MainLayout from "./layouts/MainLayout";
 
 import Add from "./pages/users/Add";
+import Users from "./pages/users/Users";
 
 function App() {
   const fetchAPI = async () => {
@@ -49,6 +50,7 @@ function App() {
         <Route path="/admin/appointments" element={<Appointments />} />
         <Route path="/admin/inventory" element={<Inventory />} />
         <Route path="/admin/reports" element={<Reports />} />
+        <Route path="/admin/users" element={<Users />} />
 
         {/* Employee Routes */}
         <Route path="/employee/account" element={<Account />} />
