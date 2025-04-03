@@ -20,7 +20,8 @@ def populate_people(db):
         )
 
         session.add(random_person)
-        session.commit()
+    
+    session.commit()
 
 clinic_products = [
     "MediCare Plus",
@@ -84,6 +85,10 @@ def populate_inventory(db):
             supplier = random.choice(suppliers),
             supplier_contact = user.get_cell()
         )
+
+        session.add(random_inventory)
+
+    session.commit()
 
 def random_gender():
     return choice(list(models.Gender)) 
