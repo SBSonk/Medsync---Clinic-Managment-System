@@ -28,6 +28,13 @@ function Sidebar() {
                 ADMIN
               </NavLink>
               <NavLink
+                to="/admin/users"
+                className={isActive("/admin/users") ? "activeLink" : ""}
+              >
+                <iconify-icon icon="lucide:users"></iconify-icon>
+                Users
+              </NavLink>
+              <NavLink
                 to="/admin/dashboard"
                 className={isActive("/admin/dashboard") ? "activeLink" : ""}
               >

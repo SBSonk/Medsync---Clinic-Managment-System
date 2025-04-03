@@ -1,0 +1,29 @@
+@import "./Variables";
+
+.formContainer {
+  width: calc(100% - 15vw);
+  max-width: 80%;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: $boxShadow;
+  height: 450px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin: 0 auto;
+
+  /* Hide scrollbar for Chrome, Safari */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for Firefox */
+  scrollbar-width: none;
+
+  /* Hide scrollbar for Internet Explorer/Edge */
+  -ms-overflow-style: none;
+}
+
+label {
+  color: black;
+}

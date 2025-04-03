@@ -13,6 +13,9 @@ import Patients from "./pages/users/Patients";
 import Appointments from "./pages/users/Appointments";
 import Reports from "./pages/users/Reports";
 import Inventory from "./pages/users/Inventory";
+import Edit from "./pages/users/Edit";
+import PatientForm from "./components/PatientForm";
+import MainLayout from "./layouts/MainLayout";
 
 import Add from "./pages/users/Add";
 
@@ -30,8 +33,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<MainLayout />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/edit" element={<PatientForm />} />
+        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
+
+        {/* Admin Routes */}
         <Route path="/admin/account" element={<Account />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/patients" element={<Patients />} />
@@ -40,9 +49,11 @@ function App() {
         <Route path="/admin/appointments" element={<Appointments />} />
         <Route path="/admin/inventory" element={<Inventory />} />
         <Route path="/admin/reports" element={<Reports />} />
+
+        {/* Employee Routes */}
+        <Route path="/employee/account" element={<Account />} />
         <Route path="/employee/patients" element={<Patients />} />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/resetpassword" element={<ResetPassword />} />
+        <Route path="/employee/patients/edit" element={<Edit />} />
       </Routes>
     </Router>
   );
