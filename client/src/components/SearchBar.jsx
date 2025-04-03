@@ -16,18 +16,7 @@ const SearchBar = ({ onSearch }) => {
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
-
-    try {
-      const response = await axios.get("http://localhost:5000/search", {
-        params: {
-          query: searchQuery,
-          searchBy: searchBy,
-        },
-      });
-      onSearch(response.data);
-    } catch (error) {
-      console.error("Error during search:", error);
-    }
+    onSearch();
   };
 
   const handleKeyDown = (e) => {

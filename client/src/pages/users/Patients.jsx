@@ -28,22 +28,25 @@ const Patients = () => {
   }, []);
 
   const columns = [
-    { name: "ID", selector: (row) => row.id, width: "10%", center: true },
-    { name: "First Name", selector: (row) => row.first_name, width: "15%" },
-    { name: "Last Name", selector: (row) => row.last_name, width: "15%" },
+    { name: "ID", selector: (row) => row.id, width: "5%", center: true, sortable: true},
+    { name: "First Name", selector: (row) => row.first_name, width: "10%", sortable: true, center: true},
+    { name: "Last Name", selector: (row) => row.last_name, width: "10%", sortable: true, center:true},
     {
       name: "Gender",
       selector: (row) => row.gender,
       width: "10%",
       center: true,
+      sortable: true 
     },
     {
       name: "Date of Birth",
       selector: (row) => row.date_of_birth,
-      width: "15%",
+      width: "10%", 
+      sortable: true,
+      center: true
     },
-    { name: "Contact No", selector: (row) => row.contact_no, width: "15%" },
-    { name: "Address", selector: (row) => row.address, width: "20%" },
+    { name: "Contact No", selector: (row) => row.contact_no, width: "10%", sortable: true, center: true  },
+    { name: "Address", selector: (row) => row.address, width: "30%", sortable: true, center: true  },
     {
       name: "Actions",
       cell: (row) => (
@@ -90,7 +93,6 @@ const Patients = () => {
 
   return (
     <MainLayout title="Patients">
-      <SearchBar onSearch={console.log('tite')}/>
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">
