@@ -17,7 +17,33 @@ def login():
         return jsonify({'message': 'Authorization success!', 'access_token': create_access_token(identity=str(user.id)), 'role': user.role}), 200
     else: 
         return jsonify({'message': 'Authorization failed...'}), 401
+
+@auth.route('/recovery-get-user', methods=['POST'])
+def recovery_get_user(): # email -> returns username, id, security_question
+    data = request.get_json()
+    user: models.User = models.User.query.filter(models.User.email == data['email']).first()
+
+    if user:
+        return jsonify({'username': user.username, 'security_question': user.security_question, 'id': user.id}), 200
+    else: 
+        return jsonify({'message': 'User not found...'}), 401
     
+@auth.route('/recovery-set-password', methods=['POST']) # user.id, security_answer, new_password -> updates if passes security_hash
+def recovery_set_password():
+    data = request.get_json()
+    user: models.User = models.User.query.filter(models.User.email == data['email']).first()
+
+    try:
+        if user and user.check_security_answer(data['security_answer']):
+            user.set_password(data['new_password'])
+            db.session.commit()
+            return jsonify({'message': 'Password successfully updated!'}), 200
+        else: 
+            return jsonify({'message': 'User not found...'}), 401
+    except:
+        db.session.rollback()
+        return jsonify({'message': 'Something went wrong with recovery...'}), 500
+
 @auth.route('/register', methods=['POST'])
 @jwt_required()
 def register():
