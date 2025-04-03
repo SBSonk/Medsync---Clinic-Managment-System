@@ -4,13 +4,12 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/MainLayout.css";
 import { Link, Navigate } from "react-router-dom";
-import SearchBar from "../../components/SearchBar";
 
-const Patients = () => {
-  const [patients, setPatients] = useState([]);
+const Users = () => {
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const fetchPatients = async () => {
+    const fetchUsers = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
@@ -18,13 +17,13 @@ const Patients = () => {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MzU5OTA2MiwianRpIjoiMjYzOGY3YWMtODU4Zi00YzA3LWFiYjktMTk2ZjAzNDIzYzBlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3NDM1OTkwNjIsImNzcmYiOiJhOGQ5NjRjMi1jMWE3LTQxNzMtOWQ3NC01NTVlZjBiMTE2OTgifQ.I5PjbXpj5DyWZZkk2jEHJgrePsaKkIuvgVPo98CivJg`,
           },
         });
-        setPatients(response.data);
+        setUsers(response.data);
       } catch (error) {
-        console.error("Error fetching Patients:", error);
+        console.error("Error fetching Users:", error);
       }
     };
 
-    fetchPatients();
+    fetchUsers();
   }, []);
 
   const columns = [
@@ -89,14 +88,13 @@ const Patients = () => {
   };
 
   return (
-    <MainLayout title="Patients">
-      <SearchBar />
+    <MainLayout title="Users">
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">
             <DataTable
               columns={columns}
-              data={patients}
+              data={users}
               customStyles={customStyles}
             />
           </div>
@@ -106,4 +104,4 @@ const Patients = () => {
   );
 };
 
-export default Patients;
+export default Users;

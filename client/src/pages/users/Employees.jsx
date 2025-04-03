@@ -3,7 +3,7 @@ import MainLayout from "../../layouts/MainLayout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/MainLayout.css";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
@@ -13,7 +13,8 @@ const Employees = () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem('access_token'),
+            // Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MzU5OTA2MiwianRpIjoiMjYzOGY3YWMtODU4Zi00YzA3LWFiYjktMTk2ZjAzNDIzYzBlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3NDM1OTkwNjIsImNzcmYiOiJhOGQ5NjRjMi1jMWE3LTQxNzMtOWQ3NC01NTVlZjBiMTE2OTgifQ.I5PjbXpj5DyWZZkk2jEHJgrePsaKkIuvgVPo98CivJg`,
           },
         });
         setEmployees(response.data);
@@ -24,6 +25,10 @@ const Employees = () => {
 
     fetchEmployees();
   }, []);
+
+  const handleEdit = (id) => {
+    navigate(`/edit/${id}`); // Navigate to EditPage with employee ID
+  };
 
   const columns = [
     { name: "ID", selector: (row) => row.id, width: "10%", center: true },
@@ -52,12 +57,12 @@ const Employees = () => {
           >
             <iconify-icon icon="mdi:eye"></iconify-icon>
           </button>
-          <button
-            className="edit-btn"
-            onClick={() => alert(`Editing ${row.name}`)}
-          >
-            <iconify-icon icon="mdi:pencil"></iconify-icon>
-          </button>
+          <Link to="/edit">
+            <button className="edit-btn" onClick={() => handleEdit(row.id)}>
+              <iconify-icon icon="mdi:pencil"></iconify-icon>
+            </button>
+          </Link>
+
           <button
             className="delete-btn"
             onClick={() => alert(`Deleting ${row.name}`)}
@@ -87,10 +92,11 @@ const Employees = () => {
     },
   };
 
-  if (localStorage.get('role') != 'admin') {
-    alert('You don\'t have permission to access page: Employees')
-    return Navigate('/dashboard')
-  } 
+  if (localStorage.getItem("role") != "admin") {
+    alert("You don't have permission to access page: Employees");
+    return Navigate("/dashboard");
+  }
+
   return (
     <MainLayout title="Employees">
       <div className="mainBox">

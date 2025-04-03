@@ -74,6 +74,41 @@ def employees():
 
     return jsonify(employees_list), 200
 
+@get.route('/api/appointments', methods=['GET'])
+@jwt_required()
+def appointments():
+    all_appointments = db.session.query(models.Appointment).all()
+
+    appointments_list = [{
+        'id': e.id,
+        'type': e.type,
+        'patient_id': e.patient_id,
+        'doctor_id': e.doctor_id,
+        'date_time': e.date_time,
+        'status': e.status,
+        'note': e.note
+    } for e in all_appointments]
+
+    return jsonify(appointments_list), 200
+
+@get.route('/api/inventory', methods=['GET'])
+@jwt_required()
+def inventory():
+    all_inventory = db.session.query(models.Inventory).all()
+
+    inventory_list = [{
+        'id': e.id,
+        'batch_id': e.batch_id,
+        'name': e.name,
+        'type': e.type,
+        'quantity': e.quantity,
+        'expiration_date': e.expiration_date,
+        'supplier': e.supplier,
+        'supplier_contact': e.supplier_contact
+    } for e in all_inventory]
+
+    return jsonify(inventory_list), 200
+
 # Get by ID 
 
 @get.route('/api/get-user-info/<id>', methods=['GET'])

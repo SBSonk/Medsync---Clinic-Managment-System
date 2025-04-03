@@ -1,0 +1,173 @@
+@import "./Variables";
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.mainHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  padding-left: 15vw;
+
+  .mainTitle {
+    padding-top: 3vh;
+    margin: 0;
+    font-size: 35px;
+    text-align: left;
+    font-weight: 500;
+    color: white;
+  }
+}
+
+.mainBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: calc(100vw - 15vw);
+    height: calc(100vh - 80px);
+    padding-left: 5vw;
+    overflow: hidden;
+}
+  
+.mainContent {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+.topRow {
+    display: flex;
+    column-gap: 15px;
+}
+
+.middleRow {
+    display: flex;
+    column-gap: 15px;
+}
+
+.bottomRow {
+    display: flex;
+    column-gap: 15px;
+}
+
+.totalPatients, .totalEmployees, .totalAppointments, .totalInventory {
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    width: 210px;
+    height: 100px;
+    column-gap: 5px;
+    border-radius: 8px;
+    box-shadow: $boxShadow;
+    .icon {
+        padding: 10px;
+        width: 55px;
+        height: 55px;
+    }
+    .text {
+        text-align: left;
+        font-size: 12px;
+        h1 {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+        p {
+            margin-top: 0;
+        }
+    }
+}
+
+.recentAppointments, .lowStockInventory, .expiringInventory {
+  width: calc(100% - 15vw);
+  max-width: 75%;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: $boxShadow;
+  height: 175px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin: 0 auto;
+
+  /* Hide scrollbar for Chrome, Safari */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for Firefox */
+  scrollbar-width: none;
+
+  /* Hide scrollbar for Internet Explorer/Edge */
+  -ms-overflow-style: none;
+}
+
+.availableEmployees, .todaysAppointments {
+    width: 418px;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: $boxShadow;
+    height: 175px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin: 0 auto;
+  
+    /* Hide scrollbar for Chrome, Safari */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  
+    /* Hide scrollbar for Firefox */
+    scrollbar-width: none;
+  
+    /* Hide scrollbar for Internet Explorer/Edge */
+    -ms-overflow-style: none;
+  }
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    transition: background 0.2s ease-in-out;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    iconify-icon {
+      color: black;
+      font-size: 18px;
+    }
+  }
+}
+
+.view-btn:hover {
+  background-color: lightblue;
+}
+
+.edit-btn:hover {
+  background-color: yellow;
+}
+
+.delete-btn:hover {
+  background-color: red;
+  opacity: 0.8;
+}

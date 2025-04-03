@@ -1,8 +1,8 @@
 import React from "react";
 import Sidebar from "../components/Sidebar";
-import "../styles/MainLayout.css"; // Add styles
+import "../styles/DashboardLayout.css"; // Add styles
 
-const MainLayout = ({ title, children }) => {
+const DashboardLayout = ({ title, children }) => {
   return (
     <div className="mainContainer">
       <Sidebar />
@@ -16,4 +16,4 @@ const MainLayout = ({ title, children }) => {
   );
 };
 
-export default MainLayout;
+export default DashboardLayout;
