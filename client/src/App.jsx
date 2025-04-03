@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import axios from "axios";
 import Login from "./pages/auth/Login";
-import ForgotPassword from "./pages/auth/ForgotPassword";
+import ForgotPassword from "./pages/auth/ForgotPasword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import "./styles/AuthLayout.css";
 import Employees from "./pages/users/Employees";
@@ -18,7 +18,6 @@ import PatientForm from "./components/PatientForm";
 import MainLayout from "./layouts/MainLayout";
 
 import Add from "./pages/users/Add";
-import Users from "./pages/users/Users";
 
 function App() {
   const fetchAPI = async () => {
@@ -34,10 +33,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to='/login' replace />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<MainLayout />} />
         <Route path="/edit" element={<PatientForm />} />
-        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
 
@@ -50,7 +48,6 @@ function App() {
         <Route path="/admin/appointments" element={<Appointments />} />
         <Route path="/admin/inventory" element={<Inventory />} />
         <Route path="/admin/reports" element={<Reports />} />
-        <Route path="/admin/users" element={<Users />} />
 
         {/* Employee Routes */}
         <Route path="/employee/account" element={<Account />} />
