@@ -1,9 +1,10 @@
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "../styles/Sidebar.css";
 import medsync from "../assets/medsync.svg";
 
 function Sidebar() {
+  const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const location = useLocation(); // Get the current location (URL)
 
@@ -77,7 +78,7 @@ function Sidebar() {
                 Reports
               </NavLink>
               <NavLink
-                to="/logout"
+                to="/"
                 className={isActive("/admin") ? "activeLink" : ""}
               >
                 <iconify-icon icon="material-symbols:logout"></iconify-icon>

@@ -13,8 +13,7 @@ const Users = () => {
       try {
         const response = await axios.get("http://localhost:8080/api/users", {
           headers: {
-            // Authorization: "Bearer " + localStorage.getItem('access_token'),
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MzU5OTA2MiwianRpIjoiMjYzOGY3YWMtODU4Zi00YzA3LWFiYjktMTk2ZjAzNDIzYzBlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3NDM1OTkwNjIsImNzcmYiOiJhOGQ5NjRjMi1jMWE3LTQxNzMtOWQ3NC01NTVlZjBiMTE2OTgifQ.I5PjbXpj5DyWZZkk2jEHJgrePsaKkIuvgVPo98CivJg`,
+            Authorization: "Bearer " + localStorage.getItem("access_token")
           },
         });
         setUsers(response.data);
