@@ -16,10 +16,12 @@
     "react-data-table-component": "^7.7.0",
     "react-datatable": "^0.0.31",
     "react-datepicker": "^8.2.1",
+    "react-datetime-picker": "^6.0.1",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.55.0",
     "react-router-dom": "^7.4.1",
-    "react-select": "^5.10.1"
+    "react-select": "^5.10.1",
+    "react-time-picker": "^7.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

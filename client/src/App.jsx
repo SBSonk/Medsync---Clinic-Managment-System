@@ -30,6 +30,7 @@ import PersonForm from "./components/PersonForm";
 import UserForm from "./components/UserForm";
 import InventoryForm from "./components/InventoryForm";
 import EmployeeForm from "./components/EmployeeForm";
+import AppointmentForm from "./components/AppointmentForm";
 
 function App() {
   const fetchAPI = async () => {
@@ -51,6 +52,7 @@ function App() {
         <Route path="/create/user" element={<UserForm />} />
         <Route path="/create/employee" element={<EmployeeForm />} />
         <Route path="/create/inventory" element={<InventoryForm />} />
+        <Route path="/create/appointment" element={<AppointmentForm />} />
         <Route path="/edit/:patient_id/:person_id" element={<PatientForm />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
