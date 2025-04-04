@@ -10,29 +10,32 @@ const People = () => {
   const navigate = useNavigate();
   const [people, setPeople] = useState([]);
   const [filteredPeople, setFilteredPeople] = useState(people);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchInputChange = (text) => {
     setSearchQuery(text);
-    const filtered = text === "" ? people : people.filter(
-      (patients) =>
-        patients.gender.toLowerCase().includes(text.toLowerCase()) ||
-        patients.last_name.toLowerCase().includes(text.toLowerCase()) ||
-        patients.first_name.toLowerCase().includes(text.toLowerCase()) 
-      );
+    const filtered =
+      text === ""
+        ? people
+        : people.filter(
+            (patients) =>
+              patients.gender.toLowerCase().includes(text.toLowerCase()) ||
+              patients.last_name.toLowerCase().includes(text.toLowerCase()) ||
+              patients.first_name.toLowerCase().includes(text.toLowerCase())
+          );
     setFilteredPeople(filtered);
   };
 
   const handleCreatePerson = (e) => {
-    navigate('/create/person');
-  }
+    navigate("/create/person");
+  };
 
   useEffect(() => {
     const fetchPatients = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token")
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
           },
         });
         setPeople(response.data);
@@ -46,35 +49,59 @@ const People = () => {
   }, []);
 
   const columns = [
-    { name: "ID", selector: (row) => row.id, width: "5%", center: true, sortable: true},
-    { name: "First Name", selector: (row) => row.first_name, width: "10%", sortable: true, center: true},
-    { name: "Last Name", selector: (row) => row.last_name, width: "10%", sortable: true, center:true},
+    {
+      name: "ID",
+      selector: (row) => row.id,
+      width: "5%",
+      center: true,
+      sortable: true,
+    },
+    {
+      name: "First Name",
+      selector: (row) => row.first_name,
+      width: "10%",
+      sortable: true,
+      center: true,
+    },
+    {
+      name: "Last Name",
+      selector: (row) => row.last_name,
+      width: "10%",
+      sortable: true,
+      center: true,
+    },
     {
       name: "Gender",
       selector: (row) => row.gender,
       width: "10%",
       center: true,
-      sortable: true 
+      sortable: true,
     },
     {
       name: "Date of Birth",
       selector: (row) => row.date_of_birth,
-      width: "10%", 
+      width: "10%",
       sortable: true,
-      center: true
+      center: true,
     },
-    { name: "Contact No", selector: (row) => row.contact_no, width: "10%", sortable: true, center: true  },
-    { name: "Address", selector: (row) => row.address, width: "30%", sortable: true, center: true  },
+    {
+      name: "Contact No",
+      selector: (row) => row.contact_no,
+      width: "10%",
+      sortable: true,
+      center: true,
+    },
+    {
+      name: "Address",
+      selector: (row) => row.address,
+      width: "30%",
+      sortable: true,
+      center: true,
+    },
     {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
-          <button
-            className="view-btn"
-            onClick={() => alert(`Viewing ${row.name}`)}
-          >
-            <iconify-icon icon="mdi:eye"></iconify-icon>
-          </button>
           <Link to="/edit/${row.id}">
             <button className="edit-btn">
               <iconify-icon icon="mdi:pencil"></iconify-icon>
@@ -111,7 +138,10 @@ const People = () => {
 
   return (
     <MainLayout title="People">
-      <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
+      <SearchBar
+        onChange={(e) => handleSearchInputChange(e.target.value)}
+        value={searchQuery}
+      ></SearchBar>
       <button onClick={handleCreatePerson}>Add new person</button>
       <div className="mainBox">
         <div className="mainContent">

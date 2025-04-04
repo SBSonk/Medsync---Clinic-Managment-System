@@ -9,35 +9,37 @@ import SearchBar from "../../components/SearchBar";
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState(users);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   const handleSearchInputChange = (text) => {
     setSearchQuery(text);
-    const filtered = text === "" ? users : users.filter(
-      (users) =>
-        users.role.toLowerCase().includes(text.toLowerCase()) ||
-        users.email.toLowerCase().includes(text.toLowerCase()) ||
-        users.username.toLowerCase().includes(text.toLowerCase())
-      );
-      setFilteredUsers(filtered);
+    const filtered =
+      text === ""
+        ? users
+        : users.filter(
+            (users) =>
+              users.role.toLowerCase().includes(text.toLowerCase()) ||
+              users.email.toLowerCase().includes(text.toLowerCase()) ||
+              users.username.toLowerCase().includes(text.toLowerCase())
+          );
+    setFilteredUsers(filtered);
   };
 
   const handleCreateUser = (e) => {
-    navigate('/create/user');
-  }
-
+    navigate("/create/user");
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/users", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token")
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
           },
         });
         setUsers(response.data);
-        setFilteredUsers(response.data)
+        setFilteredUsers(response.data);
       } catch (error) {
         console.error("Error fetching Users:", error);
       }
@@ -47,20 +49,38 @@ const Users = () => {
   }, []);
 
   const columns = [
-    { name: "ID", selector: (row) => row.id, width: "10%", center: true, sortable: true },
-    { name: "Email", selector: (row) => row.email, width: "25%", center: true, sortable: true },
-    { name: "Username", selector: (row) => row.username, width: "20%", center: true, sortable: true },
-    { name: "Role", selector: (row) => row.role, width: "20%", center: true, sortable: true },
+    {
+      name: "ID",
+      selector: (row) => row.id,
+      width: "10%",
+      center: true,
+      sortable: true,
+    },
+    {
+      name: "Email",
+      selector: (row) => row.email,
+      width: "25%",
+      center: true,
+      sortable: true,
+    },
+    {
+      name: "Username",
+      selector: (row) => row.username,
+      width: "20%",
+      center: true,
+      sortable: true,
+    },
+    {
+      name: "Role",
+      selector: (row) => row.role,
+      width: "20%",
+      center: true,
+      sortable: true,
+    },
     {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
-          <button
-            className="view-btn"
-            onClick={() => alert(`Viewing ${row.username}`)}
-          >
-            <iconify-icon icon="mdi:eye"></iconify-icon>
-          </button>
           <button
             className="edit-btn"
             onClick={() => alert(`Editing ${row.username}`)}
@@ -98,7 +118,10 @@ const Users = () => {
 
   return (
     <MainLayout title="Users">
-      <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
+      <SearchBar
+        onChange={(e) => handleSearchInputChange(e.target.value)}
+        value={searchQuery}
+      ></SearchBar>
       <button onClick={handleCreateUser}>Add new user</button>
       <div className="mainBox">
         <div className="mainContent">

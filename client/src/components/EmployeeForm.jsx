@@ -10,32 +10,150 @@ import "../styles/FormLayout.css";
 const EmployeeForm = () => {
   const { register, handleSubmit, setValue, watch } = useForm();
   const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [selectedPersonID, setSelectedPersonID] = useState(null);
+  const [people, setPeople] = useState([]);
 
-  const onSubmit = async (data) => {
-    try {
-      const employeeData = {
-        person_id: data.person_id,
-        occupation: data.occupation,
-        department: data.department,
-        schedule: data.schedule,
-      };
+  useEffect(() => {
+    setIsCreating(!employee_id && !person_id);
 
-      console.log(employeeData);
-      // Update person data
-      await axios.post(
-        "http://localhost:8080/api/create-employee",
-        employeeData,
-        {
+    const fetchPeople = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("access_token"),
           },
-        }
-      );
+        });
+        setPeople(response.data);
+      } catch (error) {
+        console.error("Error fetching people:", error);
+      }
+    };
 
-      alert("Employee created successfully!");
-      navigate("/admin/employees");
+    fetchPeople(); // Load available people
+
+    if (!employee_id && !person_id) {
+      console.log("creating");
+      return;
+    }
+
+    const fetchEmployeeAndPerson = async () => {
+      try {
+        const employeeRes = await axios.get(
+          `http://localhost:8080/api/get-employee-info/${employee_id}`,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token"),
+            },
+          }
+        );
+        const employeeData = employeeRes.data;
+
+        if (employeeData && employeeData.person_id) {
+          const personRes = await axios.get(
+            `http://localhost:8080/api/get-person-info/${person_id}`,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("access_token"),
+              },
+            }
+          );
+          const personData = personRes.data;
+
+          // Form value setting
+          setValue("firstName", personData.first_name || "");
+          setValue("lastName", personData.last_name || "");
+          setValue("gender", personData.gender || "");
+          setValue(
+            "dateOfBirth",
+            personData.date_of_birth ? new Date(personData.date_of_birth) : null
+          );
+          setValue("contactNo", personData.contact_no || "");
+          setValue("address", personData.address || "");
+
+          setValue("occupation", employeeData.occupation || "");
+          setValue("department", employeeData.department || "");
+          setValue("shift", employeeData.schedule || "");
+        }
+      } catch (error) {
+        console.error("Error fetching employee details:", error);
+      }
+    };
+
+    fetchEmployeeAndPerson();
+  }, [employee_id, person_id, setValue]);
+
+  const onSubmit = async (data) => {
+    try {
+      if (isCreating) {
+        if (!selectedPersonID) {
+          alert("Please select a person before creating an employee.");
+          return;
+        }
+
+        const newEmployee = {
+          person_id: selectedPersonID, // Link selected person ID
+          occupation: data.occupation,
+          department: data.department,
+          schedule: data.schedule,
+        };
+
+        await axios.post(
+          "http://localhost:8080/api/create-employee",
+          newEmployee,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token"),
+            },
+          }
+        );
+
+        alert("Employee created successfully!");
+      } else if (isEditing) {
+        const employeeData = {
+          person_id: person_id, // Keep the same ID
+          occupation: data.occupation,
+          department: data.department,
+          schedule: data.schedule,
+        };
+
+        const personData = {
+          id: person_id,
+          first_name: data.firstName,
+          last_name: data.lastName,
+          gender: data.gender,
+          date_of_birth: formatDate(data.dateOfBirth),
+          contact_no: data.contactNo,
+          address: data.address,
+        };
+
+        console.log(employeeData);
+        console.log(personData);
+
+        // Update employee data
+        await axios.put(
+          "http://localhost:8080/api/update-employee",
+          employeeData,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token"),
+            },
+          }
+        );
+
+        // Update person data
+        await axios.put("http://localhost:8080/api/update-person", personData, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
+          },
+        });
+
+        alert("Employee updated successfully!");
+        setIsEditing(false);
+      }
     } catch (error) {
-      console.error("Error creating employee:", error);
+      console.error("Error updating employee:", error);
     }
   };
 
@@ -45,31 +163,65 @@ const EmployeeForm = () => {
         <div className="mainContent">
           <div className="formContainer">
             <form onSubmit={handleSubmit(onSubmit)}>
-              <label>Person ID:</label>
+              {/* <label>Person ID:</label>
               <input
                 type="text"
                 {...register("person_id", { required: true, maxLength: 50 })}
-              />
+              /> */}
+              <Label>Select Person</Label>
+              <select onChange={(e) => setSelectedPersonID(e.target.value)}>
+                <option value="">-- Select Person --</option>
+                {people.map((person) => (
+                  <option key={person.id} value={person.id}>
+                    {person.first_name} {person.last_name}
+                  </option>
+                ))}
+              </select>
 
-              <label>Occupation:</label>
-              <input
-                type="text"
-                {...register("occupation", { required: true, maxLength: 50 })}
-              />
+              {selectedPersonID ? null : (
+                <>
+                  <label>Occupation:</label>
+                  <input
+                    type="text"
+                    {...register("occupation", {
+                      required: true,
+                      maxLength: 50,
+                    })}
+                    disabled={!isEditing && !isCreating}
+                  />
 
-              <label>Department:</label>
-              <input
-                type="text"
-                {...register("department", { required: true, maxLength: 50 })}
-              />
+                  <label>Department:</label>
+                  <input
+                    type="text"
+                    {...register("department", {
+                      required: true,
+                      maxLength: 50,
+                    })}
+                    disabled={!isEditing && !isCreating}
+                  />
 
-              <label>Schedule:</label>
-              <input
-                type="text"
-                {...register("schedule", { required: true, maxLength: 31 })}
-              />
+                  <label>Schedule:</label>
+                  <input
+                    type="text"
+                    {...register("schedule", { required: true, maxLength: 31 })}
+                    disabled={!isEditing && !isCreating}
+                  />
+                </>
+              )}
+              {isCreating ? (
+                <button type="submit">Create Employee</button>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setIsEditing(!isEditing)}
+                  >
+                    {isEditing ? "Cancel" : "Edit"}
+                  </button>
 
-              <button type="submit">Add Employee</button>
+                  {isEditing && <button type="submit">Save Changes</button>}
+                </>
+              )}
             </form>
           </div>
         </div>
