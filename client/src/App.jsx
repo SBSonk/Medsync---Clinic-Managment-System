@@ -26,6 +26,8 @@ import MainLayout from "./layouts/MainLayout";
 import Add from "./pages/users/Add";
 import Users from "./pages/users/Users";
 import People from "./pages/users/People";
+import PersonForm from "./components/PersonForm";
+import UserForm from "./components/UserForm";
 
 function App() {
   const fetchAPI = async () => {
@@ -42,7 +44,10 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/edit/:id" element={<PatientForm />} />
+        <Route path="/create/patient" element={<PatientForm />} />
+        <Route path="/create/person" element={<PersonForm />} />
+        <Route path="/create/user" element={<UserForm />} />
+        <Route path="/edit/:patient_id/:person_id" element={<PatientForm />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />

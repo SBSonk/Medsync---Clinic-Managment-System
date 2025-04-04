@@ -53,7 +53,6 @@ def patients():
         'allergies': p.allergies,
         'medical_history': p.medical_history,
         'family_history': p.family_history,
-        # 'emergency_contact_id': p.emergency_contact_id,
         'next_appointment_id': p.next_appointment_id
     } for p in all_patients]
 
@@ -165,7 +164,7 @@ def get_patient_info(id):
 @get.route('/api/get-emergency-contact/<patient_id>', methods=['GET'])
 @jwt_required()
 def get_emergency_contact(patient_id):
-    p = db.session.query(models.EmergencyContact).filter_by(id=patient_id).first()
+    p = db.session.query(models.EmergencyContact).filter_by(patient_id=patient_id).first()
     if p is not None:
         return jsonify({
             'person_id': p.person_id,

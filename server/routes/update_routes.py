@@ -33,7 +33,7 @@ def update_person():
 
         if 'date_of_birth' in data:
             try:
-                p.date_of_birth = datetime.datetime.strptime(data['date_of_birth'], "%m-%d-%Y").date()
+                p.date_of_birth = datetime.strptime(data['date_of_birth'], "%d-%m-%Y").date()
             except ValueError:
                 return jsonify({'message': 'Invalid date format. Use MM-DD-YYYY'}), 400
 
