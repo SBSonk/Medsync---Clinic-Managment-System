@@ -6,6 +6,10 @@ import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
+import { Dropdown } from "primereact/Dropdown";
+const dropdown_test = {
+  color: "black",
+};
 
 function formatDateTime(date, time) {
   const day = String(date.getDate()).padStart(2, "0");
@@ -21,16 +25,67 @@ const AppointmentForm = () => {
   const { register, handleSubmit, setValue, watch } = useForm();
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-  const [selectedPersonID, setSelectedPersonID] = useState(null);
+  const [selectedPatientID, setSelectedPatientID] = useState(null);
+  const [selectedFacultyID, setSelectedFacultyID] = useState(null);
+  const [patients, setPatients] = useState([]);
   const [people, setPeople] = useState([]);
+  const [employees, setEmployees] = useState([]);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/patients", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
+          },
+        });
+        setPatients(response.data);
+      } catch (error) {
+        console.error("Error fetching Patients:", error);
+      }
+    };
+
+    fetchPatients();
+
+    const fetchEmployees = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/employees", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
+          },
+        });
+        setEmployees(response.data);
+      } catch (error) {
+        console.error("Error fetching Employees:", error);
+      }
+    };
+
+    fetchEmployees();
+
+    const fetchPeople = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/people", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
+          },
+        });
+        setPeople(response.data);
+      } catch (error) {
+        console.error("Error fetching People:", error);
+      }
+    };
+
+    fetchPeople();
+  }, []);
 
   const onSubmit = async (data) => {
     try {
       const appointmentData = {
         type: data.type,
-        patient_id: data.patient_id,
-        doctor_id: data.doctor_id,
+        patient_id: selectedPatientID,
+        doctor_id: selectedFacultyID,
         date_time: formatDateTime(data.date, data.time),
         status: data.status,
         note: data.note,
@@ -68,16 +123,30 @@ const AppointmentForm = () => {
               />
 
               <label>Patient ID:</label>
-              <input
-                type="number"
-                {...register("patient_id", { required: true, maxLength: 50 })}
-              />
+              <select onChange={(e) => setSelectedPersonID(e.target.value)}>
+                <option value="">-- Select Patient --</option>
+                {patients.map((patient) => {
+                  const person = people.find((p) => p.id === patient.person_id);
+                  return (
+                    <option key={patient.id} value={patient.id}>
+                      {person ? `${person.first_name} ${person.last_name}` : "Unknown"}
+                    </option>
+                  );
+                })}
+              </select>
 
-              <label>Doctor ID:</label>
-              <input
-                type="number"
-                {...register("doctor_id", { required: true, maxLength: 50 })}
-              />
+              <label>Faculty ID:</label>
+              <select onChange={(e) => setSelectedFacultyID(e.target.value)}>
+                <option value="">-- Select Faculty --</option>
+                {employees.map((facultyMember) => {
+                  const person = people.find((p) => p.id === facultyMember.person_id);
+                  return (
+                    <option key={facultyMember.id} value={facultyMember.id}>
+                      {person ? `${person.first_name} ${person.last_name}` : "Unknown"}
+                    </option>
+                  );
+                })}
+              </select>
 
               <label>Date:</label>
               <DatePicker
