@@ -88,25 +88,18 @@ const Dashboard = () => {
     ]
 
     const lowStockInventoryTable = [
-        {name: "ID", selector: (row) => row.id, width: "10%", center: true},
-        {name: "Batch ID", selector: (row) => row.batch_id, width: "15%", center: true},
-        {name: "Name", selector: (row) => row.name, width: "15%", center: true},
-        {name: "Type", selector: (row) => row.type, width: "15%", center: true},
-        {name: "Quantity", selector: (row) => row.quantity, width: "15%", center: true},
-        {name: "Expiration Date", selector: (row) => row.expiration_date, width: "15%", center: true},
-        {name: "Supplier", selector: (row) => row.supplier, width: "15%", center: true},
-        {name: "Supplier Contact", selector: (row) => row.supplier_contact, width: "15%", center: true}
+        {name: "ID", selector: (row) => row.id, width: "15%", center: true},
+        {name: "Name", selector: (row) => row.name, center: true},
+        {name: "Type", selector: (row) => row.type, center: true},
+        {name: "Quantity", selector: (row) => row.quantity, width: "10%", center: true}
     ]
 
     const expiringInventoryTable = [
         {name: "ID", selector: (row) => row.id, width: "10%", center: true},
-        {name: "Batch ID", selector: (row) => row.batch_id, width: "15%", center: true},
-        {name: "Name", selector: (row) => row.name, width: "15%", center: true},
-        {name: "Type", selector: (row) => row.type, width: "15%", center: true},
-        {name: "Quantity", selector: (row) => row.quantity, width: "15%", center: true},
-        {name: "Expiration Date", selector: (row) => row.expiration_date, width: "15%", center: true},
-        {name: "Supplier", selector: (row) => row.supplier, width: "15%", center: true},
-        {name: "Supplier Contact", selector: (row) => row.supplier_contact, width: "15%", center: true}
+        {name: "Name", selector: (row) => row.name, center: true},
+        {name: "Type", selector: (row) => row.type, center: true},
+        {name: "Quantity", selector: (row) => row.quantity, width: "10%", center: true},
+        {name: "Expiration Date", selector: (row) => row.expiration_date, center: true}
     ]
 
     const availableEmployeesTable = [
