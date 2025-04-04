@@ -64,11 +64,10 @@ def employees():
     all_employees = db.session.query(models.Employee).all()
 
     employees_list = [{
-        'id': e.id,
         'person_id': e.person_id,
         'occupation': e.occupation,
         'department': e.department,
-        'schedule': e.shift_id
+        'schedule': e.shift.schedule
     } for e in all_employees]
 
     return jsonify(employees_list), 200
@@ -179,25 +178,14 @@ def get_employee_info(id):
     e = db.session.query(models.Employee).filter_by(id=id).first()
     if e is not None:
         return jsonify({
-            'id': e.id,
             'person_id': e.person_id,
             'occupation': e.occupation,
             'department': e.department,
+            'schedule': e.shift.schedule
         }), 200
     else:
         return jsonify({'message': f'employee with id ({id}) not found.'}), 404
     
-@get.route('/api/get-shift-info/<employee_id>', methods=['GET'])
-@jwt_required()
-def get_shift_info(employee_id):
-    s = db.session.query(models.EmployeeShift).filter_by(id=employee_id).first()
-    if s is not None:
-        return jsonify({
-            'schedule': s.schedule
-        }), 200
-    else:
-        return jsonify({'message': f'employee_shift with employee_id ({employee_id}) not found.'}), 404
-
 @get.route('/api/get-inventory-info/<inventory_id>', methods=['GET'])
 @jwt_required()
 def get_inventory_info(inventory_id):

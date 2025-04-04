@@ -81,14 +81,13 @@ class Appointment(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     type: Mapped[str] = mapped_column(db.String(30), nullable=False)
     patient_id: Mapped[int] = mapped_column(ForeignKey('patient.id'), nullable=False)
-    doctor_id: Mapped[int] = mapped_column(ForeignKey('employee.id'), nullable=False)
+    doctor_id: Mapped[int] = mapped_column(ForeignKey('employee.person_id'), nullable=False)
     date_time: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=False) # MM-DD-YY-HH-MM 24HR
     status: Mapped[str] = mapped_column(db.String(10), nullable=False)
     note: Mapped[str] = mapped_column(db.String(255), nullable=False)
 
 class Employee(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    person_id: Mapped[int] = mapped_column(ForeignKey('person.id'), nullable=False)
+    person_id: Mapped[int] = mapped_column(ForeignKey('person.id'), primary_key=True)
     occupation: Mapped[str] = mapped_column(db.String(50), nullable=False)
     department: Mapped[str] = mapped_column(db.String(50), nullable=False)
 
@@ -97,7 +96,7 @@ class Employee(db.Model):
 class EmployeeShift(db.Model):
     __tablename__ = 'employee_shift'
 
-    employee_id: Mapped[int] = mapped_column(ForeignKey('employee.id', ondelete="CASCADE"), primary_key=True)
+    employee_id: Mapped[int] = mapped_column(ForeignKey('employee.person_id', ondelete="CASCADE"), primary_key=True)
     schedule: Mapped[str] = mapped_column(db.String(255), nullable=False)
 
 class Inventory(db.Model):
