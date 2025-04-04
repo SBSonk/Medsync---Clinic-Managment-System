@@ -12,18 +12,25 @@ function formatDate(date) {
   const day = String(date.getDate()).padStart(2, '0');
   const year = date.getFullYear();
 
-  return `${month}-${day}-${year}`;
+  return `${day}-${month}-${year}`;
+
 }
 
 const PatientForm = () => {
   const { patient_id, person_id } = useParams(); // Use useParams to get the 'id' from the URL
   const { register, handleSubmit, setValue, watch } = useForm();
   const [isEditing, setIsEditing] = useState(false);
+  const [isCreating, setIsCreating] = useState([]);
 
   useEffect(() => {
+    setIsCreating(!patient_id && !person_id);
+    if (!patient_id && !person_id) {
+      console.log("creating");
+      return;
+    }
+
     const fetchPatientAndPerson = async () => {
       try {
-        // Fetch patient info first
         const patientRes = await axios.get(
           `http://localhost:8080/api/get-patient-info/${patient_id}`,
           {
@@ -35,7 +42,6 @@ const PatientForm = () => {
         const patientData = patientRes.data;
 
         if (patientData && patientData.person_id) {
-          // Now use person_id from patient info to fetch person details
           const personRes = await axios.get(
             `http://localhost:8080/api/get-person-info/${person_id}`,
             {
@@ -46,7 +52,6 @@ const PatientForm = () => {
           );
           const personData = personRes.data;
 
-          // Fetch emergency contact info
           const emergencyContactRes = await axios.get(
             `http://localhost:8080/api/get-emergency-contact/${patient_id}`,
             {
@@ -55,18 +60,13 @@ const PatientForm = () => {
               },
             }
           );
-          
-          // emergencyContactData.then
           const emergencyContactData = emergencyContactRes.data;
 
-          // Populate form fields with the retrieved data
+          // Form value setting
           setValue("firstName", personData.first_name || "");
           setValue("lastName", personData.last_name || "");
           setValue("gender", personData.gender || "");
-          setValue(
-            "dateOfBirth",
-            personData.date_of_birth ? new Date(personData.date_of_birth) : null
-          );
+          setValue("dateOfBirth", personData.date_of_birth ? new Date(personData.date_of_birth) : null);
           setValue("contactNo", personData.contact_no || "");
           setValue("address", personData.address || "");
           setValue("height", patientData.height || "");
@@ -76,7 +76,7 @@ const PatientForm = () => {
           setValue("medicalHistory", patientData.medical_history || "");
           setValue("familyHistory", patientData.family_history || "");
 
-          if (emergencyContactData ) {
+          if (emergencyContactData) {
             setValue("emergencyContact", emergencyContactData.person_id || "");
             setValue("emergencyRelation", emergencyContactData.relation || "");
           }
@@ -87,7 +87,7 @@ const PatientForm = () => {
     };
 
     fetchPatientAndPerson();
-  }, [patient_id, setValue]);
+  }, [patient_id, person_id, setValue]);
 
   const onSubmit = async (data) => {
     try {
@@ -98,8 +98,12 @@ const PatientForm = () => {
         blood_type: data.bloodType,
         allergies: data.allergies,
         medical_history: data.medicalHistory,
-        family_history: data.familyHistory
+        family_history: data.familyHistory,
+        emergency_contact_person_id: data.emergencyContact,
+        emergency_contact_relation: data.emergencyRelation
       };
+
+      console.log(formatDate(data.dateOfBirth))
 
       const personData = {
         id: person_id,
@@ -108,13 +112,14 @@ const PatientForm = () => {
         gender: data.gender,
         date_of_birth: formatDate(data.dateOfBirth),
         contact_no: data.contactNo,
-        address: data.address,
+        address: data.address
       };
 
-      console.log(patientData);
+      console.log(patientData)
+      console.log(personData);
 
       // Update patient data
-      await axios.put("http://127.0.0.1:8080/api/update-patient", patientData, {
+      await axios.put("http://localhost:8080/api/update-patient", patientData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -126,22 +131,6 @@ const PatientForm = () => {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
       });
-
-      // If emergency contact has changed, update it
-      // if (data.emergencyContact) {
-      //   await axios.put(
-      //     `http://localhost:8080/api/update-emergency-contact/${patient_id}`,
-      //     {
-      //       person_id: data.emergencyContact,
-      //       relation: data.emergencyRelation,
-      //     },
-      //     {
-      //       headers: {
-      //         Authorization: "Bearer " + localStorage.getItem("access_token"),
-      //       },
-      //     }
-      //   );
-      // } I ACTUALLY DONT REMEMBER IF I HAVE AN UPDATE
 
       alert("Patient updated successfully!");
       setIsEditing(false);
@@ -160,21 +149,21 @@ const PatientForm = () => {
               <input
                 type="text"
                 {...register("firstName")}
-                disabled={!isEditing}
+                disabled={!isEditing && !isCreating}
               />
 
               <label>Last Name:</label>
               <input
                 type="text"
                 {...register("lastName")}
-                disabled={!isEditing}
+                disabled={!isEditing && !isCreating}
               />
 
               <label>Gender:</label>
-              <select {...register("gender")} disabled={!isEditing}>
+              <select {...register("gender")} disabled={!isEditing && !isCreating}>
                 <option value="MALE">Male</option>
                 <option value="FEMALE">Female</option>
-                <option value="NON-BINARY">Non-Binary</option>
+                <option value="NON_BINARY">Non-Binary</option>
                 <option value="OTHER">Other</option>
               </select>
 
@@ -183,83 +172,91 @@ const PatientForm = () => {
                 selected={watch("dateOfBirth")}
                 onChange={(date) => setValue("dateOfBirth", date)}
                 dateFormat="dd-MM-yyyy"
-                disabled={!isEditing}
+
+                disabled={!isEditing && !isCreating}
               />
 
               <label>Contact Number:</label>
               <input
                 type="text"
                 {...register("contactNo")}
-                disabled={!isEditing}
+                disabled={!isEditing && !isCreating}
               />
 
               <label>Address:</label>
               <input
                 type="text"
                 {...register("address")}
-                disabled={!isEditing}
+                disabled={!isEditing && !isCreating}
               />
 
               <label>Height:</label>
               <input
                 type="text"
                 {...register("height")}
-                disabled={!isEditing}
+                disabled={!isEditing && !isCreating}
               />
 
               <label>Weight:</label>
               <input
                 type="text"
                 {...register("weight")}
-                disabled={!isEditing}
+                disabled={!isEditing && !isCreating}
               />
 
               <label>Blood Type:</label>
               <input
                 type="text"
                 {...register("bloodType")}
-                disabled={!isEditing}
+                disabled={!isEditing && !isCreating}
               />
 
               <label>Allergies:</label>
               <input
                 type="text"
                 {...register("allergies")}
-                disabled={!isEditing}
+                disabled={!isEditing && !isCreating}
               />
 
               <label>Medical History:</label>
               <input
                 type="text"
                 {...register("medicalHistory")}
-                disabled={!isEditing}
+                disabled={!isEditing && !isCreating}
               />
 
               <label>Family History:</label>
               <input
                 type="text"
                 {...register("familyHistory")}
-                disabled={!isEditing}
+                disabled={!isEditing && !isCreating}
               />
 
               <label>Emergency Contact:</label>
               <input
                 type="text"
                 {...register("emergencyContact")}
-                disabled={!isEditing}
+                disabled={!isEditing && !isCreating}
               />
 
               <label>Relation:</label>
               <input
                 type="text"
                 {...register("emergencyRelation")}
-                disabled={!isEditing}
+                disabled={!isEditing && !isCreating}
               />
-              <button type="button" onClick={() => setIsEditing(!isEditing)}>
-                {isEditing ? "Cancel" : "Edit"}
-              </button>
+              {isCreating ? (
+                <button type="submit">Create Patient</button>
+              ) : (
+                <>
+                  <button type="button" onClick={() => setIsEditing(!isEditing)}>
+                    {isEditing ? "Cancel" : "Edit"}
+                  </button>
 
-              {isEditing && <button type="submit">Save Changes</button>}
+                  {isEditing && <button type="submit">Save Changes</button>}
+                </>
+              )}
+
             </form>
           </div>
         </div>

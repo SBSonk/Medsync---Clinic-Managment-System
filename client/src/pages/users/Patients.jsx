@@ -15,6 +15,10 @@ const Patients = () => {
     navigate(`/edit/${patient_id}/${person_id}`);
   };
 
+  const handleCreatePatient = (e) => {
+    navigate('/create/patient')
+  };
+
   useEffect(() => {
     const fetchPatients = async () => {
       try {
@@ -158,6 +162,7 @@ const Patients = () => {
 
   return (
     <MainLayout title="Patients">
+      <button onClick={handleCreatePatient}>Add new patient</button>
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">

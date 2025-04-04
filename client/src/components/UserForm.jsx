@@ -48,7 +48,7 @@ const UserForm = () => {
       };
 
       // Update person data
-      await axios.post("http://127.0.0.1:8080/register", userData, {
+      await axios.post("http://localhost:8080/register", userData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },

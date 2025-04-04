@@ -44,6 +44,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/create/patient" element={<PatientForm />} />
         <Route path="/create/person" element={<PersonForm />} />
         <Route path="/create/user" element={<UserForm />} />
         <Route path="/edit/:patient_id/:person_id" element={<PatientForm />} />
