@@ -6,10 +6,10 @@ import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
-import { Dropdown } from 'primereact/Dropdown'
+import { Dropdown } from "primereact/Dropdown";
 
 const dropdown_test = {
-  color: "black"
+  color: "black",
 };
 
 const UserForm = () => {
@@ -23,7 +23,7 @@ const UserForm = () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token")
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
           },
         });
         setPeople(response.data);
@@ -44,7 +44,7 @@ const UserForm = () => {
         role: data.role,
         security_question: data.security_question,
         security_answer: data.security_answer,
-        person_id: selectedPersonID.id
+        person_id: selectedPersonID.id,
       };
 
       // Update person data
@@ -55,7 +55,7 @@ const UserForm = () => {
       });
 
       alert("User created successfully!");
-      navigate('/admin/users')
+      navigate("/admin/users");
     } catch (error) {
       console.error("Error creating user:", error);
     }
@@ -70,46 +70,56 @@ const UserForm = () => {
               <label>Username:</label>
               <input
                 type="text"
-                {...register("username", {required: true, maxLength: 255})}
-
+                {...register("username", { required: true, maxLength: 255 })}
               />
 
               <label>Password:</label>
               <input
                 type="password"
-                {...register("password", {required: true, maxLength: 50})}
-
+                {...register("password", { required: true, maxLength: 50 })}
               />
 
               <label>Email:</label>
               <input
                 type="email"
-                {...register("email", {required: true, maxLength: 255})}
-
+                {...register("email", { required: true, maxLength: 255 })}
               />
 
               <label>Person ID:</label>
-              <Dropdown style={dropdown_test} optionLabel="name" options={people.map(person => ({id: person.id, name: person.first_name + " " + person.last_name}))} value={selectedPersonID} onChange={(e) => setSelectedPersonID(e.value)} placeholder="Select a Person." />
+              <Dropdown
+                style={dropdown_test}
+                optionLabel="name"
+                options={people.map((person) => ({
+                  id: person.id,
+                  name: person.first_name + " " + person.last_name,
+                }))}
+                value={selectedPersonID}
+                onChange={(e) => setSelectedPersonID(e.value)}
+                placeholder="Select a Person."
+              />
 
               <label>Role:</label>
               <input
                 type="text"
-                {...register("role", {required: true, maxLength: 50})}
-
+                {...register("role", { required: true, maxLength: 50 })}
               />
 
               <label>Security Question:</label>
               <input
                 type="text"
-                {...register("security_question", {required: true, maxLength: 255})}
-
+                {...register("security_question", {
+                  required: true,
+                  maxLength: 255,
+                })}
               />
 
               <label>Answer:</label>
               <input
                 type="text"
-                {...register("security_answer", {required: true, maxLength: 50})}
-
+                {...register("security_answer", {
+                  required: true,
+                  maxLength: 50,
+                })}
               />
 
               <button type="submit">Create User</button>
