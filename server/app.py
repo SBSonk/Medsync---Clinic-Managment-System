@@ -19,7 +19,7 @@ app.register_blueprint(routes.get_routes.get)
 app.register_blueprint(routes.delete_routes.delete)
 app.register_blueprint(routes.update_routes.update)
 
-CORS(app, origins=['*', 'http://localhost:5174'], methods=["GET", "POST", "OPTIONS", "PUT"])
+CORS(app, origins=['*', 'http://localhost:5174'], methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"])
 
 jwt = JWTManager(app)
 bcrypt.init_app(app)

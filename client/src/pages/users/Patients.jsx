@@ -16,7 +16,32 @@ const Patients = () => {
   };
 
   const handleCreatePatient = (e) => {
-    navigate('/create/patient')
+    navigate("/create/patient");
+  };
+
+  const handleDelete = async (patient_id) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete Patient ID: ${patient_id}?`
+      )
+    ) {
+      try {
+        console.log("Deleting patient ID:", patient_id);
+        await axios.delete(
+          `http://localhost:8080/api/delete-patient/${patient_id}`,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token"),
+            },
+          }
+        );
+        alert("Patient deleted successfully!");
+        setPatients(patients.filter((patient) => patient.id !== patient_id)); // Update the UI
+      } catch (error) {
+        console.error("Error deleting patient:", error);
+        alert("Failed to delete patient...");
+      }
+    }
   };
 
   useEffect(() => {
@@ -41,7 +66,12 @@ const Patients = () => {
                 },
               }
             );
-            return { ...patient, person: personRes.data };
+            const person = personRes.data;
+            return {
+              ...patient,
+              person,
+              full_name: `${person.first_name} ${person.last_name}`,
+            };
           })
         );
 
@@ -66,6 +96,13 @@ const Patients = () => {
       name: "Person ID",
       selector: (row) => row.person_id,
       width: "10%",
+      center: true,
+      sortable: true,
+    },
+    {
+      name: "Full Name",
+      selector: (row) => row.full_name || "N/A",
+      width: "15%",
       center: true,
       sortable: true,
     },
@@ -128,13 +165,13 @@ const Patients = () => {
           >
             <iconify-icon icon="mdi:eye"></iconify-icon>
           </button>
-          <button onClick={() => handleEdit(row.id, row.person_id)} className="edit-btn">
+          <button
+            onClick={() => handleEdit(row.id, row.person_id)}
+            className="edit-btn"
+          >
             <iconify-icon icon="mdi:pencil"></iconify-icon>
           </button>
-          <button
-            className="delete-btn"
-            onClick={() => alert(`Deleting Patient ID: ${row.id}`)}
-          >
+          <button className="delete-btn" onClick={() => handleDelete(row.id)}>
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>
         </div>

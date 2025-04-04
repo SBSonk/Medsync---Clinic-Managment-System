@@ -12,7 +12,7 @@ def delete_user(id):
 
     if u is not None:
         try:
-            db.session.remove(u)
+            db.session.delete(u)
             db.session.commit()
             return jsonify(
                 {"message": "user deleted successfully"}
@@ -31,7 +31,7 @@ def delete_person(id):
 
     if p is not None:
         try:
-            db.session.remove(p)
+            db.session.delete(p)
             db.session.commit()
             return jsonify(
                 {"message": "person deleted successfully"}
@@ -49,7 +49,7 @@ def delete_employee(id):
 
     if employee is not None:
         try:
-            db.session.remove(employee)
+            db.session.delete(employee)
             db.session.commit()
             return jsonify({"message": "employee deleted successfully"}), 200
         except:
@@ -65,7 +65,7 @@ def delete_patient(id):
 
     if patient is not None:
         try:
-            db.session.remove(patient)
+            db.session.delete(patient)
             db.session.commit()
             return jsonify({"message": "patient deleted successfully"}), 200
         except:
@@ -80,7 +80,7 @@ def delete_appointment(id):
 
     if appointment is not None:
         try:
-            db.session.remove(appointment)
+            db.session.delete(appointment)
             db.session.commit()
             return jsonify({"message": "appointment deleted successfully"}), 200
         except:
