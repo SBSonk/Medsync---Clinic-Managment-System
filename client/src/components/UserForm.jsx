@@ -86,17 +86,14 @@ const UserForm = () => {
               />
 
               <label>Person ID:</label>
-              <Dropdown
-                style={dropdown_test}
-                optionLabel="name"
-                options={people.map((person) => ({
-                  id: person.id,
-                  name: person.first_name + " " + person.last_name,
-                }))}
-                value={selectedPersonID}
-                onChange={(e) => setSelectedPersonID(e.value)}
-                placeholder="Select a Person."
-              />
+              <select onChange={(e) => setSelectedPersonID(e.target.value)}>
+                <option value="">-- Select Person --</option>
+                {people.map((person) => (
+                  <option key={person.id} value={person.id}>
+                    {person.first_name} {person.last_name}
+                  </option>
+                ))}
+              </select>
 
               <label>Role:</label>
               <input
