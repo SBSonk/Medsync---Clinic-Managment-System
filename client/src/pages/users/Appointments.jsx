@@ -30,7 +30,9 @@ const Appointments = () => {
     navigate("/create/apppointment");
   };
 
-  handleEdit;
+  const handleEdit = (id) => {
+    navigate(`/edit/${id}`);
+  };
 
   useEffect(() => {
     const fetchAppointments = async () => {
