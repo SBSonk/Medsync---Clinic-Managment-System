@@ -69,7 +69,7 @@ class Patient(db.Model):
 
     person_id: Mapped[int] = mapped_column(ForeignKey('person.id'), nullable=False)
     emergency_contact = db.relationship('EmergencyContact', backref='patient', cascade="all, delete-orphan", uselist=False)
-    next_appointment_id: Mapped[int] = mapped_column(ForeignKey('appointment.id'))
+    next_appointment_id: Mapped[int] = mapped_column(ForeignKey('appointment.id'), nullable=True)
 
 class EmergencyContact(db.Model):
     __tablename__ = 'emergency_contact'

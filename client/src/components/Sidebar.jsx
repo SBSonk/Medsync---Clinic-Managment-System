@@ -1,9 +1,10 @@
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "../styles/Sidebar.css";
 import medsync from "../assets/medsync.svg";
 
 function Sidebar() {
+  const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const location = useLocation(); // Get the current location (URL)
 
@@ -28,6 +29,13 @@ function Sidebar() {
                 ADMIN
               </NavLink>
               <NavLink
+                to="/admin/dashboard"
+                className={isActive("/admin/dashboard") ? "activeLink" : ""}
+              >
+                <iconify-icon icon="clarity:dashboard-line"></iconify-icon>
+                Dashboard
+              </NavLink>
+              <NavLink
                 to="/admin/users"
                 className={isActive("/admin/users") ? "activeLink" : ""}
               >
@@ -35,12 +43,13 @@ function Sidebar() {
                 Users
               </NavLink>
               <NavLink
-                to="/admin/dashboard"
-                className={isActive("/admin/dashboard") ? "activeLink" : ""}
+                to="/admin/people"
+                className={isActive("/admin/people") ? "activeLink" : ""}
               >
-                <iconify-icon icon="clarity:dashboard-line"></iconify-icon>
-                Dashboard
+                <iconify-icon icon="mdi:account"></iconify-icon>
+                People
               </NavLink>
+              
               <NavLink
                 to="/admin/employees"
                 className={isActive("/admin/employees") ? "activeLink" : ""}
@@ -75,6 +84,13 @@ function Sidebar() {
               >
                 <iconify-icon icon="carbon:report"></iconify-icon>
                 Reports
+              </NavLink>
+              <NavLink
+                to="/"
+                className={isActive("/admin") ? "activeLink" : ""}
+              >
+                <iconify-icon icon="material-symbols:logout"></iconify-icon>
+                Logout
               </NavLink>
             </>
           )}
@@ -124,6 +140,13 @@ function Sidebar() {
               >
                 <iconify-icon icon="carbon:report"></iconify-icon>
                 Reports
+              </NavLink>
+              <NavLink
+                to="/logout"
+                className={isActive("/employee") ? "activeLink" : ""}
+              >
+                <iconify-icon icon="material-symbols:logout"></iconify-icon>
+                Logout
               </NavLink>
             </>
           )}

@@ -4,11 +4,12 @@ from randomuser import RandomUser
 from random import choice
 from dateutil.parser import parse
 import random
-
+from typing import List
+import math
 
 def populate_people(db):
     session = db.session
-    for _ in range(10):
+    for _ in range(25):
         user = RandomUser()
         random_person = models.Person(
             first_name = user.get_first_name(),
@@ -87,6 +88,70 @@ def populate_inventory(db):
         )
 
         session.add(random_inventory)
+
+    session.commit()
+
+blood_types = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
+
+allergies = [
+    "Pollen", "Dust mites", "Pet dander", "Mold", "Insect stings",
+    "Latex", "Certain medications", "Milk", "Eggs", "Peanuts",
+    "Tree nuts", "Wheat", "Soy", "Fish", "Shellfish"
+]
+
+medical_histories = [
+    "Chronic illnesses (e.g., diabetes, hypertension)",
+    "Previous surgeries (e.g., appendectomy, knee replacement)",
+    "Family medical history (e.g., heart disease, cancer)",
+    "None"
+]
+
+family_history = [
+    "Heart disease", 
+    "Diabetes", 
+    "Cancer", 
+    "High blood pressure", 
+    "Stroke", 
+    "Mental health disorders", 
+    "Autoimmune diseases", 
+    "Genetic disorders", 
+    "None"
+]
+
+relationship_types = [
+    "Family", 
+    "Friendship", 
+    "Romantic", 
+    "Professional", 
+    "Acquaintance", 
+    "Situational", 
+    "None"
+]
+
+def populate_patients(db):
+    session = db.session
+    all_people: List = db.session.query(models.Person).all()
+    for _ in range(10):
+        person = random.choice(all_people)
+        all_people.remove(person)
+        random_patient = models.Patient(
+            height = random.randint(1, 2),
+            weight = random.randint(40, 200),
+            blood_type = random.choice(blood_types),
+            allergies = random.choice(allergies),
+            medical_history = random.choice(medical_histories),
+            family_history = random.choice(family_history),
+
+            person_id = person.id
+        )
+
+        emergency_person = random.choice(all_people)
+        all_people.remove(emergency_person)
+        random_patient.emergency_contact = models.EmergencyContact(
+            person_id = emergency_person.id,
+            relation = random.choice(relationship_types)
+        )
+        session.add(random_patient)
 
     session.commit()
 

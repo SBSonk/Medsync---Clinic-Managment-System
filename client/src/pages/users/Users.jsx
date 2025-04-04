@@ -3,21 +3,41 @@ import MainLayout from "../../layouts/MainLayout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/MainLayout.css";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import SearchBar from "../../components/SearchBar";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState(users);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+
+  const handleSearchInputChange = (text) => {
+    setSearchQuery(text);
+    const filtered = text === "" ? users : users.filter(
+      (users) =>
+        users.role.toLowerCase().includes(text.toLowerCase()) ||
+        users.email.toLowerCase().includes(text.toLowerCase()) ||
+        users.username.toLowerCase().includes(text.toLowerCase())
+      );
+      setFilteredUsers(filtered);
+  };
+
+  const handleCreateUser = (e) => {
+    navigate('/create/user');
+  }
+
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/people", {
+        const response = await axios.get("http://localhost:8080/api/users", {
           headers: {
-            // Authorization: "Bearer " + localStorage.getItem('access_token'),
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MzU5OTA2MiwianRpIjoiMjYzOGY3YWMtODU4Zi00YzA3LWFiYjktMTk2ZjAzNDIzYzBlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3NDM1OTkwNjIsImNzcmYiOiJhOGQ5NjRjMi1jMWE3LTQxNzMtOWQ3NC01NTVlZjBiMTE2OTgifQ.I5PjbXpj5DyWZZkk2jEHJgrePsaKkIuvgVPo98CivJg`,
+            Authorization: "Bearer " + localStorage.getItem("access_token")
           },
         });
         setUsers(response.data);
+        setFilteredUsers(response.data)
       } catch (error) {
         console.error("Error fetching Users:", error);
       }
@@ -27,40 +47,29 @@ const Users = () => {
   }, []);
 
   const columns = [
-    { name: "ID", selector: (row) => row.id, width: "10%", center: true },
-    { name: "First Name", selector: (row) => row.first_name, width: "15%" },
-    { name: "Last Name", selector: (row) => row.last_name, width: "15%" },
-    {
-      name: "Gender",
-      selector: (row) => row.gender,
-      width: "10%",
-      center: true,
-    },
-    {
-      name: "Date of Birth",
-      selector: (row) => row.date_of_birth,
-      width: "15%",
-    },
-    { name: "Contact No", selector: (row) => row.contact_no, width: "15%" },
-    { name: "Address", selector: (row) => row.address, width: "20%" },
+    { name: "ID", selector: (row) => row.id, width: "10%", center: true, sortable: true },
+    { name: "Email", selector: (row) => row.email, width: "25%", center: true, sortable: true },
+    { name: "Username", selector: (row) => row.username, width: "20%", center: true, sortable: true },
+    { name: "Role", selector: (row) => row.role, width: "20%", center: true, sortable: true },
     {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
           <button
             className="view-btn"
-            onClick={() => alert(`Viewing ${row.name}`)}
+            onClick={() => alert(`Viewing ${row.username}`)}
           >
             <iconify-icon icon="mdi:eye"></iconify-icon>
           </button>
-          <Link to="/edit">
-            <button className="edit-btn" onClick={() => handleEdit(row.id)}>
-              <iconify-icon icon="mdi:pencil"></iconify-icon>
-            </button>
-          </Link>
+          <button
+            className="edit-btn"
+            onClick={() => alert(`Editing ${row.username}`)}
+          >
+            <iconify-icon icon="mdi:pencil"></iconify-icon>
+          </button>
           <button
             className="delete-btn"
-            onClick={() => alert(`Deleting ${row.name}`)}
+            onClick={() => alert(`Deleting ${row.username}`)}
           >
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>
@@ -89,12 +98,14 @@ const Users = () => {
 
   return (
     <MainLayout title="Users">
+      <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
+      <button onClick={handleCreateUser}>Add new user</button>
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">
             <DataTable
               columns={columns}
-              data={users}
+              data={filteredUsers}
               customStyles={customStyles}
             />
           </div>

@@ -10,9 +10,9 @@ const Appointments = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/people", {
+        const response = await axios.get("http://localhost:8080/api/appointments", {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MzU5OTA2MiwianRpIjoiMjYzOGY3YWMtODU4Zi00YzA3LWFiYjktMTk2ZjAzNDIzYzBlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3NDM1OTkwNjIsImNzcmYiOiJhOGQ5NjRjMi1jMWE3LTQxNzMtOWQ3NC01NTVlZjBiMTE2OTgifQ.I5PjbXpj5DyWZZkk2jEHJgrePsaKkIuvgVPo98CivJg`,
+            Authorization: "Bearer " + localStorage.getItem("access_token")
           },
         });
         setAppointments(response.data);
@@ -25,41 +25,41 @@ const Appointments = () => {
   }, []);
 
   const columns = [
-    { name: "ID", selector: (row) => row.id, width: "10%", center: true },
-    { name: "First Name", selector: (row) => row.first_name, width: "15%" },
-    { name: "Last Name", selector: (row) => row.last_name, width: "15%" },
-    {
-      name: "Gender",
-      selector: (row) => row.gender,
-      width: "10%",
-      center: true,
+    { name: "ID", selector: (row) => row.id, width: "10%", center: true, sortable: true },
+    { name: "Type", selector: (row) => row.type, width: "15%", center: true, sortable: true },
+    { name: "Patient ID", selector: (row) => row.patient_id, width: "15%", center: true, sortable: true },
+    { name: "Doctor ID", selector: (row) => row.doctor_id, width: "15%", center: true, sortable: true },
+    { 
+      name: "Date and Time", 
+      selector: (row) => {
+        const dateTime = new Date(row.date_time);
+        return `${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString()}`;
+      },
+      width: "20%", 
+      center: true, 
+      sortable: true 
     },
-    {
-      name: "Date of Birth",
-      selector: (row) => row.date_of_birth,
-      width: "15%",
-    },
-    { name: "Contact No", selector: (row) => row.contact_no, width: "15%" },
-    { name: "Address", selector: (row) => row.address, width: "20%" },
+    { name: "Status", selector: (row) => row.status, width: "10%", center: true, sortable: true },
+    { name: "Note", selector: (row) => row.note, width: "20%", center: true, sortable: true },
     {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
           <button
             className="view-btn"
-            onClick={() => alert(`Viewing ${row.name}`)}
+            onClick={() => alert(`Viewing appointment ${row.id}`)}
           >
             <iconify-icon icon="mdi:eye"></iconify-icon>
           </button>
           <button
             className="edit-btn"
-            onClick={() => alert(`Editing ${row.name}`)}
+            onClick={() => alert(`Editing appointment ${row.id}`)}
           >
             <iconify-icon icon="mdi:pencil"></iconify-icon>
           </button>
           <button
             className="delete-btn"
-            onClick={() => alert(`Deleting ${row.name}`)}
+            onClick={() => alert(`Deleting appointment ${row.id}`)}
           >
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>

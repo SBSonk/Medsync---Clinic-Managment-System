@@ -19,21 +19,19 @@ def create_person():
             gender = models.Gender[data['gender']],
             date_of_birth = datetime.strptime(data['date_of_birth'], "%d-%m-%Y").date(),
             contact_no = data['contact_no'],
-            address = data['address'],
-            security_question = data['security_question'],
-            security_answer = data['security_answer']
+            address = data['address']
         )
 
         db.session.add(p)
         db.session.commit()
 
         return jsonify(
-            {"message": "user created successfully"}
+            {"message": "person created successfully"}
         ), 201
     except:
         db.session.rollback()
         return jsonify(
-            {"message": "failed to create user..."}
+            {"message": "failed to create person..."}
         ), 500
     
 @create.route('/api/create-employee', methods=['POST'])

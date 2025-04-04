@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import axios from "axios";
 import Login from "./pages/auth/Login";
 import ForgotPassword from "./pages/auth/ForgotPassword";
@@ -18,6 +24,10 @@ import PatientForm from "./components/PatientForm";
 import MainLayout from "./layouts/MainLayout";
 
 import Add from "./pages/users/Add";
+import Users from "./pages/users/Users";
+import People from "./pages/users/People";
+import PersonForm from "./components/PersonForm";
+import UserForm from "./components/UserForm";
 
 function App() {
   const fetchAPI = async () => {
@@ -33,16 +43,19 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to='/login' replace />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/create/person" element={<PersonForm />} />
+        <Route path="/create/user" element={<UserForm />} />
+        <Route path="/edit/:patient_id/:person_id" element={<PatientForm />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/edit" element={<PatientForm />} />
-        {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
 
         {/* Admin Routes */}
+        <Route path="/admin/users" element={<Users />} />
         <Route path="/admin/account" element={<Account />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/admin/people" element={<People />} />
         <Route path="/admin/patients" element={<Patients />} />
         <Route path="/admin/employees" element={<Employees />} />
         <Route path="/admin/add" element={<Add />} />

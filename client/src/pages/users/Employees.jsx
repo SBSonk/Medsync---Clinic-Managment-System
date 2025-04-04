@@ -4,20 +4,32 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/MainLayout.css";
 import { Link, Navigate } from "react-router-dom";
+import SearchBar from "../../components/SearchBar";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
+  const [filteredEmployees, setFilteredEmployees] = useState(employees);
+  const [searchQuery, setSearchQuery] = useState('');
 
+  const handleSearchInputChange = (text) => {
+    setSearchQuery(text);
+    const filtered = text === "" ? employees : employees.filter(
+      (employees) =>
+        employees.occupation.toLowerCase().includes(text.toLowerCase())
+      // TODO
+      );
+      setFilteredEmployees(filtered);
+  };
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/people", {
+        const response = await axios.get("http://localhost:8080/api/employees", {
           headers: {
-            // Authorization: "Bearer " + localStorage.getItem("access_token"),
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0MzU5OTA2MiwianRpIjoiMjYzOGY3YWMtODU4Zi00YzA3LWFiYjktMTk2ZjAzNDIzYzBlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjEiLCJuYmYiOjE3NDM1OTkwNjIsImNzcmYiOiJhOGQ5NjRjMi1jMWE3LTQxNzMtOWQ3NC01NTVlZjBiMTE2OTgifQ.I5PjbXpj5DyWZZkk2jEHJgrePsaKkIuvgVPo98CivJg`,
+            Authorization: "Bearer " + localStorage.getItem("access_token")
           },
         });
         setEmployees(response.data);
+        setFilteredEmployees(response.data);
       } catch (error) {
         console.error("Error fetching employees:", error);
       }
@@ -32,40 +44,33 @@ const Employees = () => {
 
   const columns = [
     { name: "ID", selector: (row) => row.id, width: "10%", center: true },
-    { name: "First Name", selector: (row) => row.first_name, width: "15%" },
-    { name: "Last Name", selector: (row) => row.last_name, width: "15%" },
+    { name: "Person ID", selector: (row) => row.person_id, width: "15%" },
+    { name: "Occupation", selector: (row) => row.occupation, width: "20%" },
+    { name: "Department", selector: (row) => row.department, width: "20%" },
     {
-      name: "Gender",
-      selector: (row) => row.gender,
-      width: "10%",
-      center: true,
-    },
-    {
-      name: "Date of Birth",
-      selector: (row) => row.date_of_birth,
+      name: "Shift",
+      selector: (row) => row.shift ? row.shift.shift_name : "N/A", // Assuming `shift_name` is an attribute of the related `EmployeeShift` model
       width: "15%",
     },
-    { name: "Contact No", selector: (row) => row.contact_no, width: "15%" },
-    { name: "Address", selector: (row) => row.address, width: "20%" },
     {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
           <button
             className="view-btn"
-            onClick={() => alert(`Viewing ${row.name}`)}
+            onClick={() => alert(`Viewing ${row.id}`)}
           >
             <iconify-icon icon="mdi:eye"></iconify-icon>
           </button>
-          <Link to="/edit">
-            <button className="edit-btn" onClick={() => handleEdit(row.id)}>
-              <iconify-icon icon="mdi:pencil"></iconify-icon>
-            </button>
-          </Link>
-
+          <button
+            className="edit-btn"
+            onClick={() => alert(`Editing ${row.id}`)}
+          >
+            <iconify-icon icon="mdi:pencil"></iconify-icon>
+          </button>
           <button
             className="delete-btn"
-            onClick={() => alert(`Deleting ${row.name}`)}
+            onClick={() => alert(`Deleting ${row.id}`)}
           >
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>
@@ -99,12 +104,13 @@ const Employees = () => {
 
   return (
     <MainLayout title="Employees">
+      <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">
             <DataTable
               columns={columns}
-              data={employees}
+              data={filteredEmployees}
               customStyles={customStyles}
             />
           </div>
