@@ -9,17 +9,16 @@ import SearchBar from "../../components/SearchBar";
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState(employees);
-<<<<<<< Updated upstream
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   const handleCreateItem = (e) => {
-    navigate('/create/employee')
+    navigate("/create/employee");
   };
 
-=======
-  const [searchQuery, setSearchQuery] = useState("");
->>>>>>> Stashed changes
+  const handleEdit = (employee_id, person_id) => {
+    navigate(`/edit/${employee_id}/${person_id}`);
+  };
 
   const handleSearchInputChange = (text) => {
     setSearchQuery(text);
@@ -33,11 +32,6 @@ const Employees = () => {
           );
     setFilteredEmployees(filtered);
   };
-
-  const handleEdit = (employee_id, person_id) => {
-    navigate(`/edit/${employee_id}/${person_id}`);
-  };
-
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -83,7 +77,18 @@ const Employees = () => {
   }, []);
 
   const columns = [
-    { name: "Person ID", selector: (row) => row.person_id, width: "15%" },
+    {
+      name: "ID",
+      selector: (row) => row.id,
+      width: "15%",
+      sortable: true,
+    },
+    {
+      name: "Person ID",
+      selector: (row) => row.person_id,
+      width: "15%",
+      sortable: true,
+    },
     {
       name: "Full Name",
       selector: (row) => row.full_name || "N/A",
@@ -91,8 +96,18 @@ const Employees = () => {
       center: true,
       sortable: true,
     },
-    { name: "Occupation", selector: (row) => row.occupation, width: "20%" },
-    { name: "Department", selector: (row) => row.department, width: "20%" },
+    {
+      name: "Occupation",
+      selector: (row) => row.occupation,
+      width: "20%",
+      sortable: true,
+    },
+    {
+      name: "Department",
+      selector: (row) => row.department,
+      width: "20%",
+      sortable: true,
+    },
     {
       name: "Shift",
       selector: (row) => (row.shift ? row.shift.shift_name : "N/A"), // Assuming `shift_name` is an attribute of the related `EmployeeShift` model
@@ -150,15 +165,11 @@ const Employees = () => {
 
   return (
     <MainLayout title="Employees">
-<<<<<<< Updated upstream
-      <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
-      <button onClick={handleCreateItem}>Add new employee</button>
-=======
       <SearchBar
         onChange={(e) => handleSearchInputChange(e.target.value)}
         value={searchQuery}
       ></SearchBar>
->>>>>>> Stashed changes
+      <button onClick={handleCreateItem}>Add new employee</button>
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">

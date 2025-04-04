@@ -17,19 +17,23 @@ const EmployeeForm = () => {
         person_id: data.person_id,
         occupation: data.occupation,
         department: data.department,
-        schedule: data.schedule
+        schedule: data.schedule,
       };
 
       console.log(employeeData);
       // Update person data
-      await axios.post("http://127.0.0.1:8080/api/create-employee", employeeData, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
-        },
-      });
+      await axios.post(
+        "http://localhost:8080/api/create-employee",
+        employeeData,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
+          },
+        }
+      );
 
       alert("Employee created successfully!");
-      navigate('/admin/employees')
+      navigate("/admin/employees");
     } catch (error) {
       console.error("Error creating employee:", error);
     }
@@ -45,28 +49,24 @@ const EmployeeForm = () => {
               <input
                 type="text"
                 {...register("person_id", { required: true, maxLength: 50 })}
-
               />
 
               <label>Occupation:</label>
               <input
                 type="text"
                 {...register("occupation", { required: true, maxLength: 50 })}
-
               />
 
               <label>Department:</label>
               <input
                 type="text"
                 {...register("department", { required: true, maxLength: 50 })}
-
               />
 
               <label>Schedule:</label>
               <input
                 type="text"
                 {...register("schedule", { required: true, maxLength: 31 })}
-
               />
 
               <button type="submit">Add Employee</button>
