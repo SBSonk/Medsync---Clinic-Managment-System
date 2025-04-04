@@ -8,8 +8,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
 
 function formatDate(date) {
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, "0");
   const year = date.getFullYear();
 
   return `${day}-${month}-${year}`;
@@ -27,7 +27,7 @@ const PersonForm = () => {
         gender: data.gender,
         date_of_birth: formatDate(data.date_of_birth),
         contact_no: data.contact_no,
-        address: data.address
+        address: data.address,
       };
 
       console.log(personData);
@@ -39,7 +39,7 @@ const PersonForm = () => {
       });
 
       alert("User created successfully!");
-      navigate('/admin/people')
+      navigate("/admin/people");
     } catch (error) {
       console.error("Error creating user:", error);
     }
@@ -54,19 +54,17 @@ const PersonForm = () => {
               <label>First Name:</label>
               <input
                 type="text"
-                {...register("first_name", {required: true, maxLength: 50})}
-
+                {...register("first_name", { required: true, maxLength: 50 })}
               />
 
               <label>Last Name:</label>
               <input
                 type="text"
-                {...register("last_name", {required: true, maxLength: 50})}
-
+                {...register("last_name", { required: true, maxLength: 50 })}
               />
 
               <label>Gender:</label>
-              <select {...register("gender", {required: true})}>
+              <select {...register("gender", { required: true })}>
                 <option value="MALE">Male</option>
                 <option value="FEMALE">Female</option>
                 <option value="NON_BINARY">Non-Binary</option>
@@ -78,21 +76,20 @@ const PersonForm = () => {
                 selected={watch("date_of_birth")}
                 onChange={(date) => setValue("date_of_birth", date)}
                 dateFormat="dd-MM-yyyy"
-
+                showMonthDropdown
+                showYearDropdown
               />
 
               <label>Contact Number:</label>
               <input
                 type="text"
-                {...register("contact_no", {required: true, maxLength: 31})}
-
+                {...register("contact_no", { required: true, maxLength: 31 })}
               />
 
               <label>Address:</label>
               <input
                 type="text"
-                {...register("address", {required: true, maxLength: 255})}
-
+                {...register("address", { required: true, maxLength: 255 })}
               />
 
               <button type="submit">Add Person</button>

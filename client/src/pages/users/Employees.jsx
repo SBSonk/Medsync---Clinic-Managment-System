@@ -9,6 +9,7 @@ import SearchBar from "../../components/SearchBar";
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState(employees);
+<<<<<<< Updated upstream
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
@@ -16,26 +17,63 @@ const Employees = () => {
     navigate('/create/employee')
   };
 
+=======
+  const [searchQuery, setSearchQuery] = useState("");
+>>>>>>> Stashed changes
 
   const handleSearchInputChange = (text) => {
     setSearchQuery(text);
-    const filtered = text === "" ? employees : employees.filter(
-      (employees) =>
-        employees.occupation.toLowerCase().includes(text.toLowerCase())
-      // TODO
-      );
-      setFilteredEmployees(filtered);
+    const filtered =
+      text === ""
+        ? employees
+        : employees.filter(
+            (employees) =>
+              employees.occupation.toLowerCase().includes(text.toLowerCase())
+            // TODO
+          );
+    setFilteredEmployees(filtered);
   };
+
+  const handleEdit = (employee_id, person_id) => {
+    navigate(`/edit/${employee_id}/${person_id}`);
+  };
+
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/employees", {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token")
-          },
-        });
-        setEmployees(response.data);
-        setFilteredEmployees(response.data);
+        // Fetch all employees
+        const response = await axios.get(
+          "http://localhost:8080/api/employees",
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token"),
+            },
+          }
+        );
+
+        // Fetch person details for each employee
+        const employeesWithPersonDetails = await Promise.all(
+          response.data.map(async (employee) => {
+            const personRes = await axios.get(
+              `http://localhost:8080/api/get-person-info/${employee.person_id}`,
+              {
+                headers: {
+                  Authorization:
+                    "Bearer " + localStorage.getItem("access_token"),
+                },
+              }
+            );
+            const person = personRes.data;
+            return {
+              ...employee,
+              person,
+              full_name: `${person.first_name} ${person.last_name}`,
+            };
+          })
+        );
+
+        setEmployees(employeesWithPersonDetails);
+        setFilteredEmployees(employeesWithPersonDetails);
       } catch (error) {
         console.error("Error fetching employees:", error);
       }
@@ -44,17 +82,20 @@ const Employees = () => {
     fetchEmployees();
   }, []);
 
-  const handleEdit = (id) => {
-    navigate(`/edit/${id}`); // Navigate to EditPage with employee ID
-  };
-
   const columns = [
     { name: "Person ID", selector: (row) => row.person_id, width: "15%" },
+    {
+      name: "Full Name",
+      selector: (row) => row.full_name || "N/A",
+      width: "15%",
+      center: true,
+      sortable: true,
+    },
     { name: "Occupation", selector: (row) => row.occupation, width: "20%" },
     { name: "Department", selector: (row) => row.department, width: "20%" },
     {
       name: "Shift",
-      selector: (row) => row.shift ? row.shift.shift_name : "N/A", // Assuming `shift_name` is an attribute of the related `EmployeeShift` model
+      selector: (row) => (row.shift ? row.shift.shift_name : "N/A"), // Assuming `shift_name` is an attribute of the related `EmployeeShift` model
       width: "15%",
     },
     {
@@ -109,8 +150,15 @@ const Employees = () => {
 
   return (
     <MainLayout title="Employees">
+<<<<<<< Updated upstream
       <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
       <button onClick={handleCreateItem}>Add new employee</button>
+=======
+      <SearchBar
+        onChange={(e) => handleSearchInputChange(e.target.value)}
+        value={searchQuery}
+      ></SearchBar>
+>>>>>>> Stashed changes
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">

@@ -19,11 +19,8 @@ import Patients from "./pages/users/Patients";
 import Appointments from "./pages/users/Appointments";
 import Reports from "./pages/users/Reports";
 import Inventory from "./pages/users/Inventory";
-import Edit from "./pages/users/Edit";
 import PatientForm from "./components/PatientForm";
-import MainLayout from "./layouts/MainLayout";
 
-import Add from "./pages/users/Add";
 import Users from "./pages/users/Users";
 import People from "./pages/users/People";
 import PersonForm from "./components/PersonForm";
@@ -32,16 +29,6 @@ import InventoryForm from "./components/InventoryForm";
 import EmployeeForm from "./components/EmployeeForm";
 
 function App() {
-  const fetchAPI = async () => {
-    const response = await axios.get("http://localhost:8080/api/users");
-    console.log(response.data.users);
-    setArray(response.data.users);
-  };
-
-  useEffect(() => {
-    fetchAPI();
-  }, []);
-
   return (
     <Router>
       <Routes>
@@ -63,7 +50,6 @@ function App() {
         <Route path="/admin/people" element={<People />} />
         <Route path="/admin/patients" element={<Patients />} />
         <Route path="/admin/employees" element={<Employees />} />
-        <Route path="/admin/add" element={<Add />} />
         <Route path="/admin/appointments" element={<Appointments />} />
         <Route path="/admin/inventory" element={<Inventory />} />
         <Route path="/admin/reports" element={<Reports />} />
@@ -71,7 +57,6 @@ function App() {
         {/* Employee Routes */}
         <Route path="/employee/account" element={<Account />} />
         <Route path="/employee/patients" element={<Patients />} />
-        <Route path="/employee/patients/edit" element={<Edit />} />
       </Routes>
     </Router>
   );

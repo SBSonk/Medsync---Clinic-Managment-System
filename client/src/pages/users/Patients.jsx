@@ -199,7 +199,9 @@ const Patients = () => {
 
   return (
     <MainLayout title="Patients">
-      <button onClick={handleCreatePatient}>Add new patient</button>
+      <div className="mainHeader">
+        <button onClick={handleCreatePatient}>Add new patient</button>
+      </div>
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">
