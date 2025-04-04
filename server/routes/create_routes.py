@@ -124,3 +124,26 @@ def create_appointment():
         return jsonify(
             {"message": "failed to create appointment..."}
         ), 500
+
+@create.route('/api/create-inventory', methods=['POST'])
+# @jwt_required()
+def create_inventory():
+    data = request.get_json()
+
+    try:
+        i = models.Inventory(
+            batch_id = data['batch_id'],
+            name = data['name'],
+            type = data['type'],
+            quantity = data['quantity'],
+            expiration_date = datetime.strptime(data['expiration_date'], "%d-%m-%Y").date(),
+            supplier = data['supplier'],
+            supplier_contact = data['supplier_contact']
+        )
+
+        db.session.add(i)
+        db.session.commit()
+        return jsonify({'message': 'inventory item created successfully.'}), 201
+    except:
+        db.session.rollback()
+        return jsonify({'message': 'failed to create inventory item...'}), 500

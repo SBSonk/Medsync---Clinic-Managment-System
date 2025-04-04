@@ -75,7 +75,7 @@ def delete_patient(id):
 
 @delete.route('/api/delete-appointment/<id>', methods=['DELETE'])
 # @jwt_required()
-def delete_appointment(id):
+def delete_inventory(id):
     appointment = db.session.query(models.Appointment).filter_by(id=id).first()
 
     if appointment is not None:
@@ -87,4 +87,20 @@ def delete_appointment(id):
             db.session.rollback()
             return jsonify({"message": "failed to delete appointment..."}), 500
     return jsonify({f"message": "appointment with id {id} does not exist."}), 404
+    
+
+@delete.route('/api/delete-inventory/<id>', methods=['DELETE'])
+# @jwt_required()
+def delete_inventory(id):
+    inventory_item = db.session.query(models.Inventory).filter_by(id=id).first()
+
+    if inventory_item is not None:
+        try:
+            db.session.remove(inventory_item)
+            db.session.commit()
+            return jsonify({"message": "inventory item deleted successfully"}), 200
+        except:
+            db.session.rollback()
+            return jsonify({"message": "failed to delete inventory item..."}), 500
+    return jsonify({f"message": "inventory item with id {id} does not exist."}), 404
     

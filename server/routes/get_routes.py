@@ -197,3 +197,21 @@ def get_shift_info(employee_id):
         }), 200
     else:
         return jsonify({'message': f'employee_shift with employee_id ({employee_id}) not found.'}), 404
+
+@get.route('/api/get-inventory-info/<inventory_id>', methods=['GET'])
+@jwt_required()
+def get_inventory_info(inventory_id):
+    item = db.session.query(models.Inventory).filter_by(id=inventory_id).first()
+    if item is not None:
+        return jsonify({
+            'id': item.id,
+            'batch_id': item.batch_id,
+            'name': item.name,
+            'type': item.type,
+            'quantity': item.quantity,
+            'expiration_date': item.expiration_date.isoformat(),
+            'supplier': item.supplier,
+            'supplier_contact': item.supplier_contact
+        }), 200
+    else:
+        return jsonify({'message': f'Inventory item with ID ({inventory_id}) not found.'}), 404
