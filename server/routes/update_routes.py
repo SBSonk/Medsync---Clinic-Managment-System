@@ -191,3 +191,44 @@ def update_user():
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': f'Update failed: {str(e)}'}), 500
+    
+@update.route('/api/update-inventory', methods=['PUT'])
+# @jwt_required()
+def update_inventory():
+    data = request.get_json()
+
+    # Find the inventory item by ID
+    item = db.session.get(models.Inventory, data['id'])
+
+    if item is None:
+        return jsonify({'message': f'Inventory item with id ({data["id"]}) not found.'}), 404
+
+    try:
+        if 'batch_id' in data:
+            item.batch_id = data['batch_id']
+
+        if 'name' in data:
+            item.name = data['name']
+
+        if 'type' in data:
+            item.type = data['type']
+
+        if 'quantity' in data:
+            item.quantity = data['quantity']
+
+        if 'expiration_date' in data:
+            # expects date in ISO format like "2025-05-01"
+            item.expiration_date = datetime.strptime(data['date_of_birth'], "%d-%m-%Y").date()
+
+        if 'supplier' in data:
+            item.supplier = data['supplier']
+
+        if 'supplier_contact' in data:
+            item.supplier_contact = data['supplier_contact']
+
+        db.session.commit()
+
+        return jsonify({'message': 'Inventory update successful!'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': f'Inventory update failed: {str(e)}'}), 500
