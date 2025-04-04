@@ -29,11 +29,12 @@ iconify-icon {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   padding-left: 15vw;
 }
 .mainHeader .mainTitle {
   padding-top: 3vh;
+  padding-bottom: 2vh;
   margin: 0;
   font-size: 35px;
   text-align: left;
@@ -46,41 +47,42 @@ iconify-icon {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 75vw;
+  width: 85vw;
   height: calc(100vh - 80px);
+  padding-left: 10vw;
   overflow: hidden;
 }
 
 .mainContent {
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: center;
 }
 
 .topRow {
   display: flex;
-  -moz-column-gap: 15px;
-       column-gap: 15px;
+  -moz-column-gap: 1vw;
+       column-gap: 1vw;
 }
 
 .middleRow {
   display: flex;
-  -moz-column-gap: 15px;
-       column-gap: 15px;
+  -moz-column-gap: 1vw;
+       column-gap: 1vw;
 }
 
 .bottomRow {
   display: flex;
-  -moz-column-gap: 15px;
-       column-gap: 15px;
+  -moz-column-gap: 1vw;
+       column-gap: 1vw;
 }
 
 .totalPatients, .totalEmployees, .totalAppointments, .totalInventory {
   background-color: #FFFFFF;
   display: flex;
   align-items: center;
-  width: 210px;
-  height: 100px;
+  width: 15.5vw;
+  height: 8vw;
   -moz-column-gap: 5px;
        column-gap: 5px;
   border-radius: 8px;
@@ -93,7 +95,6 @@ iconify-icon {
 }
 .totalPatients .text, .totalEmployees .text, .totalAppointments .text, .totalInventory .text {
   text-align: left;
-  font-size: 12px;
 }
 .totalPatients .text h1, .totalEmployees .text h1, .totalAppointments .text h1, .totalInventory .text h1 {
   margin-top: 10px;
@@ -101,16 +102,17 @@ iconify-icon {
 }
 .totalPatients .text p, .totalEmployees .text p, .totalAppointments .text p, .totalInventory .text p {
   margin-top: 0;
+  font-size: 0.75em;
+  width: 8vw;
 }
 
 .recentAppointments, .lowStockInventory, .expiringInventory {
-  width: calc(100% - 15vw);
-  max-width: 75%;
+  width: 20vw;
+  height: 12vw;
   background: white;
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  height: 175px;
   overflow-y: scroll;
   overflow-x: hidden;
   margin: 0 auto;
@@ -125,12 +127,12 @@ iconify-icon {
 }
 
 .availableEmployees, .todaysAppointments {
-  width: 418px;
+  width: 30vw;
+  height: 12vw;
   background: white;
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  height: 175px;
   overflow-y: scroll;
   overflow-x: hidden;
   margin: 0 auto;
