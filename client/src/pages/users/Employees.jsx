@@ -3,13 +3,19 @@ import MainLayout from "../../layouts/MainLayout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/MainLayout.css";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState(employees);
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+
+  const handleCreateItem = (e) => {
+    navigate('/create/employee')
+  };
+
 
   const handleSearchInputChange = (text) => {
     setSearchQuery(text);
@@ -43,7 +49,6 @@ const Employees = () => {
   };
 
   const columns = [
-    { name: "ID", selector: (row) => row.id, width: "10%", center: true },
     { name: "Person ID", selector: (row) => row.person_id, width: "15%" },
     { name: "Occupation", selector: (row) => row.occupation, width: "20%" },
     { name: "Department", selector: (row) => row.department, width: "20%" },
@@ -105,6 +110,7 @@ const Employees = () => {
   return (
     <MainLayout title="Employees">
       <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
+      <button onClick={handleCreateItem}>Add new employee</button>
       <div className="mainBox">
         <div className="mainContent">
           <div className="table-container">
