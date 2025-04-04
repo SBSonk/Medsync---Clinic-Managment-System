@@ -75,7 +75,7 @@ def delete_patient(id):
 
 @delete.route('/api/delete-appointment/<id>', methods=['DELETE'])
 # @jwt_required()
-def delete_inventory(id):
+def delete_appointment(id):
     appointment = db.session.query(models.Appointment).filter_by(id=id).first()
 
     if appointment is not None:

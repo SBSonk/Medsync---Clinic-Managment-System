@@ -4,11 +4,13 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/MainLayout.css";
 import SearchBar from "../../components/SearchBar";
+import { useNavigate } from "react-router-dom";
 
 const Inventory = () => {
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState(inventory);
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   const handleSearchInputChange = (text) => {
     setSearchQuery(text);
@@ -20,6 +22,10 @@ const Inventory = () => {
         inventory.batch_id.includes(text)
       );
     setFilteredInventory(filtered);
+  };
+
+  const handleCreateItem = (e) => {
+    navigate('/create/inventory')
   };
 
   useEffect(() => {
@@ -102,6 +108,7 @@ const Inventory = () => {
     <>
       <MainLayout title="Inventory">
         <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
+        <button onClick={handleCreateItem}>Add new item</button>
         <div className="mainBox">
           <div className="mainContent">
             <div className="table-container">
