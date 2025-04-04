@@ -4,6 +4,7 @@ from models import db
 import models
 from datetime import datetime
 
+
 create = Blueprint('create', __name__)
 
 # Creation routes
@@ -76,8 +77,7 @@ def create_patient():
             allergies = data['allergies'],
             medical_history = data['medical_history'],
             family_history = data['family_history'],
-            person_id = data['person_id'],
-            next_appointment_id = data['next_appointment_id']
+            person_id = data['person_id']
         )
 
         if 'emergency_contact_person_id' in data and 'emergency_contact_relation' in data:
@@ -86,13 +86,17 @@ def create_patient():
                 relation = data['emergency_contact_relation']
             )
 
+        if 'next_appointment_id' in data:
+            patient.next_appointment_id = data['next_appointment_id']
+
         db.session.add(patient)
         db.session.commit()
 
         return jsonify(
             {"message": "patient created successfully"}
         ), 201
-    except:
+    except Exception as e:
+        print(e)
         db.session.rollback()
         return jsonify(
             {"message": "failed to create patient..."}
