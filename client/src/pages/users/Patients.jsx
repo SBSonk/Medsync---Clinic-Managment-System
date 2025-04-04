@@ -5,11 +5,31 @@ import axios from "axios";
 import "../../styles/MainLayout.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
+import SearchBar from "../../components/SearchBar";
 
 const Patients = () => {
   const [patients, setPatients] = useState([]);
+  const [filteredPatients, setFilteredPatients] = useState(patients);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate();
+
+  const handleSearchInputChange = (text) => {
+    setSearchQuery(text);
+    const filtered =
+      text === ""
+        ? patients
+        : patients.filter((patient) => {
+          const fullName = `${patient.person.first_name} ${patient.person.last_name}`.toLowerCase();
+          return (
+            fullName.includes(text.toLowerCase()) ||
+            (patient.allergies || "").toLowerCase().includes(text.toLowerCase()) ||
+            (patient.blood_type || "").toLowerCase().includes(text.toLowerCase()) ||
+            (patient.family_history || "").toLowerCase().includes(text.toLowerCase()) 
+          );
+        });
+          setFilteredPatients(filtered);
+  };
 
   const handleEdit = (patient_id, person_id) => {
     navigate(`/edit/${patient_id}/${person_id}`);
@@ -76,6 +96,8 @@ const Patients = () => {
         );
 
         setPatients(patientsWithPersonDetails);
+        setFilteredPatients(patientsWithPersonDetails);
+
       } catch (error) {
         console.error("Error fetching Patients:", error);
       }
@@ -200,6 +222,10 @@ const Patients = () => {
   return (
     <MainLayout title="Patients">
       <div className="mainHeader">
+        <SearchBar
+          onChange={(e) => handleSearchInputChange(e.target.value)}
+          value={searchQuery}
+        ></SearchBar>
         <button onClick={handleCreatePatient}>Add new patient</button>
       </div>
       <div className="mainBox">
@@ -207,7 +233,7 @@ const Patients = () => {
           <div className="table-container">
             <DataTable
               columns={columns}
-              data={patients}
+              data={filteredPatients}
               customStyles={customStyles}
             />
           </div>
