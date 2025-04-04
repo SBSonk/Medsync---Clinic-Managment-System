@@ -145,10 +145,9 @@ const Dashboard = () => {
     },
   ];
 
-  const availableEmployeesTable = [
- {
+  const availableEmployeesTable = [{
       name: "Person ID",
-      selector: (row) => row.person - id,
+      selector: (row) => row.person_id,
       width: "15%",
       center: true,
     },
