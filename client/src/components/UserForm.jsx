@@ -96,10 +96,11 @@ const UserForm = () => {
               </select>
 
               <label>Role:</label>
-              <input
-                type="text"
-                {...register("role", { required: true, maxLength: 50 })}
-              />
+              <select {...register("role", { required: true })}>
+                <option value="">-- Select Role --</option>
+                <option value="employee">Employee</option>
+                <option value="admin">Admin</option>
+              </select>
 
               <label>Security Question:</label>
               <input
