@@ -127,10 +127,9 @@ def get_user_info(id):
 @get.route('/api/get-person-info/<id>', methods=['GET'])
 @jwt_required()
 def get_person_info(id):
-    p = db.session.query(models.Person).filter_by(id=id).first()
+    p = db.session.query(models.Person).filter_by(person_id=id).first()
     if p is not None:
         return jsonify({
-            'id': p.id,
             'first_name': p.first_name,
             'last_name': p.last_name,
             'gender': p.gender.name,
