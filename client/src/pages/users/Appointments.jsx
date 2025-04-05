@@ -41,6 +41,7 @@ const Appointments = () => {
     useState(appointments);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState([]);
 
   const handleReport = () => {
     exportToPDF(columns, filteredAppointments);
@@ -111,6 +112,8 @@ const Appointments = () => {
     };
 
     fetchAppointments();
+
+    setIsAdmin(localStorage.getItem("role") === "admin");
   }, []);
 
   const columns = [
@@ -166,24 +169,26 @@ const Appointments = () => {
       center: true,
       sortable: true,
     },
-    {
+    isAdmin && ({
       name: "Actions",
       cell: (row) => (
-        <div className="action-buttons">
-          <button className="edit-btn" onClick={() => handleEdit(row.id)}>
-            <iconify-icon icon="mdi:pencil"></iconify-icon>
-          </button>
-          <button className="delete-btn" onClick={() => handleDelete(row.id)}>
-            <iconify-icon icon="mdi:trash-can"></iconify-icon>
-          </button>
-        </div>
+        
+          <div className="action-buttons">
+            <button className="edit-btn" onClick={() => handleEdit(row.id)}>
+              <iconify-icon icon="mdi:pencil"></iconify-icon>
+            </button>
+            <button className="delete-btn" onClick={() => handleDelete(row.id)}>
+              <iconify-icon icon="mdi:trash-can"></iconify-icon>
+            </button>
+          </div>
+        
       ),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
       width: "25%",
       center: true,
-    },
+    }),
   ];
 
   const customStyles = {

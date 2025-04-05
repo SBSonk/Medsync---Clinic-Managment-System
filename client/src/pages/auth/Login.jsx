@@ -27,8 +27,8 @@ const Login = () => {
       console.log(localStorage.getItem("access_token"));
       console.log(localStorage.getItem("role"));
 
-      if (role === "admin") navigate("/admin/patients");
-      if (role === "employee") navigate("/employee/patients");
+      if (role === "admin") navigate("/admin/dashboard");
+      if (role === "employee") navigate("/employee/dashboard");
     } catch (err) {
       console.log(err);
       setError("Invalid username or password");

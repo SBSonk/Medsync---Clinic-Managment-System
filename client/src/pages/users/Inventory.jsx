@@ -38,6 +38,8 @@ const Inventory = () => {
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState(inventory);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAdmin, setIsAdmin] = useState([]);
+
   const navigate = useNavigate();
 
   const handleReport = () => {
@@ -113,6 +115,7 @@ const Inventory = () => {
     };
 
     fetchInventory();
+    setIsAdmin(localStorage.getItem("role") === "admin");
   }, []);
 
   const columns = [
@@ -172,7 +175,7 @@ const Inventory = () => {
       center: true,
       sortable: true,
     },
-    {
+    isAdmin && {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
@@ -222,7 +225,7 @@ const Inventory = () => {
             />
           </div>
         </div>
-      <button onClick={handleReport}>Print table report</button>
+        <button onClick={handleReport}>Print table report</button>
       </MainLayout>
     </>
   );

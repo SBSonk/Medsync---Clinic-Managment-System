@@ -40,7 +40,7 @@ const Patients = () => {
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState(patients);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [isAdmin, setIsAdmin] = useState([]);
   const navigate = useNavigate();
 
   const handleReport = () => {
@@ -137,6 +137,7 @@ const Patients = () => {
 
         setPatients(patientsWithPersonDetails);
         setFilteredPatients(patientsWithPersonDetails);
+        setIsAdmin(localStorage.getItem("role") === "admin");
       } catch (error) {
         console.error("Error fetching Patients:", error);
       }
@@ -209,14 +210,11 @@ const Patients = () => {
       center: true,
       sortable: true,
     },
-    {
+    isAdmin && {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
-          <button
-            onClick={() => handleEdit(row.id, row.person_id)}
-            className="edit-btn"
-          >
+          <button className="edit-btn" onClick={() => handleEdit(row.id)}>
             <iconify-icon icon="mdi:pencil"></iconify-icon>
           </button>
           <button className="delete-btn" onClick={() => handleDelete(row.id)}>
@@ -227,7 +225,7 @@ const Patients = () => {
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-      width: "20%",
+      width: "25%",
       center: true,
     },
   ];
