@@ -18,7 +18,7 @@ function formatDateTime(date, time) {
 
   const [hours, minutes] = time.split(":").map(Number); // Split and convert to numbers
 
-  return `${day}-${month}-${year}-${hours}-${minutes}`;
+  return `${month}-${day}-${year}-${hours}-${minutes}`;
 }
 
 const AppointmentForm = () => {
