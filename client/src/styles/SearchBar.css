@@ -31,13 +31,4 @@
 .search-select-container {
   display: flex;
   align-items: center;
-}
-
-.search-select {
-  width: 150px; /* Set width for the select dropdown */
-  min-width: 130px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  color: black;
-  background-color: white;
 }/*# sourceMappingURL=SearchBar.css.map */

@@ -13,7 +13,7 @@
   background: $button-light;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: $boxShadow;
 }
 
 .authForm,
@@ -85,6 +85,7 @@ form {
   .errorMessage {
     color: red;
     margin: 0;
+    font-size: small;
   }
 }
 
