@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import AuthLayout from "../../layouts/AuthLayout";
+import ResetPasswordLayout from "../../layouts/ResetPasswordLayout";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ResetPassword = () => {
   const location = useLocation();
-  const { id, username, security_question } = location.state || { username: 'INVALID USER', security_question: 'INVALID QUESTION' };
+  const { id, username, security_question } = location.state || {
+    username: "INVALID USER",
+    security_question: "INVALID QUESTION",
+  };
 
   const [security_answer, setSecurityAnswer] = useState("");
   const [password, setPassword] = useState("");
@@ -22,26 +25,30 @@ const ResetPassword = () => {
       return;
     }
 
-    await axios.post("http://127.0.0.1:8080/recovery-set-password", {'id': id, 'new_password': password, 'security_answer': security_answer});
+    await axios.post("http://127.0.0.1:8080/recovery-set-password", {
+      id: id,
+      new_password: password,
+      security_answer: security_answer,
+    });
 
     // Temporary success message (replace with API call)
     alert("Password reset successful!");
-    navigate('/', {replace: true}) // Redirect to login after reset
+    navigate("/", { replace: true }); // Redirect to login after reset
   };
 
   return (
-    <AuthLayout title="Reset Password">
+    <ResetPasswordLayout title="Reset Password">
       <form onSubmit={handleSubmit}>
         <label>Hello, {username}!</label>
 
         <label>{security_question}</label>
         <label>Security Answer</label>
-          <input
-            type="text"
-            value={security_answer}
-            onChange={(e) => setSecurityAnswer(e.target.value)}
-            placeholder="Enter answer"
-            required
+        <input
+          type="text"
+          value={security_answer}
+          onChange={(e) => setSecurityAnswer(e.target.value)}
+          placeholder="Enter answer"
+          required
         />
 
         <label>New password</label>
@@ -68,7 +75,7 @@ const ResetPassword = () => {
 
         <button type="submit">Reset Password</button>
       </form>
-    </AuthLayout>
+    </ResetPasswordLayout>
   );
 };
 
