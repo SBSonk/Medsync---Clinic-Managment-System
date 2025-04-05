@@ -54,10 +54,10 @@ def update_person():
 # @jwt_required()
 def update_employee():
     data = request.get_json()
-    employee = db.session.get(models.Employee, data['id'])
+    employee = db.session.get(models.Employee, data['person_id'])
     
     if not employee:
-        return jsonify({"message": f"Employee with ID {data['id']} not found."}), 404
+        return jsonify({"message": f"Employee with ID {data['person_id']} not found."}), 404
 
     try:
         if 'person_id' in data:

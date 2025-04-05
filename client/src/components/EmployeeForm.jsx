@@ -7,6 +7,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
 
+function formatDate(date) {
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
+
 const EmployeeForm = () => {
   const { person_id } = useParams();
   const { register, handleSubmit, setValue, watch } = useForm();
@@ -66,10 +74,6 @@ const EmployeeForm = () => {
           setValue("firstName", personData.first_name || "");
           setValue("lastName", personData.last_name || "");
           setValue("gender", personData.gender || "");
-          setValue(
-            "dateOfBirth",
-            personData.date_of_birth ? new Date(personData.date_of_birth) : null
-          );
           setValue("contactNo", personData.contact_no || "");
           setValue("address", personData.address || "");
 
@@ -121,16 +125,9 @@ const EmployeeForm = () => {
 
         const personData = {
           id: person_id,
-          first_name: data.firstName,
-          last_name: data.lastName,
-          gender: data.gender,
-          date_of_birth: formatDate(data.dateOfBirth),
-          contact_no: data.contactNo,
-          address: data.address,
         };
 
         console.log(employeeData);
-        console.log(personData);
 
         // Update employee data
         await axios.put(
