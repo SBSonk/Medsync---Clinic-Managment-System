@@ -123,15 +123,13 @@ const Users = () => {
         value={searchQuery}
       ></SearchBar>
       <button onClick={handleCreateUser}>Add new user</button>
-      <div className="mainBox">
-        <div className="mainContent">
-          <div className="table-container">
-            <DataTable
-              columns={columns}
-              data={filteredUsers}
-              customStyles={customStyles}
-            />
-          </div>
+      <div className="mainContent">
+        <div className="table-container">
+          <DataTable
+            columns={columns}
+            data={filteredUsers}
+            customStyles={customStyles}
+          />
         </div>
       </div>
     </MainLayout>

@@ -5,8 +5,8 @@ import axios from "axios";
 import "../../styles/MainLayout.css";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
-import {jsPDF} from 'jspdf';
-import {autoTable} from 'jspdf-autotable';
+import { jsPDF } from "jspdf";
+import { autoTable } from "jspdf-autotable";
 
 const exportToPDF = (columns, data) => {
   const doc = new jsPDF();
@@ -15,9 +15,7 @@ const exportToPDF = (columns, data) => {
   const tableColumn = cleanedColumns.map((col) => col.name);
   const tableRows = data.map((row) =>
     columns.map((col) =>
-      typeof col.selector === 'function'
-        ? col.selector(row)
-        : row[col.selector]
+      typeof col.selector === "function" ? col.selector(row) : row[col.selector]
     )
   );
 
@@ -219,19 +217,17 @@ const Employees = () => {
         value={searchQuery}
       ></SearchBar>
       <button onClick={handleCreateItem}>Add new employee</button>
-      <div className="mainBox">
-        <div className="mainContent">
-          <div className="table-container">
-            <DataTable
-              columns={columns}
-              data={filteredEmployees}
-              customStyles={customStyles}
-            />
-          </div>
+      <div className="mainContent">
+        <div className="table-container">
+          <DataTable
+            columns={columns}
+            data={filteredEmployees}
+            customStyles={customStyles}
+          />
         </div>
       </div>
       <button onClick={handleReport}>Print table report</button>
-      </MainLayout>
+    </MainLayout>
   );
 };
 

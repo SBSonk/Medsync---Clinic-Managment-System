@@ -12,7 +12,7 @@ const Reports = () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token")
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
           },
         });
         setReports(response.data);
@@ -88,15 +88,13 @@ const Reports = () => {
 
   return (
     <MainLayout title="Reports">
-      <div className="mainBox">
-        <div className="mainContent">
-          <div className="table-container">
-            <DataTable
-              columns={columns}
-              data={reports}
-              customStyles={customStyles}
-            />
-          </div>
+      <div className="mainContent">
+        <div className="table-container">
+          <DataTable
+            columns={columns}
+            data={reports}
+            customStyles={customStyles}
+          />
         </div>
       </div>
     </MainLayout>
