@@ -98,13 +98,6 @@ function Sidebar() {
                 Inventory
               </NavLink>
               <NavLink
-                to="/admin/reports"
-                className={isActive("/admin/reports") ? "activeLink" : ""}
-              >
-                <iconify-icon icon="carbon:report"></iconify-icon>
-                Reports
-              </NavLink>
-              <NavLink
                 to="#"
                 onClick={handleLogout}
                 className={({ isActive }) => (isActive ? "activeLink" : "")}
@@ -117,10 +110,7 @@ function Sidebar() {
 
           {role === "employee" && (
             <>
-              <NavLink
-                to="/employee/account"
-                className={isActive("/employee/account") ? "activeLink" : ""}
-              >
+              <NavLink to="">
                 <iconify-icon icon="qlementine-icons:user-16"></iconify-icon>
                 EMPLOYEE
               </NavLink>
@@ -153,13 +143,6 @@ function Sidebar() {
               >
                 <iconify-icon icon="ph:package"></iconify-icon>
                 Inventory
-              </NavLink>
-              <NavLink
-                to="/employee/reports"
-                className={isActive("/employee/reports") ? "activeLink" : ""}
-              >
-                <iconify-icon icon="carbon:report"></iconify-icon>
-                Reports
               </NavLink>
               <NavLink
                 to="#"

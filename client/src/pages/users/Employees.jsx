@@ -17,7 +17,7 @@ const Employees = () => {
   };
 
   const handleEdit = (person_id) => {
-    navigate(`/edit/${person_id}`);
+    navigate(`/edit-employee/${person_id}`);
   };
 
   const handleDelete = async (person_id) => {

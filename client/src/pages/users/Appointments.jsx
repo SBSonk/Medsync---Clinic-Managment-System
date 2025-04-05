@@ -31,7 +31,32 @@ const Appointments = () => {
   };
 
   const handleEdit = (id) => {
-    navigate(`/edit/${id}`);
+    navigate(`/edit-appointment/${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    if (
+      window.confirm(`Are you sure you want to delete appointment ID: ${id}?`)
+    ) {
+      try {
+        console.log("Deleting appointment ID:", id);
+        await axios.delete(
+          `http://localhost:8080/api/delete-appointment/${id}`,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token"),
+            },
+          }
+        );
+        alert("Appointment deleted successfully!");
+        setAppointments(
+          appointment.filter((appointment) => appointment.id !== id)
+        ); // Update the UI
+      } catch (error) {
+        console.error("Error deleting appointment:", error);
+        alert("Failed to delete appointment...");
+      }
+    }
   };
 
   useEffect(() => {
@@ -112,22 +137,10 @@ const Appointments = () => {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
-          <button
-            className="view-btn"
-            onClick={() => alert(`Viewing appointment ${row.id}`)}
-          >
-            <iconify-icon icon="mdi:eye"></iconify-icon>
-          </button>
-          <button
-            className="edit-btn"
-            onClick={() => alert(`Editing appointment ${row.id}`)}
-          >
+          <button className="edit-btn" onClick={() => handleEdit(row.id)}>
             <iconify-icon icon="mdi:pencil"></iconify-icon>
           </button>
-          <button
-            className="delete-btn"
-            onClick={() => alert(`Deleting appointment ${row.id}`)}
-          >
+          <button className="delete-btn" onClick={() => handleDelete(row.id)}>
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>
         </div>

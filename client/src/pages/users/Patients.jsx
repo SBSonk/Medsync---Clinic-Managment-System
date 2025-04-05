@@ -39,7 +39,7 @@ const Patients = () => {
   };
 
   const handleEdit = (patient_id, person_id) => {
-    navigate(`/edit/${patient_id}/${person_id}`);
+    navigate(`/edit-patient/${patient_id}/${person_id}`);
   };
 
   const handleCreatePatient = (e) => {

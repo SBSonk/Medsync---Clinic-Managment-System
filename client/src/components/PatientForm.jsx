@@ -209,7 +209,7 @@ const PatientForm = () => {
               <select
                 value={selectedPersonID || ""}
                 onChange={(e) => setSelectedPersonID(e.target.value)}
-                disabled={isEditing || !isEditing} // Prevent changing person while editing
+                disabled={!isCreating} // Prevent changing person while editing
               >
                 <option value="">-- Select Person --</option>
                 {people.map((person) => (
