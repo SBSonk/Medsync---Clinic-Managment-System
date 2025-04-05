@@ -8,7 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
 
 const EmployeeForm = () => {
-const { person_id } = useParams();
+  const { person_id } = useParams();
   const { register, handleSubmit, setValue, watch } = useForm();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
@@ -164,11 +164,6 @@ const { person_id } = useParams();
         <div className="mainContent">
           <div className="formContainer">
             <form onSubmit={handleSubmit(onSubmit)}>
-              {/* <label>Person ID:</label>
-              <input
-                type="text"
-                {...register("person_id", { required: true, maxLength: 50 })}
-              /> */}
               <label>Select Person</label>
               <select onChange={(e) => setSelectedPersonID(e.target.value)}>
                 <option value="">-- Select Person --</option>
@@ -179,36 +174,32 @@ const { person_id } = useParams();
                 ))}
               </select>
 
-              {selectedPersonID ? null : (
-                <>
-                  <label>Occupation:</label>
-                  <input
-                    type="text"
-                    {...register("occupation", {
-                      required: true,
-                      maxLength: 50,
-                    })}
-                    disabled={!isEditing && !isCreating}
-                  />
+              <label>Occupation:</label>
+              <input
+                type="text"
+                {...register("occupation", {
+                  required: true,
+                  maxLength: 50,
+                })}
+                disabled={!isEditing && !isCreating}
+              />
 
-                  <label>Department:</label>
-                  <input
-                    type="text"
-                    {...register("department", {
-                      required: true,
-                      maxLength: 50,
-                    })}
-                    disabled={!isEditing && !isCreating}
-                  />
+              <label>Department:</label>
+              <input
+                type="text"
+                {...register("department", {
+                  required: true,
+                  maxLength: 50,
+                })}
+                disabled={!isEditing && !isCreating}
+              />
 
-                  <label>Schedule:</label>
-                  <input
-                    type="text"
-                    {...register("schedule", { required: true, maxLength: 31 })}
-                    disabled={!isEditing && !isCreating}
-                  />
-                </>
-              )}
+              <label>Schedule:</label>
+              <input
+                type="text"
+                {...register("schedule", { required: true, maxLength: 31 })}
+                disabled={!isEditing && !isCreating}
+              />
               {isCreating ? (
                 <button type="submit">Create Employee</button>
               ) : (
