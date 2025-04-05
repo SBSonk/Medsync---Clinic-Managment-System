@@ -20,15 +20,22 @@ const Patients = () => {
       text === ""
         ? patients
         : patients.filter((patient) => {
-          const fullName = `${patient.person.first_name} ${patient.person.last_name}`.toLowerCase();
-          return (
-            fullName.includes(text.toLowerCase()) ||
-            (patient.allergies || "").toLowerCase().includes(text.toLowerCase()) ||
-            (patient.blood_type || "").toLowerCase().includes(text.toLowerCase()) ||
-            (patient.family_history || "").toLowerCase().includes(text.toLowerCase()) 
-          );
-        });
-          setFilteredPatients(filtered);
+            const fullName =
+              `${patient.person.first_name} ${patient.person.last_name}`.toLowerCase();
+            return (
+              fullName.includes(text.toLowerCase()) ||
+              (patient.allergies || "")
+                .toLowerCase()
+                .includes(text.toLowerCase()) ||
+              (patient.blood_type || "")
+                .toLowerCase()
+                .includes(text.toLowerCase()) ||
+              (patient.family_history || "")
+                .toLowerCase()
+                .includes(text.toLowerCase())
+            );
+          });
+    setFilteredPatients(filtered);
   };
 
   const handleEdit = (patient_id, person_id) => {
@@ -97,7 +104,6 @@ const Patients = () => {
 
         setPatients(patientsWithPersonDetails);
         setFilteredPatients(patientsWithPersonDetails);
-
       } catch (error) {
         console.error("Error fetching Patients:", error);
       }
@@ -181,12 +187,6 @@ const Patients = () => {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
-          <button
-            className="view-btn"
-            onClick={() => alert(`Viewing Patient ID: ${row.id}`)}
-          >
-            <iconify-icon icon="mdi:eye"></iconify-icon>
-          </button>
           <button
             onClick={() => handleEdit(row.id, row.person_id)}
             className="edit-btn"
