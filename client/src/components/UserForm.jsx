@@ -74,8 +74,10 @@ const UserForm = () => {
         role: data.role,
         security_question: data.security_question,
         security_answer: data.security_answer,
-        person_id: selectedPersonID,
+        person_id: selectedPersonID
       };
+
+      console.log(userData);
 
       if (isCreating) {
         // Create a new user

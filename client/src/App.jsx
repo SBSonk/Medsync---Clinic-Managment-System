@@ -96,6 +96,9 @@ function App() {
             {" "}
             {/* PATIENT ROUTES */}
             <Route path="/employee/patients" element={<Patients />} />
+            <Route path="/employee/dashboard" element={<Dashboard />} />
+            <Route path="/employee/appointments" element={<Appointments />} />
+            <Route path="/employee/inventory" element={<Inventory />} />
           </>
         )}
 
