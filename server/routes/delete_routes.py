@@ -43,10 +43,10 @@ def delete_person(id):
         
     return jsonify({f"message": "person with id {id} does not exist."}), 404 
     
-@delete.route('/api/delete-employee/<id>', methods=['DELETE'])
+@delete.route('/api/delete-employee/<person_id>', methods=['DELETE'])
 @jwt_required()
-def delete_employee(id):
-    employee = db.session.query(models.Employee).filter_by(id=id).first()
+def delete_employee(person_id):
+    employee = db.session.query(models.Employee).filter_by(person_id=person_id).first()
 
     if employee is not None:
         try:
@@ -57,7 +57,7 @@ def delete_employee(id):
             db.session.rollback()
             return jsonify({"message": "failed to delete employee..."}), 500
 
-    return jsonify({f"message": "employee with id {id} does not exist."}), 404
+    return jsonify({f"message": "employee with id {person_id} does not exist."}), 404
     
 @delete.route('/api/delete-patient/<id>', methods=['DELETE'])
 @jwt_required()
