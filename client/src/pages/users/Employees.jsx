@@ -139,32 +139,29 @@ const Employees = () => {
     {
       name: "Person ID",
       selector: (row) => row.person_id,
-      width: "15%",
+      width: "10%",
       sortable: true,
     },
     {
       name: "Full Name",
       selector: (row) => row.full_name || "N/A",
-      width: "15%",
       center: true,
       sortable: true,
     },
     {
       name: "Occupation",
       selector: (row) => row.occupation,
-      width: "20%",
       sortable: true,
     },
     {
       name: "Department",
       selector: (row) => row.department,
-      width: "20%",
       sortable: true,
     },
     {
       name: "Shift",
       selector: (row) => (row.shift ? row.schedule : "N/A"), // Assuming `shift_name` is an attribute of the related `EmployeeShift` model
-      width: "15%",
+      width: "10%",
     },
     {
       name: "Actions",
