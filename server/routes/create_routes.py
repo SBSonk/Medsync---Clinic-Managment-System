@@ -49,6 +49,7 @@ def create_employee():
 
         if 'schedule' in data:
             employee.shift = models.EmployeeShift(
+                employee_id = employee.person_id,
                 schedule = data['schedule']
             )
 
