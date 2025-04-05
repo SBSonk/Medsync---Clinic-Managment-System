@@ -71,11 +71,13 @@ const Dashboard = () => {
 
         const appointments = response.data;
 
+        setAppointments(appointments);
+
         const sortedAppointments = appointments
           .filter(app => new Date(app.date) >= new Date()) // keep only upcoming
           .sort((a, b) => new Date(a.date) - new Date(b.date)); // sort by nearest
 
-        setAppointments(appointments);
+        
         setMostRecentAppointments(sortedAppointments.slice(0, 5));
       } catch (error) {
         console.error("Error fetching Appointments:", error);
@@ -117,7 +119,6 @@ const Dashboard = () => {
   }, []);
 
   const recentAppointmentsTable = [
-    { name: "ID", selector: (row) => row.id, width: "10%", center: true },
     { name: "Type", selector: (row) => row.type, width: "15%", center: true },
     {
       name: "Patient ID",
@@ -160,7 +161,7 @@ const Dashboard = () => {
 
   const expiringInventoryTable = [
     { name: "ID", selector: (row) => row.id, width: "10%", center: true },
-    { name: "Name", selector: (row) => { row.name }, center: true },
+    { name: "Name", selector: (row) => row.name, center: true },
     { name: "Type", selector: (row) => row.type, center: true },
     {
       name: "Quantity",
@@ -271,9 +272,8 @@ const Dashboard = () => {
 
         <div className="dashboard-tables dashboard-row">
           <div className="recentAppointments">
-            <label>Recent Appointments</label>
             <div>
-              <DataTable columns={recentAppointmentsTable} data={mostRecentAppointments} customStyles={customStyles} />
+              <DataTable columns={recentAppointmentsTable} data={appointments} customStyles={customStyles} />
             </div>
           </div>
         </div>

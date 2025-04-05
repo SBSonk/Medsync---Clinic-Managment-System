@@ -58,31 +58,36 @@ function App() {
           <Route path="/" element={<Navigate to="/login" replace />} />
         )}
 
-        <Route path="/create/patient" element={<PatientForm />} />
-        <Route path="/create/person" element={<PersonForm />} />
-        <Route path="/create/user" element={<UserForm />} />
-        <Route path="/create/employee" element={<EmployeeForm />} />
-        <Route path="/create/inventory" element={<InventoryForm />} />
-        <Route path="/create/appointment" element={<AppointmentForm />} />
-        <Route path="/edit/:person_id" element={<EmployeeForm />} />
-        <Route path="/edit/:patient_id/:person_id" element={<PatientForm />} />
+        {isAdmin ? (
+          <> {/* ADMIN ROUTES */}
+            <Route path="/create/patient" element={<PatientForm />} />
+            <Route path="/create/person" element={<PersonForm />} />
+            <Route path="/create/user" element={<UserForm />} />
+            <Route path="/create/employee" element={<EmployeeForm />} />
+            <Route path="/create/inventory" element={<InventoryForm />} />
+            <Route path="/create/appointment" element={<AppointmentForm />} />
+            <Route path="/edit/:person_id" element={<EmployeeForm />} />
+            <Route path="/edit/:patient_id/:person_id" element={<PatientForm />} />
+
+            <Route path="/admin/users" element={<Users />} />
+            <Route path="/admin/dashboard" element={<Dashboard />} />
+            <Route path="/admin/people" element={<People />} />
+            <Route path="/admin/patients" element={<Patients />} />
+            <Route path="/admin/employees" element={<Employees />} />
+            <Route path="/admin/appointments" element={<Appointments />} />
+            <Route path="/admin/inventory" element={<Inventory />} />
+            <Route path="/admin/reports" element={<Reports />} />
+          </>
+        ) : ( 
+          <> {/* PATIENT ROUTES */}
+            <Route path="/employee/patients" element={<Patients />} />
+          </>
+        )}
+        
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Navigate to="/login" replace />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
-
-        {/* Admin Routes */}
-        <Route path="/admin/users" element={<Users />} />
-        <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="/admin/people" element={<People />} />
-        <Route path="/admin/patients" element={<Patients />} />
-        <Route path="/admin/employees" element={<Employees />} />
-        <Route path="/admin/appointments" element={<Appointments />} />
-        <Route path="/admin/inventory" element={<Inventory />} />
-        <Route path="/admin/reports" element={<Reports />} />
-
-        {/* Employee Routes */}
-        <Route path="/employee/patients" element={<Patients />} />
       </Routes>
     </Router>
   );
