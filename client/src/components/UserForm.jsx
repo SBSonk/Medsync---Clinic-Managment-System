@@ -63,66 +63,64 @@ const UserForm = () => {
 
   return (
     <MainLayout title="Create User">
-      <div className="mainBox">
-        <div className="mainContent">
-          <div className="formContainer">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <label>Username:</label>
-              <input
-                type="text"
-                {...register("username", { required: true, maxLength: 255 })}
-              />
+      <div className="mainContent">
+        <div className="formContainer">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <label>Username:</label>
+            <input
+              type="text"
+              {...register("username", { required: true, maxLength: 255 })}
+            />
 
-              <label>Password:</label>
-              <input
-                type="password"
-                {...register("password", { required: true, maxLength: 50 })}
-              />
+            <label>Password:</label>
+            <input
+              type="password"
+              {...register("password", { required: true, maxLength: 50 })}
+            />
 
-              <label>Email:</label>
-              <input
-                type="email"
-                {...register("email", { required: true, maxLength: 255 })}
-              />
+            <label>Email:</label>
+            <input
+              type="email"
+              {...register("email", { required: true, maxLength: 255 })}
+            />
 
-              <label>Person ID:</label>
-              <select onChange={(e) => setSelectedPersonID(e.target.value)}>
-                <option value="">-- Select Person --</option>
-                {people.map((person) => (
-                  <option key={person.id} value={person.id}>
-                    {person.first_name} {person.last_name}
-                  </option>
-                ))}
-              </select>
+            <label>Person ID:</label>
+            <select onChange={(e) => setSelectedPersonID(e.target.value)}>
+              <option value="">-- Select Person --</option>
+              {people.map((person) => (
+                <option key={person.id} value={person.id}>
+                  {person.first_name} {person.last_name}
+                </option>
+              ))}
+            </select>
 
-              <label>Role:</label>
-              <select {...register("role", { required: true })}>
-                <option value="">-- Select Role --</option>
-                <option value="employee">Employee</option>
-                <option value="admin">Admin</option>
-              </select>
+            <label>Role:</label>
+            <select {...register("role", { required: true })}>
+              <option value="">-- Select Role --</option>
+              <option value="employee">Employee</option>
+              <option value="admin">Admin</option>
+            </select>
 
-              <label>Security Question:</label>
-              <input
-                type="text"
-                {...register("security_question", {
-                  required: true,
-                  maxLength: 255,
-                })}
-              />
+            <label>Security Question:</label>
+            <input
+              type="text"
+              {...register("security_question", {
+                required: true,
+                maxLength: 255,
+              })}
+            />
 
-              <label>Answer:</label>
-              <input
-                type="text"
-                {...register("security_answer", {
-                  required: true,
-                  maxLength: 50,
-                })}
-              />
+            <label>Answer:</label>
+            <input
+              type="text"
+              {...register("security_answer", {
+                required: true,
+                maxLength: 50,
+              })}
+            />
 
-              <button type="submit">Create User</button>
-            </form>
-          </div>
+            <button type="submit">Create User</button>
+          </form>
         </div>
       </div>
     </MainLayout>

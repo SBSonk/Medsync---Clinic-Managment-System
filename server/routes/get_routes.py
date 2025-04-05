@@ -67,7 +67,7 @@ def employees():
         'person_id': e.person_id,
         'occupation': e.occupation,
         'department': e.department,
-        'schedule': e.shift.schedule
+        'schedule': e.shift.schedule if e.shift else None
     } for e in all_employees]
 
     return jsonify(employees_list), 200
@@ -180,7 +180,7 @@ def get_employee_info(person_id):
             'person_id': e.person_id,
             'occupation': e.occupation,
             'department': e.department,
-            'schedule': e.shift.schedule
+            'schedule': e.shift.schedule if e.shift else None
         }), 200
     else:
         return jsonify({'message': f'employee with id ({id}) not found.'}), 404

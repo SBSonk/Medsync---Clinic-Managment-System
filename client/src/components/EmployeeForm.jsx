@@ -107,7 +107,7 @@ const EmployeeForm = () => {
           person_id: selectedPersonID, // Link selected person ID
           occupation: data.occupation,
           department: data.department,
-          shift: data.schedule,
+          schedule: data.schedule,
         };
 
         await axios.post(
@@ -121,12 +121,13 @@ const EmployeeForm = () => {
         );
 
         alert("Employee created successfully!");
+        navigate("/admin/employees");
       } else if (isEditing) {
         const employeeData = {
           person_id: person_id, // Keep the same ID
           occupation: data.occupation,
           department: data.department,
-          shift: data.schedule,
+          schedule: data.schedule,
         };
 
         const personData = {
@@ -163,67 +164,62 @@ const EmployeeForm = () => {
 
   return (
     <MainLayout title={isCreating ? "Create Employee" : "Edit Employee"}>
-      <div className="mainBox">
-        <div className="mainContent">
-          <div className="formContainer">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <label>Select Person</label>
-              <select
-                value={selectedPersonID || ""}
-                onChange={(e) => setSelectedPersonID(e.target.value)}
-                disabled={isEditing && !isEditing && !isCreating}
-              >
-                <option value="">-- Select Person --</option>
-                {people.map((person) => (
-                  <option key={person.id} value={person.id}>
-                    {person.first_name} {person.last_name}
-                  </option>
-                ))}
-              </select>
+      <div className="mainContent">
+        <div className="formContainer">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <label>Select Person</label>
+            <select
+              value={selectedPersonID || ""}
+              onChange={(e) => setSelectedPersonID(e.target.value)}
+              disabled={isEditing && !isEditing && !isCreating}
+            >
+              <option value="">-- Select Person --</option>
+              {people.map((person) => (
+                <option key={person.id} value={person.id}>
+                  {person.first_name} {person.last_name}
+                </option>
+              ))}
+            </select>
 
-              <label>Occupation:</label>
-              <input
-                type="text"
-                {...register("occupation", {
-                  required: true,
-                  maxLength: 50,
-                })}
-                disabled={!isEditing && !isCreating}
-              />
+            <label>Occupation:</label>
+            <input
+              type="text"
+              {...register("occupation", {
+                required: true,
+                maxLength: 50,
+              })}
+              disabled={!isEditing && !isCreating}
+            />
 
-              <label>Department:</label>
-              <input
-                type="text"
-                {...register("department", {
-                  required: true,
-                  maxLength: 50,
-                })}
-                disabled={!isEditing && !isCreating}
-              />
+            <label>Department:</label>
+            <input
+              type="text"
+              {...register("department", {
+                required: true,
+                maxLength: 50,
+              })}
+              disabled={!isEditing && !isCreating}
+            />
 
-              <label>Schedule:</label>
-              <input
-                type="text"
-                {...register("shift", { required: true, maxLength: 31 })}
-                disabled={!isEditing && !isCreating}
-              />
+            <label>Schedule:</label>
+            <input
+              type="text"
+              {...register("shift", { required: true, maxLength: 31 })}
+              disabled={!isEditing && !isCreating}
+            />
 
-              {isCreating ? (
-                <button type="submit">Create Employee</button>
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => setIsEditing(!isEditing)}
-                  >
-                    {isEditing ? "Cancel" : "Edit"}
-                  </button>
+            {isCreating ? (
+              <button type="submit">Create Employee</button>
+            ) : (
+              <>
+                <button type="button" onClick={() => setIsEditing(!isEditing)}>
+                  {isEditing ? "Cancel" : "Edit"}
+                </button>
 
-                  {isEditing && <button type="submit">Save Changes</button>}
-                </>
-              )}
-            </form>
-          </div>
+                {isEditing && <button type="submit">Save Changes</button>}
+              </>
+            )}
+          </form>
         </div>
       </div>
     </MainLayout>

@@ -6,6 +6,35 @@ import "../../styles/MainLayout.css";
 import { Link, useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
+import { jsPDF } from "jspdf";
+import { autoTable } from "jspdf-autotable";
+
+const exportToPDF = (columns, data) => {
+  const doc = new jsPDF();
+
+  const cleanedColumns = columns.filter((col) => col.name !== "Actions");
+  const tableColumn = cleanedColumns.map((col) => col.name);
+  const tableRows = data.map((row) =>
+    columns.map((col) =>
+      typeof col.selector === "function" ? col.selector(row) : row[col.selector]
+    )
+  );
+
+  const now = new Date();
+  const dateStr = now.toLocaleString();
+  const fileNameDate = now.toISOString().split("T")[0]; // YYYY-MM-DD
+
+  const title = `Patients Report - ${dateStr}`;
+  doc.text(title, 14, 15);
+
+  autoTable(doc, {
+    head: [tableColumn],
+    body: tableRows,
+    startY: 25,
+  });
+
+  doc.save(`Patients Report - ${fileNameDate}.pdf`);
+};
 
 const Patients = () => {
   const [patients, setPatients] = useState([]);
@@ -13,6 +42,10 @@ const Patients = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate();
+
+  const handleReport = () => {
+    exportToPDF(columns, filteredPatients);
+  };
 
   const handleSearchInputChange = (text) => {
     setSearchQuery(text);
@@ -116,7 +149,7 @@ const Patients = () => {
     {
       name: "ID",
       selector: (row) => row.id,
-      width: "5%",
+      width: "10%",
       center: true,
       sortable: true,
     },
@@ -135,16 +168,9 @@ const Patients = () => {
       sortable: true,
     },
     {
-      name: "Height",
-      selector: (row) => row.height,
-      width: "10%",
-      center: true,
-      sortable: true,
-    },
-    {
-      name: "Weight",
-      selector: (row) => row.weight,
-      width: "10%",
+      name: "Height & Weight",
+      selector: (row) => row.height + "cm : " + row.weight + "lbs",
+      width: "15%",
       center: true,
       sortable: true,
     },
@@ -158,14 +184,14 @@ const Patients = () => {
     {
       name: "Allergies",
       selector: (row) => row.allergies || "N/A",
-      width: "15%",
+      width: "10%",
       center: true,
       sortable: true,
     },
     {
       name: "Medical History",
       selector: (row) => row.medical_history || "N/A",
-      width: "15%",
+      width: "30%",
       center: true,
       sortable: true,
     },
@@ -179,7 +205,7 @@ const Patients = () => {
     {
       name: "Next Appointment ID",
       selector: (row) => row.next_appointment_id || "N/A",
-      width: "10%",
+      width: "20%",
       center: true,
       sortable: true,
     },
@@ -221,24 +247,21 @@ const Patients = () => {
 
   return (
     <MainLayout title="Patients">
-      <div className="mainHeader">
-        <SearchBar
-          onChange={(e) => handleSearchInputChange(e.target.value)}
-          value={searchQuery}
-        ></SearchBar>
-        <button onClick={handleCreatePatient}>Add new patient</button>
-      </div>
-      <div className="mainBox">
-        <div className="mainContent">
-          <div className="table-container">
-            <DataTable
-              columns={columns}
-              data={filteredPatients}
-              customStyles={customStyles}
-            />
-          </div>
+      <SearchBar
+        onChange={(e) => handleSearchInputChange(e.target.value)}
+        value={searchQuery}
+      ></SearchBar>
+      <button onClick={handleCreatePatient}>Add new patient</button>
+      <div className="mainContent">
+        <div className="table-container">
+          <DataTable
+            columns={columns}
+            data={filteredPatients}
+            customStyles={customStyles}
+          />
         </div>
       </div>
+      <button onClick={handleReport}>Print table report</button>
     </MainLayout>
   );
 };

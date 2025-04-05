@@ -16,12 +16,10 @@
   margin-bottom: 10px;
 
   .mainTitle {
-    padding-top: 3vh;
-    margin: 0;
     font-size: 35px;
     text-align: left;
-    font-weight: 500;
-    color: white;
+    font-weight: 600;
+    color: black;
   }
 }
 
@@ -29,11 +27,11 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 100%;
+  width: 85vw;
   height: calc(100vh - 80px);
-  padding: 0;
   margin: auto;
-  overflow: hidden;
+  overflow:hidden;
+  padding-left: 15vw;
 }
 
 .mainContent {
@@ -45,8 +43,7 @@
 }
 
 .table-container {
-  width: calc(100% - 15vw);
-  max-width: 80%;
+  width: 85%;
   background: white;
   padding: 15px;
   border-radius: 8px;

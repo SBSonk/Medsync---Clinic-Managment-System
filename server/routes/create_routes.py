@@ -48,17 +48,20 @@ def create_employee():
         )
 
         if 'schedule' in data:
-            employee.shift = models.EmployeeShift(
+            shift = models.EmployeeShift(
+                employee_id = employee.person_id, 
                 schedule = data['schedule']
             )
+            employee.shift = shift
 
+        
         db.session.add(employee)
         db.session.commit()
-
         return jsonify(
             {"message": "employee created successfully"}
         ), 201
-    except:
+    except Exception as e:
+        print(e)
         db.session.rollback()
         return jsonify(
             {"message": "failed to create employee..."}
@@ -81,10 +84,11 @@ def create_patient():
         )
 
         if 'emergency_contact_person_id' in data and 'emergency_contact_relation' in data:
-            patient.emergency_contact = models.EmergencyContact(
+            emergency_contact = models.EmergencyContact(
                 person_id = data['emergency_contact_person_id'],
                 relation = data['emergency_contact_relation']
             )
+            patient.emergency_contact = emergency_contact
 
         if 'next_appointment_id' in data:
             patient.next_appointment_id = data['next_appointment_id']

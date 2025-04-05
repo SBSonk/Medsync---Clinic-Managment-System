@@ -5,12 +5,45 @@ import axios from "axios";
 import "../../styles/MainLayout.css";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
+import { jsPDF } from "jspdf";
+import { autoTable } from "jspdf-autotable";
+
+const exportToPDF = (columns, data) => {
+  const doc = new jsPDF();
+
+  const cleanedColumns = columns.filter((col) => col.name !== "Actions");
+  const tableColumn = cleanedColumns.map((col) => col.name);
+  const tableRows = data.map((row) =>
+    columns.map((col) =>
+      typeof col.selector === "function" ? col.selector(row) : row[col.selector]
+    )
+  );
+
+  const now = new Date();
+  const dateStr = now.toLocaleString();
+  const fileNameDate = now.toISOString().split("T")[0]; // YYYY-MM-DD
+
+  const title = `Employees Report - ${dateStr}`;
+  doc.text(title, 14, 15);
+
+  autoTable(doc, {
+    head: [tableColumn],
+    body: tableRows,
+    startY: 25,
+  });
+
+  doc.save(`Employees Report - ${fileNameDate}.pdf`);
+};
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState(employees);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+
+  const handleReport = () => {
+    exportToPDF(columns, filteredEmployees);
+  };
 
   const handleCreateItem = (e) => {
     navigate("/create/employee");
@@ -106,32 +139,29 @@ const Employees = () => {
     {
       name: "Person ID",
       selector: (row) => row.person_id,
-      width: "15%",
+      width: "10%",
       sortable: true,
     },
     {
       name: "Full Name",
       selector: (row) => row.full_name || "N/A",
-      width: "15%",
       center: true,
       sortable: true,
     },
     {
       name: "Occupation",
       selector: (row) => row.occupation,
-      width: "20%",
       sortable: true,
     },
     {
       name: "Department",
       selector: (row) => row.department,
-      width: "20%",
       sortable: true,
     },
     {
       name: "Shift",
-      selector: (row) => (row.shift ? row.shift.shift_name : "N/A"), // Assuming `shift_name` is an attribute of the related `EmployeeShift` model
-      width: "15%",
+      selector: (row) => (row.shift ? row.schedule : "N/A"), // Assuming `shift_name` is an attribute of the related `EmployeeShift` model
+      width: "10%",
     },
     {
       name: "Actions",
@@ -184,17 +214,16 @@ const Employees = () => {
         value={searchQuery}
       ></SearchBar>
       <button onClick={handleCreateItem}>Add new employee</button>
-      <div className="mainBox">
-        <div className="mainContent">
-          <div className="table-container">
-            <DataTable
-              columns={columns}
-              data={filteredEmployees}
-              customStyles={customStyles}
-            />
-          </div>
+      <div className="mainContent">
+        <div className="table-container">
+          <DataTable
+            columns={columns}
+            data={filteredEmployees}
+            customStyles={customStyles}
+          />
         </div>
       </div>
+      <button onClick={handleReport}>Print table report</button>
     </MainLayout>
   );
 };

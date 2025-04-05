@@ -72,12 +72,17 @@ def update_employee():
             if employee.shift:
                 employee.shift.schedule = data['schedule']  # Update existing shift
             else:
-                employee.shift = models.EmployeeShift(schedule=data['schedule'])  # Create new shift
+                shift = models.EmployeeShift(
+                    employee_id = employee.person_id, 
+                    schedule = data['schedule']
+                )
+                employee.shift = shift
 
         db.session.commit()
         return jsonify({"message": "Employee updated successfully"}), 200
 
     except Exception as e:
+        print(e)
         db.session.rollback() 
         return jsonify({"message": f"Failed to update employee with id: {data['id']}"}), 500
 
@@ -112,10 +117,11 @@ def update_patient():
             if 'emergency_contact_relation' in data:
                 patient.emergency_contact.relation = data['emergency_contact_relation']
         elif 'emergency_contact_person_id' in data and 'emergency_contact_relation' in data:
-            patient.emergency_contact = models.EmergencyContact(
+            emergency_contact = models.EmergencyContact(
                 person_id = data['emergency_contact_person_id'],
                 relation = data['emergency_contact_relation']
             )
+            patient.emergency_contact = emergency_contact
 
         db.session.commit()
         return jsonify({"message": "Patient updated successfully"}), 200
