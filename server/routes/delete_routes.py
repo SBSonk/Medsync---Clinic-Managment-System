@@ -6,7 +6,7 @@ delete = Blueprint('delete', __name__)
 
 # Creation routes
 @delete.route('/api/user/<id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_user(id):
     u = db.session.query(models.User).filter_by(id=id).first()
 
@@ -24,7 +24,7 @@ def delete_user(id):
     return jsonify({f"message": "user with id {id} does not exist."}), 404 
 
 @delete.route('/api/delete-person/<id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_person(id):
 
     p = db.session.query(models.Person).filter_by(id=id).first()
@@ -43,7 +43,7 @@ def delete_person(id):
     return jsonify({f"message": "person with id {id} does not exist."}), 404 
     
 @delete.route('/api/delete-employee/<id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_employee(id):
     employee = db.session.query(models.Employee).filter_by(id=id).first()
 
@@ -59,7 +59,7 @@ def delete_employee(id):
     return jsonify({f"message": "employee with id {id} does not exist."}), 404
     
 @delete.route('/api/delete-patient/<id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_patient(id):
     patient = db.session.query(models.Patient).filter_by(id=id).first()
 
@@ -74,7 +74,7 @@ def delete_patient(id):
     return jsonify({f"message": "patient with id {id} does not exist."}), 404
 
 @delete.route('/api/delete-appointment/<id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_appointment(id):
     appointment = db.session.query(models.Appointment).filter_by(id=id).first()
 
@@ -90,7 +90,7 @@ def delete_appointment(id):
     
 
 @delete.route('/api/delete-inventory/<id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_inventory(id):
     inventory_item = db.session.query(models.Inventory).filter_by(id=id).first()
 

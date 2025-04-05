@@ -9,7 +9,7 @@ create = Blueprint('create', __name__)
 
 # Creation routes
 @create.route('/api/create-person', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def create_person():
     data = request.get_json()
 
@@ -36,7 +36,7 @@ def create_person():
         ), 500
     
 @create.route('/api/create-employee', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def create_employee():
     data = request.get_json()
 
@@ -65,7 +65,7 @@ def create_employee():
         ), 500
 
 @create.route('/api/create-patient', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def create_patient():
     data = request.get_json()
 
@@ -103,7 +103,7 @@ def create_patient():
         ), 500
     
 @create.route('/api/create-appointment', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def create_appointment():
     data = request.get_json()
 
@@ -130,7 +130,7 @@ def create_appointment():
         ), 500
 
 @create.route('/api/create-inventory', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def create_inventory():
     data = request.get_json()
 

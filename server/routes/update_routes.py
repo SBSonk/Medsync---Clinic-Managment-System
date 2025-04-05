@@ -8,7 +8,7 @@ update = Blueprint('update', __name__)
 
 # Creation routes
 @update.route('/api/update-person', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def update_person():
     data = request.get_json()
 
@@ -51,7 +51,7 @@ def update_person():
         return jsonify({'message': f'Update failed: {str(e)}'}), 500
     
 @update.route('/api/update-employee', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def update_employee():
     data = request.get_json()
     employee = db.session.get(models.Employee, data['person_id'])
@@ -82,7 +82,7 @@ def update_employee():
         return jsonify({"message": f"Failed to update employee with id: {data['id']}"}), 500
 
 @update.route('/api/update-patient', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def update_patient():
     data = request.get_json()
     patient = db.session.get(models.Patient, data['id'])
@@ -125,7 +125,7 @@ def update_patient():
         return jsonify({"message": f"Failed to update patient with id: {data['id']}"}), 500
     
 @update.route('/api/update-appointment', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def update_appointment():
     data = request.get_json()
     appointment = db.session.get(models.Appointment, data['id'])
@@ -156,7 +156,7 @@ def update_appointment():
         return jsonify({"message": f"Failed to update appointment with id {data['id']}"}), 500
 
 @update.route('/api/update-user', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def update_user():
     data = request.get_json()
 
@@ -193,7 +193,7 @@ def update_user():
         return jsonify({'message': f'Update failed: {str(e)}'}), 500
     
 @update.route('/api/update-inventory', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def update_inventory():
     data = request.get_json()
 
