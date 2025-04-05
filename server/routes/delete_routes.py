@@ -97,7 +97,7 @@ def delete_inventory(id):
 
     if inventory_item is not None:
         try:
-            db.session.remove(inventory_item)
+            db.session.delete(inventory_item)
             db.session.commit()
             return jsonify({"message": "inventory item deleted successfully"}), 200
         except:

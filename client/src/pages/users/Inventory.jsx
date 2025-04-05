@@ -31,6 +31,37 @@ const Inventory = () => {
     navigate("/create/inventory");
   };
 
+  const handleEdit = (id) => {
+    navigate(`/edit-inventory-item/${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete inventory ID: "${id}"?`
+    );
+    if (!confirmDelete) return;
+
+    try {
+      console.log("Deleting inventory item ID:", id);
+      await axios.delete(`http://localhost:8080/api/delete-inventory/${id}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      });
+
+      alert(`Item deleted successfully!`);
+
+      // Update state to remove the deleted item
+      const updatedInventory = inventory.filter(
+        (inventory) => inventory.id !== id
+      );
+      setInventory(updatedInventory);
+      setFilteredInventory(updatedInventory);
+    } catch (error) {
+      alert("Failed to delete the item.");
+    }
+  };
+
   useEffect(() => {
     const fetchInventory = async () => {
       try {
@@ -113,16 +144,10 @@ const Inventory = () => {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
-          <button
-            className="edit-btn"
-            onClick={() => alert(`Editing ${row.name}`)}
-          >
+          <button className="edit-btn" onClick={() => handleEdit(row.id)}>
             <iconify-icon icon="mdi:pencil"></iconify-icon>
           </button>
-          <button
-            className="delete-btn"
-            onClick={() => alert(`Deleting ${row.name}`)}
-          >
+          <button className="delete-btn" onClick={() => handleDelete(row.id)}>
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>
         </div>
@@ -156,15 +181,13 @@ const Inventory = () => {
           value={searchQuery}
         ></SearchBar>
         <button onClick={handleCreateItem}>Add new item</button>
-        <div className="mainBox">
-          <div className="mainContent">
-            <div className="table-container">
-              <DataTable
-                columns={columns}
-                data={filteredInventory}
-                customStyles={customStyles}
-              />
-            </div>
+        <div className="mainContent">
+          <div className="table-container">
+            <DataTable
+              columns={columns}
+              data={filteredInventory}
+              customStyles={customStyles}
+            />
           </div>
         </div>
       </MainLayout>
