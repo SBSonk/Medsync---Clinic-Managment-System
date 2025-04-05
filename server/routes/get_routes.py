@@ -130,7 +130,6 @@ def get_person_info(id):
     p = db.session.query(models.Person).filter_by(id=id).first()
     if p is not None:
         return jsonify({
-            'id': p.id,
             'first_name': p.first_name,
             'last_name': p.last_name,
             'gender': p.gender.name,
@@ -172,10 +171,10 @@ def get_emergency_contact(patient_id):
     else:   
         return jsonify({'message': f'emergency contact with patient_id ({patient_id}) not found.'}), 404
     
-@get.route('/api/get-employee-info/<id>', methods=['GET'])
+@get.route('/api/get-employee-info/<person_id>', methods=['GET'])
 @jwt_required()
-def get_employee_info(id):
-    e = db.session.query(models.Employee).filter_by(id=id).first()
+def get_employee_info(person_id):
+    e = db.session.query(models.Employee).filter_by(person_id=person_id).first()
     if e is not None:
         return jsonify({
             'person_id': e.person_id,
