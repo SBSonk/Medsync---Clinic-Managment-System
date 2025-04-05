@@ -98,13 +98,6 @@ function Sidebar() {
                 Inventory
               </NavLink>
               <NavLink
-                to="/admin/reports"
-                className={isActive("/admin/reports") ? "activeLink" : ""}
-              >
-                <iconify-icon icon="carbon:report"></iconify-icon>
-                Reports
-              </NavLink>
-              <NavLink
                 to="#"
                 onClick={handleLogout}
                 className={({ isActive }) => (isActive ? "activeLink" : "")}
@@ -150,13 +143,6 @@ function Sidebar() {
               >
                 <iconify-icon icon="ph:package"></iconify-icon>
                 Inventory
-              </NavLink>
-              <NavLink
-                to="/employee/reports"
-                className={isActive("/employee/reports") ? "activeLink" : ""}
-              >
-                <iconify-icon icon="carbon:report"></iconify-icon>
-                Reports
               </NavLink>
               <NavLink
                 to="#"
