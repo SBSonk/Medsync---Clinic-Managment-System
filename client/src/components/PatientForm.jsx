@@ -17,6 +17,7 @@ function formatDate(date) {
 }
 
 const PatientForm = () => {
+  const navigate = UseNavigate();
   const { patient_id, person_id } = useParams(); // Use useParams to get the 'id' from the URL
   const { register, handleSubmit, setValue, watch } = useForm();
   const [isEditing, setIsEditing] = useState(false);
@@ -134,6 +135,7 @@ const PatientForm = () => {
         );
 
         alert("Patient created successfully!");
+        navigate('admin/patients');
       } else if (isEditing) {
         const patientData = {
           id: patient_id,
