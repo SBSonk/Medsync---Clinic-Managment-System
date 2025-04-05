@@ -79,17 +79,6 @@ const PatientForm = () => {
             }
           );
           const emergencyContactData = emergencyContactRes.data;
-
-          // Form value setting
-          setValue("firstName", personData.first_name || "");
-          setValue("lastName", personData.last_name || "");
-          setValue("gender", personData.gender || "");
-          setValue(
-            "dateOfBirth",
-            personData.date_of_birth ? new Date(personData.date_of_birth) : null
-          );
-          setValue("contactNo", personData.contact_no || "");
-          setValue("address", personData.address || "");
           setValue("height", patientData.height || "");
           setValue("weight", patientData.weight || "");
           setValue("bloodType", patientData.blood_type || "");
@@ -162,12 +151,6 @@ const PatientForm = () => {
 
         const personData = {
           id: person_id,
-          first_name: data.firstName,
-          last_name: data.lastName,
-          gender: data.gender,
-          date_of_birth: formatDate(data.dateOfBirth),
-          contact_no: data.contactNo,
-          address: data.address,
         };
 
         console.log(patientData);
@@ -219,56 +202,6 @@ const PatientForm = () => {
                 ))}
               </select>
 
-              {/* Render First Name to Address only when not editing */}
-              {!isEditing && (
-                <>
-                  <label>First Name:</label>
-                  <input
-                    type="text"
-                    {...register("firstName")}
-                    disabled={!isCreating}
-                  />
-
-                  <label>Last Name:</label>
-                  <input
-                    type="text"
-                    {...register("lastName")}
-                    disabled={!isCreating}
-                  />
-
-                  <label>Gender:</label>
-                  <select {...register("gender")} disabled={!isCreating}>
-                    <option value="MALE">Male</option>
-                    <option value="FEMALE">Female</option>
-                    <option value="NON_BINARY">Non-Binary</option>
-                    <option value="OTHER">Other</option>
-                  </select>
-
-                  <label>Date of Birth:</label>
-                  <DatePicker
-                    selected={watch("dateOfBirth")}
-                    onChange={(date) => setValue("dateOfBirth", date)}
-                    dateFormat="dd-MM-yyyy"
-                    disabled={!isCreating}
-                  />
-
-                  <label>Contact Number:</label>
-                  <input
-                    type="text"
-                    {...register("contactNo")}
-                    disabled={!isCreating}
-                  />
-
-                  <label>Address:</label>
-                  <input
-                    type="text"
-                    {...register("address")}
-                    disabled={!isCreating}
-                  />
-                </>
-              )}
-
-              {/* Inputs starting from height remain editable */}
               <label>Height:</label>
               <input
                 type="text"
