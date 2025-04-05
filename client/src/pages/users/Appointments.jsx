@@ -27,7 +27,7 @@ const Appointments = () => {
   };
 
   const handleCreateAppointment = (e) => {
-    navigate("/create/apppointment");
+    navigate("/create/appointment");
   };
 
   const handleEdit = (id) => {

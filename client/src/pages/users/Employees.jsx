@@ -22,14 +22,12 @@ const Employees = () => {
 
   const handleDelete = async (person_id) => {
     if (
-      window.confirm(
-        `Are you sure you want to delete person ID: ${person_id}?`
-      )
+      window.confirm(`Are you sure you want to delete person ID: ${person_id}?`)
     ) {
       try {
         console.log("Deleting person ID:", person_id);
         await axios.delete(
-          `http://localhost:8080/api/delete-mployee/${person_id}`,
+          `http://localhost:8080/api/delete-employee/${person_id}`,
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token"),
@@ -37,9 +35,7 @@ const Employees = () => {
           }
         );
         alert("Employee deleted successfully!");
-        setEmployees(
-          employees.filter((employee) => employee.id !== person_id)
-        ); // Update the UI
+        setEmployees(employees.filter((employee) => employee.id !== person_id)); // Update the UI
       } catch (error) {
         console.error("Error deleting employee:", error);
         alert("Failed to delete employee...");
@@ -145,7 +141,10 @@ const Employees = () => {
           >
             <iconify-icon icon="mdi:pencil"></iconify-icon>
           </button>
-          <button className="delete-btn" onClick={() => handleDelete(row.person_id)}>
+          <button
+            className="delete-btn"
+            onClick={() => handleDelete(row.person_id)}
+          >
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>
         </div>
