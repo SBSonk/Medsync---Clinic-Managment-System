@@ -5,7 +5,7 @@ import medsync from "../assets/medsync.svg";
 const ResetPasswordLayout = ({ title, children }) => {
   return (
     <div className="authContainer">
-      <div className="authBox">
+      <div className="sqBox">
         {/* Left Side: Form */}
         <div className="authForm">{children}</div>
 
