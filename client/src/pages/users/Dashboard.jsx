@@ -3,17 +3,17 @@ import DashboardLayout from "../../layouts/DashboardLayout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/DashboardLayout.css";
-import patientIcon from "../../assets/hugeicons_patient.png";
-import doctorIcon from "../../assets/hugeicons_doctor-03.png";
-import appointmentIcon from "../../assets/la_calendar.png";
-import inventoryIcon from "../../assets/ph_package.png";
+import patientIcon from "../../assets/hugeicons_patient.svg";
+import doctorIcon from "../../assets/hugeicons_doctor-03.svg";
+import appointmentIcon from "../../assets/la_calendar.svg";
+import inventoryIcon from "../../assets/ph_package.svg";
 
 const customStyles = {
   rdt_Table: {
     style: {
-      height: '100%', // override the row height
+      height: "100%", // override the row height
     },
-  }
+  },
 };
 
 const Dashboard = () => {
@@ -74,10 +74,9 @@ const Dashboard = () => {
         setAppointments(appointments);
 
         const sortedAppointments = appointments
-          .filter(app => new Date(app.date) >= new Date()) // keep only upcoming
+          .filter((app) => new Date(app.date) >= new Date()) // keep only upcoming
           .sort((a, b) => new Date(a.date) - new Date(b.date)); // sort by nearest
 
-        
         setMostRecentAppointments(sortedAppointments.slice(0, 5));
       } catch (error) {
         console.error("Error fetching Appointments:", error);
@@ -96,8 +95,11 @@ const Dashboard = () => {
         );
 
         setInventory(response.data);
-        setLowStockInventory(response.data.filter((i) => i.quantity <= lowStockThreshhold)
-          .sort((a, b) => a.quantity - b.quantity));
+        setLowStockInventory(
+          response.data
+            .filter((i) => i.quantity <= lowStockThreshhold)
+            .sort((a, b) => a.quantity - b.quantity)
+        );
         setExpiringInventory(
           response.data
             .filter((i) => {
@@ -105,7 +107,10 @@ const Dashboard = () => {
               const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
               return diffInDays >= 0 && diffInDays <= 14;
             })
-            .sort((a, b) => new Date(a.expiration_date) - new Date(b.expiration_date))
+            .sort(
+              (a, b) =>
+                new Date(a.expiration_date) - new Date(b.expiration_date)
+            )
         );
       } catch (error) {
         console.error("Error fetching Inventory:", error);
@@ -176,30 +181,31 @@ const Dashboard = () => {
     },
   ];
 
-  const availableEmployeesTable = [{
-    name: "Person ID",
-    selector: (row) => row.person_id,
-    width: "15%",
-    center: true,
-  },
-  {
-    name: "Occupation",
-    selector: (row) => row.occupation,
-    width: "15%",
-    center: true,
-  },
-  {
-    name: "Department",
-    selector: (row) => row.department,
-    width: "15%",
-    center: true,
-  },
-  {
-    name: "Schedule",
-    selector: (row) => row.schedule,
-    width: "15%",
-    center: true,
-  },
+  const availableEmployeesTable = [
+    {
+      name: "Person ID",
+      selector: (row) => row.person_id,
+      width: "15%",
+      center: true,
+    },
+    {
+      name: "Occupation",
+      selector: (row) => row.occupation,
+      width: "15%",
+      center: true,
+    },
+    {
+      name: "Department",
+      selector: (row) => row.department,
+      width: "15%",
+      center: true,
+    },
+    {
+      name: "Schedule",
+      selector: (row) => row.schedule,
+      width: "15%",
+      center: true,
+    },
   ];
 
   const todaysAppointmentsTable = [
@@ -273,7 +279,11 @@ const Dashboard = () => {
         <div className="dashboard-tables dashboard-row">
           <div className="recentAppointments">
             <div>
-              <DataTable columns={recentAppointmentsTable} data={appointments} customStyles={customStyles} />
+              <DataTable
+                columns={recentAppointmentsTable}
+                data={appointments}
+                customStyles={customStyles}
+              />
             </div>
           </div>
         </div>
@@ -284,18 +294,25 @@ const Dashboard = () => {
           </div>
           <div className="dashboard-label">
             <label>Expiring Inventory</label>
-
           </div>
         </div>
 
         <div className="dashboard-tables dashboard-row">
           <div className="lowStockInventory">
             <label>Low Stock Inventory</label>
-            <DataTable columns={lowStockInventoryTable} data={lowStockInventory} customStyles={customStyles} />
+            <DataTable
+              columns={lowStockInventoryTable}
+              data={lowStockInventory}
+              customStyles={customStyles}
+            />
           </div>
           <div className="expiringInventory">
             <label>Expiring Inventory</label>
-            <DataTable columns={expiringInventoryTable} data={expiringInventory} customStyles={customStyles} />
+            <DataTable
+              columns={expiringInventoryTable}
+              data={expiringInventory}
+              customStyles={customStyles}
+            />
           </div>
         </div>
       </div>

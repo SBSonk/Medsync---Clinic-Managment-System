@@ -79,7 +79,9 @@ iconify-icon {
   margin: 0;
 }
 
-.text, .text h1, .text p {
+.text,
+.text h1,
+.text p {
   color: black;
   text-align: center;
 }
@@ -100,7 +102,7 @@ iconify-icon {
 .totalEmployees,
 .totalAppointments,
 .totalInventory {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   display: flex;
   align-items: center;
   width: 25%;
@@ -115,8 +117,8 @@ iconify-icon {
 .totalAppointments .icon,
 .totalInventory .icon {
   padding: 10px;
-  width: 55px;
-  height: 55px;
+  width: 70px;
+  height: 70px;
 }
 .totalPatients .text,
 .totalEmployees .text,
@@ -253,7 +255,8 @@ iconify-icon {
   padding-bottom: 1rem;
 }
 
-.dashboard-row > div > label, .dashboard-row > label {
+.dashboard-row > div > label,
+.dashboard-row > label {
   color: white;
   font-weight: 600;
   font-size: 1.25rem;

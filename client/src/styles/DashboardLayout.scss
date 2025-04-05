@@ -53,8 +53,8 @@ $body-width: 85%;
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .mainContent {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .topRow {
@@ -64,7 +64,9 @@ $body-width: 85%;
   margin: 0;
 }
 
-.text, .text h1, .text p {
+.text,
+.text h1,
+.text p {
   color: black;
   text-align: center;
 }
@@ -83,7 +85,7 @@ $body-width: 85%;
 .totalEmployees,
 .totalAppointments,
 .totalInventory {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   display: flex;
   align-items: center;
   width: 25%;
@@ -94,8 +96,8 @@ $body-width: 85%;
 
   .icon {
     padding: 10px;
-    width: 55px;
-    height: 55px;
+    width: 70px;
+    height: 70px;
   }
 
   .text {
@@ -219,10 +221,9 @@ $body-width: 85%;
   min-width: 0; // Prevent overflow issues
 }
 
-
 .dashboard-tables {
   width: $body-width;
-  
+
   height: 60vh;
 }
 
@@ -235,7 +236,8 @@ $body-width: 85%;
   padding-bottom: 1rem;
 }
 
-.dashboard-row>div>label, .dashboard-row>label {
+.dashboard-row > div > label,
+.dashboard-row > label {
   color: white;
   font-weight: 600;
   font-size: 1.25rem;
