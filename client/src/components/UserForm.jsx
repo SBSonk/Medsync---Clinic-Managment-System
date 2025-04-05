@@ -79,8 +79,6 @@ const UserForm = () => {
 
       console.log(userData);
 
-      console.log(userData);
-
       if (isCreating) {
         // Create a new user
         await axios.post("http://localhost:8080/register", userData, {
