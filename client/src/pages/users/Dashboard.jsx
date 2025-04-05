@@ -8,6 +8,14 @@ import doctorIcon from "../../assets/hugeicons_doctor-03.png";
 import appointmentIcon from "../../assets/la_calendar.png";
 import inventoryIcon from "../../assets/ph_package.png";
 
+const customStyles = {
+  rdt_Table: {
+    style: {
+      height: '100%', // override the row height
+    },
+  }
+};
+
 const Dashboard = () => {
   const lowStockThreshhold = 25;
   const [patients, setPatients] = useState([]);
@@ -96,7 +104,7 @@ const Dashboard = () => {
               return diffInDays >= 0 && diffInDays <= 14;
             })
             .sort((a, b) => new Date(a.expiration_date) - new Date(b.expiration_date))
-        );  
+        );
       } catch (error) {
         console.error("Error fetching Inventory:", error);
       }
@@ -145,19 +153,19 @@ const Dashboard = () => {
     {
       name: "Quantity",
       selector: (row) => row.quantity,
-      width: "10%",
+      width: "20%",
       center: true,
     },
   ];
 
   const expiringInventoryTable = [
     { name: "ID", selector: (row) => row.id, width: "10%", center: true },
-    { name: "Name", selector: (row) => row.name, center: true },
+    { name: "Name", selector: (row) => { row.name }, center: true },
     { name: "Type", selector: (row) => row.type, center: true },
     {
       name: "Quantity",
       selector: (row) => row.quantity,
-      width: "10%",
+      width: "20%",
       center: true,
     },
     {
@@ -256,18 +264,38 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="dashboard-tables">
+
+        <div className="dashboard-tables dashboard-row">
           <label>Recent Appointments</label>
+        </div>
+
+        <div className="dashboard-tables dashboard-row">
           <div className="recentAppointments">
-            <DataTable columns={recentAppointmentsTable} data={mostRecentAppointments} />
+            <label>Recent Appointments</label>
+            <div>
+              <DataTable columns={recentAppointmentsTable} data={mostRecentAppointments} customStyles={customStyles} />
+            </div>
           </div>
-          <label>Low Stock Inventory</label>
+        </div>
+
+        <div className="dashboard-tables dashboard-row">
+          <div className="dashboard-label">
+            <label>Low Stock Inventory</label>
+          </div>
+          <div className="dashboard-label">
+            <label>Expiring Inventory</label>
+
+          </div>
+        </div>
+
+        <div className="dashboard-tables dashboard-row">
           <div className="lowStockInventory">
-            <DataTable columns={lowStockInventoryTable} data={lowStockInventory} />
+            <label>Low Stock Inventory</label>
+            <DataTable columns={lowStockInventoryTable} data={lowStockInventory} customStyles={customStyles} />
           </div>
-          <label>Expiring Inventory</label>
           <div className="expiringInventory">
-            <DataTable columns={expiringInventoryTable} data={expiringInventory} />
+            <label>Expiring Inventory</label>
+            <DataTable columns={expiringInventoryTable} data={expiringInventory} customStyles={customStyles} />
           </div>
         </div>
       </div>
