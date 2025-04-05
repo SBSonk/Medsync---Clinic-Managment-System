@@ -30,6 +30,35 @@ const Users = () => {
     navigate("/create/user");
   };
 
+  const handleEdit = (id) => {
+    navigate(`/edit-user/${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete inventory ID: "${id}"?`
+    );
+    if (!confirmDelete) return;
+
+    try {
+      console.log("Deleting user D:", id);
+      await axios.delete(`http://localhost:8080/api/delete-user/${id}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      });
+
+      alert(`Item deleted successfully!`);
+
+      // Update state to remove the deleted item
+      const updatedUser = user.filter((user) => user.id !== id);
+      setInventory(updatedUser);
+      setFilteredInventory(updatedInventory);
+    } catch (error) {
+      alert("Failed to delete the item.");
+    }
+  };
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -81,16 +110,10 @@ const Users = () => {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
-          <button
-            className="edit-btn"
-            onClick={() => alert(`Editing ${row.username}`)}
-          >
+          <button className="edit-btn" onClick={() => handleEdit(row.id)}>
             <iconify-icon icon="mdi:pencil"></iconify-icon>
           </button>
-          <button
-            className="delete-btn"
-            onClick={() => alert(`Deleting ${row.username}`)}
-          >
+          <button className="delete-btn" onClick={() => handleDelete(row.id)}>
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>
         </div>
