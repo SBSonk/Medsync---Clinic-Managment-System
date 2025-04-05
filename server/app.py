@@ -8,18 +8,24 @@ import routes.create_routes
 import routes.delete_routes
 import routes.get_routes
 import routes.update_routes
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'uhm, i like corndogs?'
+app.config['JWT_SECRET_KEY'] = 'i like eggs'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///medsync.sqlite3'
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
+
+app.config["JWT_BLACKLIST_ENABLED"] = True
+app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access", "refresh"]
 
 app.register_blueprint(routes.auth.auth)
 app.register_blueprint(routes.create_routes.create)
 app.register_blueprint(routes.get_routes.get)
-# app.register_blueprint(routes.delete_routes.delete)
+app.register_blueprint(routes.delete_routes.delete)
 app.register_blueprint(routes.update_routes.update)
 
-CORS(app, origins=['*', 'http://localhost:5174'], methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"])
+CORS(app, origins=['*'], methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"])
 
 jwt = JWTManager(app)
 bcrypt.init_app(app)
@@ -43,6 +49,11 @@ with app.app_context():
 def basic_authentication():
     if request.method.lower() == 'options':
         return Response()
+
+@jwt.token_in_blocklist_loader # token blocklist
+def check_if_token_revoked(jwt_header, jwt_payload):
+    jti = jwt_payload["jti"]
+    return jti in routes.auth.blacklist
 
 if __name__ == "__main__":
     app.run(debug=True, port=8080)

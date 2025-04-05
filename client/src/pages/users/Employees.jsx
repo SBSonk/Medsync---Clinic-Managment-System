@@ -16,20 +16,20 @@ const Employees = () => {
     navigate("/create/employee");
   };
 
-  const handleEdit = (employee_id, person_id) => {
-    navigate(`/edit/${employee_id}/${person_id}`);
+  const handleEdit = (person_id) => {
+    navigate(`/edit/${person_id}`);
   };
 
-  const handleDelete = async (employee_id) => {
+  const handleDelete = async (person_id) => {
     if (
       window.confirm(
-        `Are you sure you want to delete Employee ID: ${employee_id}?`
+        `Are you sure you want to delete person ID: ${person_id}?`
       )
     ) {
       try {
-        console.log("Deleting employee ID:", employee_id);
+        console.log("Deleting person ID:", person_id);
         await axios.delete(
-          `http://localhost:8080/api/delete-mployee/${employee_id}`,
+          `http://localhost:8080/api/delete-mployee/${person_id}`,
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token"),
@@ -38,7 +38,7 @@ const Employees = () => {
         );
         alert("Employee deleted successfully!");
         setEmployees(
-          employees.filter((employee) => employee.id !== employee_id)
+          employees.filter((employee) => employee.id !== person_id)
         ); // Update the UI
       } catch (error) {
         console.error("Error deleting employee:", error);
@@ -106,12 +106,6 @@ const Employees = () => {
 
   const columns = [
     {
-      name: "ID",
-      selector: (row) => row.id,
-      width: "15%",
-      sortable: true,
-    },
-    {
       name: "Person ID",
       selector: (row) => row.person_id,
       width: "15%",
@@ -147,11 +141,11 @@ const Employees = () => {
         <div className="action-buttons">
           <button
             className="edit-btn"
-            onClick={() => handleEdit(row.id, row.person_id)}
+            onClick={() => handleEdit(row.person_id)}
           >
             <iconify-icon icon="mdi:pencil"></iconify-icon>
           </button>
-          <button className="delete-btn" onClick={() => handleDelete(row.id)}>
+          <button className="delete-btn" onClick={() => handleDelete(row.person_id)}>
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>
         </div>

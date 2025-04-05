@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
 
 const EmployeeForm = () => {
+const { person_id } = useParams();
   const { register, handleSubmit, setValue, watch } = useForm();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
@@ -16,7 +17,7 @@ const EmployeeForm = () => {
   const [people, setPeople] = useState([]);
 
   useEffect(() => {
-    setIsCreating(!employee_id && !person_id);
+    setIsCreating(!person_id);
 
     const fetchPeople = async () => {
       try {
@@ -33,7 +34,7 @@ const EmployeeForm = () => {
 
     fetchPeople(); // Load available people
 
-    if (!employee_id && !person_id) {
+    if (!person_id) {
       console.log("creating");
       return;
     }
@@ -41,7 +42,7 @@ const EmployeeForm = () => {
     const fetchEmployeeAndPerson = async () => {
       try {
         const employeeRes = await axios.get(
-          `http://localhost:8080/api/get-employee-info/${employee_id}`,
+          `http://localhost:8080/api/get-employee-info/${person_id}`,
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token"),
@@ -82,7 +83,7 @@ const EmployeeForm = () => {
     };
 
     fetchEmployeeAndPerson();
-  }, [employee_id, person_id, setValue]);
+  }, [person_id, setValue]);
 
   const onSubmit = async (data) => {
     try {
@@ -168,7 +169,7 @@ const EmployeeForm = () => {
                 type="text"
                 {...register("person_id", { required: true, maxLength: 50 })}
               /> */}
-              <Label>Select Person</Label>
+              <label>Select Person</label>
               <select onChange={(e) => setSelectedPersonID(e.target.value)}>
                 <option value="">-- Select Person --</option>
                 {people.map((person) => (

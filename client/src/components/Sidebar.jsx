@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "../styles/Sidebar.css";
 import medsync from "../assets/medsync.svg";
+import axios from "axios";
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -10,6 +11,26 @@ function Sidebar() {
 
   // Function to check if the link should be active based on the current route
   const isActive = (path) => location.pathname === path;
+
+  const handleLogout = async (e) => {
+    console.log('t');
+    e.preventDefault();
+    try {
+      await axios.post(
+        "http://localhost:8080/logout",
+        {}, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("access_token"),
+          },
+        }
+      );
+      localStorage.clear();
+      alert('Logged out successfully.')
+      navigate('/logout');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   return (
     <div className="sidebar">
@@ -49,7 +70,7 @@ function Sidebar() {
                 <iconify-icon icon="mdi:account"></iconify-icon>
                 People
               </NavLink>
-              
+
               <NavLink
                 to="/admin/employees"
                 className={isActive("/admin/employees") ? "activeLink" : ""}
@@ -86,8 +107,9 @@ function Sidebar() {
                 Reports
               </NavLink>
               <NavLink
-                to="/"
-                className={isActive("/admin") ? "activeLink" : ""}
+                to="#"
+                onClick={handleLogout}
+                className={({ isActive }) => (isActive ? "activeLink" : "")}
               >
                 <iconify-icon icon="material-symbols:logout"></iconify-icon>
                 Logout
@@ -142,12 +164,14 @@ function Sidebar() {
                 Reports
               </NavLink>
               <NavLink
-                to="/logout"
-                className={isActive("/employee") ? "activeLink" : ""}
+                to="#"
+                onClick={handleLogout}
+                className={({ isActive }) => (isActive ? "activeLink" : "")}
               >
                 <iconify-icon icon="material-symbols:logout"></iconify-icon>
                 Logout
               </NavLink>
+
             </>
           )}
         </div>

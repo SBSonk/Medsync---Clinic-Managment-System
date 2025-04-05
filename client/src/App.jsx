@@ -30,18 +30,40 @@ import EmployeeForm from "./components/EmployeeForm";
 import AppointmentForm from "./components/AppointmentForm";
 
 function App() {
+  const [isLoggedIn, SetLoggedIn] = useState([]);
+  const [isAdmin, SetIsAdmin] = useState([]);
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    const role = localStorage.getItem('role');
+
+    SetLoggedIn(!!token); // convert to boolean
+    SetIsAdmin(role === 'admin');
+  }, []); 
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+
+        {isLoggedIn ? (
+          isAdmin ? (
+            <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
+          ) : (
+            <Route path="/" element={<Navigate to="/employee/dashboard" replace />} />
+          )
+        ) : (
+          <Route path="/" element={<Navigate to="/login" replace />} />
+        )}
+
         <Route path="/create/patient" element={<PatientForm />} />
         <Route path="/create/person" element={<PersonForm />} />
         <Route path="/create/user" element={<UserForm />} />
         <Route path="/create/employee" element={<EmployeeForm />} />
         <Route path="/create/inventory" element={<InventoryForm />} />
         <Route path="/create/appointment" element={<AppointmentForm />} />
+        <Route path="/edit/:person_id" element={<EmployeeForm />} />
         <Route path="/edit/:patient_id/:person_id" element={<PatientForm />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Navigate to="/login" replace />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
 

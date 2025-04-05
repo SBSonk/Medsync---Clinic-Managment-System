@@ -1,9 +1,11 @@
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt
 from models import db
 import models
 
 auth = Blueprint('auth', __name__)
+
+blacklist = set()
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -17,6 +19,14 @@ def login():
         return jsonify({'message': 'Authorization success!', 'access_token': create_access_token(identity=str(user.id)), 'role': user.role}), 200
     else: 
         return jsonify({'message': 'Authorization failed...'}), 401
+
+@auth.route('/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    jti = get_jwt()["jti"]
+    blacklist.add(jti)
+    return jsonify(msg="Logout successful. Token revoked."), 200
+
 
 @auth.route('/recovery-get-user', methods=['POST'])
 def recovery_get_user(): # email -> returns username, id, security_question
