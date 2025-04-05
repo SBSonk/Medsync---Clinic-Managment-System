@@ -13,22 +13,23 @@ function Sidebar() {
   const isActive = (path) => location.pathname === path;
 
   const handleLogout = async (e) => {
-    console.log('t');
+    console.log("t");
     e.preventDefault();
     try {
       await axios.post(
         "http://localhost:8080/logout",
-        {}, {
+        {},
+        {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("access_token"),
           },
         }
       );
       localStorage.clear();
-      alert('Logged out successfully.')
-      navigate('/logout');
+      alert("Logged out successfully.");
+      navigate("/logout");
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
     }
   };
 
@@ -42,10 +43,7 @@ function Sidebar() {
         <div className="sidebarLinks">
           {role === "admin" && (
             <>
-              <NavLink
-                to="/admin/account"
-                className={isActive("/admin/account") ? "activeLink" : ""}
-              >
+              <NavLink to="">
                 <iconify-icon icon="qlementine-icons:user-16"></iconify-icon>
                 ADMIN
               </NavLink>
@@ -171,7 +169,6 @@ function Sidebar() {
                 <iconify-icon icon="material-symbols:logout"></iconify-icon>
                 Logout
               </NavLink>
-
             </>
           )}
         </div>

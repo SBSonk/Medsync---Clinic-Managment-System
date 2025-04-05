@@ -69,4 +69,12 @@ iconify-icon {
 .sidebarLinks .activeLink {
   background: #e6e6fa; /* Same background as hover */
   font-weight: bold; /* Optional, to make it stand out */
+}
+
+p {
+  margin: 0;
+  color: black;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 20px;
 }/*# sourceMappingURL=Sidebar.css.map */
