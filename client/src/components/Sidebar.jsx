@@ -117,10 +117,7 @@ function Sidebar() {
 
           {role === "employee" && (
             <>
-              <NavLink
-                to="/employee/account"
-                className={isActive("/employee/account") ? "activeLink" : ""}
-              >
+              <NavLink to="">
                 <iconify-icon icon="qlementine-icons:user-16"></iconify-icon>
                 EMPLOYEE
               </NavLink>

@@ -59,16 +59,27 @@ function App() {
         )}
 
         {isAdmin ? (
-          <> {/* ADMIN ROUTES */}
+          <>
+            {" "}
+            {/* ADMIN ROUTES */}
             <Route path="/create/patient" element={<PatientForm />} />
             <Route path="/create/person" element={<PersonForm />} />
             <Route path="/create/user" element={<UserForm />} />
             <Route path="/create/employee" element={<EmployeeForm />} />
             <Route path="/create/inventory" element={<InventoryForm />} />
             <Route path="/create/appointment" element={<AppointmentForm />} />
-            <Route path="/edit/:person_id" element={<EmployeeForm />} />
-            <Route path="/edit/:patient_id/:person_id" element={<PatientForm />} />
-
+            <Route
+              path="/edit-employee/:person_id"
+              element={<EmployeeForm />}
+            />
+            <Route
+              path="/edit-patient/:patient_id/:person_id"
+              element={<PatientForm />}
+            />
+            <Route
+              path="/edit-appointment/:person_id"
+              element={<AppointmentForm />}
+            />
             <Route path="/admin/users" element={<Users />} />
             <Route path="/admin/dashboard" element={<Dashboard />} />
             <Route path="/admin/people" element={<People />} />
@@ -78,12 +89,14 @@ function App() {
             <Route path="/admin/inventory" element={<Inventory />} />
             <Route path="/admin/reports" element={<Reports />} />
           </>
-        ) : ( 
-          <> {/* PATIENT ROUTES */}
+        ) : (
+          <>
+            {" "}
+            {/* PATIENT ROUTES */}
             <Route path="/employee/patients" element={<Patients />} />
           </>
         )}
-        
+
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Navigate to="/login" replace />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />

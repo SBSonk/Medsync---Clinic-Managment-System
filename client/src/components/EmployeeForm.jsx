@@ -107,7 +107,7 @@ const EmployeeForm = () => {
           person_id: selectedPersonID, // Link selected person ID
           occupation: data.occupation,
           department: data.department,
-          schedule: data.schedule,
+          shift: data.schedule,
         };
 
         await axios.post(
@@ -126,7 +126,7 @@ const EmployeeForm = () => {
           person_id: person_id, // Keep the same ID
           occupation: data.occupation,
           department: data.department,
-          schedule: data.schedule,
+          shift: data.schedule,
         };
 
         const personData = {
@@ -171,7 +171,7 @@ const EmployeeForm = () => {
               <select
                 value={selectedPersonID || ""}
                 onChange={(e) => setSelectedPersonID(e.target.value)}
-                disabled={isEditing || !isEditing}
+                disabled={isEditing && !isEditing && !isCreating}
               >
                 <option value="">-- Select Person --</option>
                 {people.map((person) => (
