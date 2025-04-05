@@ -80,6 +80,8 @@ const EmployeeForm = () => {
           setValue("occupation", employeeData.occupation || "");
           setValue("department", employeeData.department || "");
           setValue("shift", employeeData.schedule || "");
+
+          console.log(employeeData);
         }
       } catch (error) {
         console.error("Error fetching employee details:", error);
@@ -87,6 +89,10 @@ const EmployeeForm = () => {
     };
 
     fetchEmployeeAndPerson();
+
+    if (person_id) {
+      setSelectedPersonID(person_id);
+    }
   }, [person_id, setValue]);
 
   const onSubmit = async (data) => {
@@ -156,13 +162,17 @@ const EmployeeForm = () => {
   };
 
   return (
-    <MainLayout title="Create Employee">
+    <MainLayout title={isCreating ? "Create Employee" : "Edit Employee"}>
       <div className="mainBox">
         <div className="mainContent">
           <div className="formContainer">
             <form onSubmit={handleSubmit(onSubmit)}>
               <label>Select Person</label>
-              <select onChange={(e) => setSelectedPersonID(e.target.value)}>
+              <select
+                value={selectedPersonID || ""}
+                onChange={(e) => setSelectedPersonID(e.target.value)}
+                disabled={isEditing || !isEditing}
+              >
                 <option value="">-- Select Person --</option>
                 {people.map((person) => (
                   <option key={person.id} value={person.id}>
@@ -194,9 +204,10 @@ const EmployeeForm = () => {
               <label>Schedule:</label>
               <input
                 type="text"
-                {...register("schedule", { required: true, maxLength: 31 })}
+                {...register("shift", { required: true, maxLength: 31 })}
                 disabled={!isEditing && !isCreating}
               />
+
               {isCreating ? (
                 <button type="submit">Create Employee</button>
               ) : (

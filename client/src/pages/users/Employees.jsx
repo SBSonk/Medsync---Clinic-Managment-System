@@ -35,7 +35,9 @@ const Employees = () => {
           }
         );
         alert("Employee deleted successfully!");
-        setEmployees(employees.filter((employee) => employee.id !== person_id)); // Update the UI
+        setEmployees(
+          employees.filter((employee) => employee.person_id !== person_id)
+        ); // Update the UI
       } catch (error) {
         console.error("Error deleting employee:", error);
         alert("Failed to delete employee...");

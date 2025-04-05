@@ -9,33 +9,39 @@ import { useNavigate } from "react-router-dom";
 const Inventory = () => {
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState(inventory);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   const handleSearchInputChange = (text) => {
     setSearchQuery(text);
-    const filtered = text === "" ? inventory : inventory.filter(
-      (inventory) =>
-        inventory.name.toLowerCase().includes(text.toLowerCase()) ||
-        inventory.type.toLowerCase().includes(text.toLowerCase()) ||
-        inventory.supplier.toLowerCase().includes(text.toLowerCase()) ||
-        inventory.batch_id.includes(text)
-      );
+    const filtered =
+      text === ""
+        ? inventory
+        : inventory.filter(
+            (inventory) =>
+              inventory.name.toLowerCase().includes(text.toLowerCase()) ||
+              inventory.type.toLowerCase().includes(text.toLowerCase()) ||
+              inventory.supplier.toLowerCase().includes(text.toLowerCase()) ||
+              inventory.batch_id.includes(text)
+          );
     setFilteredInventory(filtered);
   };
 
   const handleCreateItem = (e) => {
-    navigate('/create/inventory')
+    navigate("/create/inventory");
   };
 
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/inventory", {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token")
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:8080/api/inventory",
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("access_token"),
+            },
+          }
+        );
         setInventory(response.data);
         setFilteredInventory(response.data);
       } catch (error) {
@@ -47,28 +53,66 @@ const Inventory = () => {
   }, []);
 
   const columns = [
-    { name: "ID", selector: (row) => row.id, width: "10%", center: true, sortable: true },
-    { name: "Batch ID", selector: (row) => row.batch_id, width: "15%", center: true, sortable: true },
-    { name: "Name", selector: (row) => row.name, width: "20%", center: true, sortable: true },
-    { name: "Type", selector: (row) => row.type, width: "15%", center: true, sortable: true },
-    { name: "Quantity", selector: (row) => row.quantity, width: "10%", center: true, sortable: true },
+    {
+      name: "ID",
+      selector: (row) => row.id,
+      width: "10%",
+      center: true,
+      sortable: true,
+    },
+    {
+      name: "Batch ID",
+      selector: (row) => row.batch_id,
+      width: "15%",
+      center: true,
+      sortable: true,
+    },
+    {
+      name: "Name",
+      selector: (row) => row.name,
+      width: "20%",
+      center: true,
+      sortable: true,
+    },
+    {
+      name: "Type",
+      selector: (row) => row.type,
+      width: "15%",
+      center: true,
+      sortable: true,
+    },
+    {
+      name: "Quantity",
+      selector: (row) => row.quantity,
+      width: "10%",
+      center: true,
+      sortable: true,
+    },
     {
       name: "Expiration Date",
       selector: (row) => row.expiration_date,
-      width: "15%", center: true, sortable: true
+      width: "15%",
+      center: true,
+      sortable: true,
     },
-    { name: "Supplier", selector: (row) => row.supplier, width: "15%", center: true, sortable: true },
-    { name: "Supplier Contact", selector: (row) => row.supplier_contact, width: "15%", center: true, sortable: true },
+    {
+      name: "Supplier",
+      selector: (row) => row.supplier,
+      width: "15%",
+      center: true,
+      sortable: true,
+    },
+    {
+      name: "Supplier Contact",
+      selector: (row) => row.supplier_contact,
+      width: "15%",
+      center: true,
+      sortable: true,
+    },
     {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
-          <button
-            className="view-btn"
-            onClick={() => alert(`Viewing ${row.name}`)}
-          >
-            <iconify-icon icon="mdi:eye"></iconify-icon>
-          </button>
           <button
             className="edit-btn"
             onClick={() => alert(`Editing ${row.name}`)}
@@ -107,7 +151,10 @@ const Inventory = () => {
   return (
     <>
       <MainLayout title="Inventory">
-        <SearchBar onChange={(e) => handleSearchInputChange(e.target.value)} value={searchQuery}></SearchBar>
+        <SearchBar
+          onChange={(e) => handleSearchInputChange(e.target.value)}
+          value={searchQuery}
+        ></SearchBar>
         <button onClick={handleCreateItem}>Add new item</button>
         <div className="mainBox">
           <div className="mainContent">
