@@ -13,7 +13,6 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import "./styles/AuthLayout.css";
 import Employees from "./pages/users/Employees";
-import Account from "./pages/users/Account";
 import Dashboard from "./pages/users/Dashboard";
 import Patients from "./pages/users/Patients";
 import Appointments from "./pages/users/Appointments";
@@ -33,22 +32,27 @@ function App() {
   const [isLoggedIn, SetLoggedIn] = useState([]);
   const [isAdmin, SetIsAdmin] = useState([]);
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    const role = localStorage.getItem('role');
+    const token = localStorage.getItem("access_token");
+    const role = localStorage.getItem("role");
 
     SetLoggedIn(!!token); // convert to boolean
-    SetIsAdmin(role === 'admin');
-  }, []); 
+    SetIsAdmin(role === "admin");
+  }, []);
 
   return (
     <Router>
       <Routes>
-
         {isLoggedIn ? (
           isAdmin ? (
-            <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
+            <Route
+              path="/"
+              element={<Navigate to="/admin/dashboard" replace />}
+            />
           ) : (
-            <Route path="/" element={<Navigate to="/employee/dashboard" replace />} />
+            <Route
+              path="/"
+              element={<Navigate to="/employee/dashboard" replace />}
+            />
           )
         ) : (
           <Route path="/" element={<Navigate to="/login" replace />} />
@@ -69,7 +73,6 @@ function App() {
 
         {/* Admin Routes */}
         <Route path="/admin/users" element={<Users />} />
-        <Route path="/admin/account" element={<Account />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/people" element={<People />} />
         <Route path="/admin/patients" element={<Patients />} />
@@ -79,7 +82,6 @@ function App() {
         <Route path="/admin/reports" element={<Reports />} />
 
         {/* Employee Routes */}
-        <Route path="/employee/account" element={<Account />} />
         <Route path="/employee/patients" element={<Patients />} />
       </Routes>
     </Router>

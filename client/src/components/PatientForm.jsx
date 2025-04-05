@@ -108,6 +108,10 @@ const PatientForm = () => {
     };
 
     fetchPatientAndPerson();
+
+    if (person_id) {
+      setSelectedPersonID(person_id);
+    }
   }, [patient_id, person_id, setValue]);
 
   const onSubmit = async (data) => {
@@ -196,13 +200,17 @@ const PatientForm = () => {
   };
 
   return (
-    <MainLayout title="Edit Patient">
+    <MainLayout title={isCreating ? "Create Patient" : "Edit Patient"}>
       <div className="mainBox">
         <div className="mainContent">
           <div className="formContainer">
             <form onSubmit={handleSubmit(onSubmit)}>
               <label>Select Person:</label>
-              <select onChange={(e) => setSelectedPersonID(e.target.value)}>
+              <select
+                value={selectedPersonID || ""}
+                onChange={(e) => setSelectedPersonID(e.target.value)}
+                disabled={isEditing} // Prevent changing person while editing
+              >
                 <option value="">-- Select Person --</option>
                 {people.map((person) => (
                   <option key={person.id} value={person.id}>
@@ -211,27 +219,25 @@ const PatientForm = () => {
                 ))}
               </select>
 
-              {selectedPersonID ? null : (
+              {/* Render First Name to Address only when not editing */}
+              {!isEditing && (
                 <>
                   <label>First Name:</label>
                   <input
                     type="text"
                     {...register("firstName")}
-                    disabled={!isEditing && !isCreating}
+                    disabled={!isCreating}
                   />
 
                   <label>Last Name:</label>
                   <input
                     type="text"
                     {...register("lastName")}
-                    disabled={!isEditing && !isCreating}
+                    disabled={!isCreating}
                   />
 
                   <label>Gender:</label>
-                  <select
-                    {...register("gender")}
-                    disabled={!isEditing && !isCreating}
-                  >
+                  <select {...register("gender")} disabled={!isCreating}>
                     <option value="MALE">Male</option>
                     <option value="FEMALE">Female</option>
                     <option value="NON_BINARY">Non-Binary</option>
@@ -243,25 +249,26 @@ const PatientForm = () => {
                     selected={watch("dateOfBirth")}
                     onChange={(date) => setValue("dateOfBirth", date)}
                     dateFormat="dd-MM-yyyy"
-                    disabled={!isEditing && !isCreating}
+                    disabled={!isCreating}
                   />
 
                   <label>Contact Number:</label>
                   <input
                     type="text"
                     {...register("contactNo")}
-                    disabled={!isEditing && !isCreating}
+                    disabled={!isCreating}
                   />
 
                   <label>Address:</label>
                   <input
                     type="text"
                     {...register("address")}
-                    disabled={!isEditing && !isCreating}
+                    disabled={!isCreating}
                   />
                 </>
               )}
 
+              {/* Inputs starting from height remain editable */}
               <label>Height:</label>
               <input
                 type="text"
@@ -310,12 +317,14 @@ const PatientForm = () => {
                 {...register("emergencyContact")}
                 disabled={!isEditing && !isCreating}
               />
+
               <label>Relation:</label>
               <input
                 type="text"
                 {...register("emergencyRelation")}
                 disabled={!isEditing && !isCreating}
               />
+
               {isCreating ? (
                 <button type="submit">Create Patient</button>
               ) : (

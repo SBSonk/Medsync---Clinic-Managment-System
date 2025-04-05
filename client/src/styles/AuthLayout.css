@@ -33,8 +33,7 @@ iconify-icon {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.authForm,
-.securityQuestion {
+.authForm {
   flex: 1;
   background: #e0e0e0;
   padding: 40px;
