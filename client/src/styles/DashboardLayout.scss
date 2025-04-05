@@ -50,6 +50,11 @@
   margin: 0;
 }
 
+.text, .text h1, .text p {
+  color: black;
+  text-align: center;
+}
+
 .middleRow {
   display: flex;
   column-gap: 1vw;

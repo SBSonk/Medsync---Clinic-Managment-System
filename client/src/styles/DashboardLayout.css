@@ -67,6 +67,11 @@ iconify-icon {
   margin: 0;
 }
 
+.text, .text h1, .text p {
+  color: black;
+  text-align: center;
+}
+
 .middleRow {
   display: flex;
   -moz-column-gap: 1vw;
