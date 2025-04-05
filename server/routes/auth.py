@@ -65,6 +65,7 @@ def register():
         db.session.commit()
 
         return jsonify({'message': 'Account successfully created!'}), 201
-    except:
+    except Exception as err:
+        print(err)
         db.session.rollback()
         return jsonify({'message': 'Account creation failed...'}), 500

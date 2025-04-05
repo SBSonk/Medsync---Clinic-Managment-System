@@ -44,8 +44,10 @@ const UserForm = () => {
         role: data.role,
         security_question: data.security_question,
         security_answer: data.security_answer,
-        person_id: selectedPersonID.id,
+        person_id: selectedPersonID
       };
+
+      console.log(userData);
 
       // Update person data
       await axios.post("http://localhost:8080/register", userData, {
