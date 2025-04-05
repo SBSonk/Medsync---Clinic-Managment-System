@@ -9,10 +9,14 @@ import appointmentIcon from "../../assets/la_calendar.png";
 import inventoryIcon from "../../assets/ph_package.png";
 
 const Dashboard = () => {
+  const lowStockThreshhold = 25;
   const [patients, setPatients] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [appointments, setAppointments] = useState([]);
+  const [mostRecentAppointments, setMostRecentAppointments] = useState([]);
   const [inventory, setInventory] = useState([]);
+  const [lowStockInventory, setLowStockInventory] = useState([]);
+  const [expiringInventory, setExpiringInventory] = useState([]);
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -57,7 +61,14 @@ const Dashboard = () => {
           }
         );
 
-        setAppointments(response.data);
+        const appointments = response.data;
+
+        const sortedAppointments = appointments
+          .filter(app => new Date(app.date) >= new Date()) // keep only upcoming
+          .sort((a, b) => new Date(a.date) - new Date(b.date)); // sort by nearest
+
+        setAppointments(appointments);
+        setMostRecentAppointments(sortedAppointments.slice(0, 5));
       } catch (error) {
         console.error("Error fetching Appointments:", error);
       }
@@ -75,6 +86,17 @@ const Dashboard = () => {
         );
 
         setInventory(response.data);
+        setLowStockInventory(response.data.filter((i) => i.quantity <= lowStockThreshhold)
+          .sort((a, b) => a.quantity - b.quantity));
+        setExpiringInventory(
+          response.data
+            .filter((i) => {
+              const diffInMs = new Date(i.expiration_date) - new Date();
+              const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+              return diffInDays >= 0 && diffInDays <= 14;
+            })
+            .sort((a, b) => new Date(a.expiration_date) - new Date(b.expiration_date))
+        );  
       } catch (error) {
         console.error("Error fetching Inventory:", error);
       }
@@ -146,29 +168,29 @@ const Dashboard = () => {
   ];
 
   const availableEmployeesTable = [{
-      name: "Person ID",
-      selector: (row) => row.person_id,
-      width: "15%",
-      center: true,
-    },
-    {
-      name: "Occupation",
-      selector: (row) => row.occupation,
-      width: "15%",
-      center: true,
-    },
-    {
-      name: "Department",
-      selector: (row) => row.department,
-      width: "15%",
-      center: true,
-    },
-    {
-      name: "Schedule",
-      selector: (row) => row.schedule,
-      width: "15%",
-      center: true,
-    },
+    name: "Person ID",
+    selector: (row) => row.person_id,
+    width: "15%",
+    center: true,
+  },
+  {
+    name: "Occupation",
+    selector: (row) => row.occupation,
+    width: "15%",
+    center: true,
+  },
+  {
+    name: "Department",
+    selector: (row) => row.department,
+    width: "15%",
+    center: true,
+  },
+  {
+    name: "Schedule",
+    selector: (row) => row.schedule,
+    width: "15%",
+    center: true,
+  },
   ];
 
   const todaysAppointmentsTable = [
@@ -234,23 +256,18 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="middleRow">
+        <div className="dashboard-tables">
+          <label>Recent Appointments</label>
           <div className="recentAppointments">
-            <DataTable columns={recentAppointmentsTable} data={appointments} />
+            <DataTable columns={recentAppointmentsTable} data={mostRecentAppointments} />
           </div>
+          <label>Low Stock Inventory</label>
           <div className="lowStockInventory">
-            <DataTable columns={lowStockInventoryTable} data={inventory} />
+            <DataTable columns={lowStockInventoryTable} data={lowStockInventory} />
           </div>
+          <label>Expiring Inventory</label>
           <div className="expiringInventory">
-            <DataTable columns={expiringInventoryTable} data={inventory} />
-          </div>
-        </div>
-        <div className="bottomRow">
-          <div className="availableEmployees">
-            <DataTable columns={availableEmployeesTable} data={employees} />
-          </div>
-          <div className="todaysAppointments">
-            <DataTable columns={todaysAppointmentsTable} data={appointments} />
+            <DataTable columns={expiringInventoryTable} data={expiringInventory} />
           </div>
         </div>
       </div>

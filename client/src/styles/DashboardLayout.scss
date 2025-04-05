@@ -27,70 +27,79 @@
 }
 
 .mainBox {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: calc(100vw - 15vw);
-    height: calc(100vh - 80px);
-    padding-left: 10vw;
-    overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: calc(100vw - 15vw);
+  height: calc(100vh - 80px);
+  padding-left: 10vw;
+  overflow: hidden;
 }
-  
+
 .mainContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .topRow {
-    display: flex;
-    column-gap: 1vw;
+  display: flex;
+  width: 80%;
+  column-gap: 1vw;
+  margin: 0;
 }
 
 .middleRow {
-    display: flex;
-    column-gap: 1vw;
+  display: flex;
+  column-gap: 1vw;
 }
 
 .bottomRow {
-    display: flex;
-    column-gap: 1vw;
+  display: flex;
+  column-gap: 1vw;
 }
 
-.totalPatients, .totalEmployees, .totalAppointments, .totalInventory {
-    background-color: #FFFFFF;
-    display: flex;
-    align-items: center;
-    width: 15.5vw;
-    height: 8vw;
-    column-gap: 5px;
-    border-radius: 8px;
-    box-shadow: $boxShadow;
-    .icon {
-        padding: 10px;
-        width: 55px;
-        height: 55px;
+.totalPatients,
+.totalEmployees,
+.totalAppointments,
+.totalInventory {
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  width: 25%;
+  height: 8vw;
+  column-gap: 5px;
+  border-radius: 8px;
+  box-shadow: $boxShadow;
+
+  .icon {
+    padding: 10px;
+    width: 55px;
+    height: 55px;
+  }
+
+  .text {
+    text-align: left;
+
+    h1 {
+      margin-top: 10px;
+      margin-bottom: 0;
     }
-    .text {
-        text-align: left;
-        h1 {
-            margin-top: 10px;
-            margin-bottom: 0;
-        }
-        p {
-            margin-top: 0;
-            font-size: 0.75em;
-            width: 8vw;
-        }
+
+    p {
+      margin-top: 0;
+      font-size: 0.75em;
+      width: 8vw;
     }
+  }
 }
 
-.recentAppointments, .lowStockInventory, .expiringInventory {
-  width: 20vw;
+.recentAppointments,
+.lowStockInventory,
+.expiringInventory {
   height: 12vw;
   background: white;
-  padding: 10px;
   border-radius: 8px;
   box-shadow: $boxShadow;
   overflow-y: scroll;
@@ -109,7 +118,8 @@
   -ms-overflow-style: none;
 }
 
-.availableEmployees, .todaysAppointments {
+.availableEmployees,
+.todaysAppointments {
   width: 30vw;
   height: 12vw;
   background: white;
@@ -171,4 +181,24 @@
 .delete-btn:hover {
   background-color: red;
   opacity: 0.8;
+}
+
+.dashboard-tables {
+  width: 80%;
+  flex-direction: column;
+  display: flex;
+  width: 80%;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.dashboard-tables>label {
+  color: white;
+  font-weight: 600;
+  font-size: 1.5rem;
+  align-self: flex-start;
+}
+
+.dashboard-tables>div {
+  width: 100%;
 }

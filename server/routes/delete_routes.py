@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 from models import db
 import models
+from flask_jwt_extended import jwt_required
 
 delete = Blueprint('delete', __name__)
 
