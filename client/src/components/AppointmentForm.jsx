@@ -123,7 +123,7 @@ const AppointmentForm = () => {
               />
 
               <label>Patient ID:</label>
-              <select onChange={(e) => setSelectedPersonID(e.target.value)}>
+              <select onChange={(e) => setSelectedPatientID(e.target.value)}>
                 <option value="">-- Select Patient --</option>
                 {patients.map((patient) => {
                   const person = people.find((p) => p.id === patient.person_id);

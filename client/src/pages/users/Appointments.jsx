@@ -46,6 +46,7 @@ const Appointments = () => {
           }
         );
         setAppointments(response.data);
+        setFilteredAppointments(response.data);
       } catch (error) {
         console.error("Error fetching Appointments:", error);
       }
