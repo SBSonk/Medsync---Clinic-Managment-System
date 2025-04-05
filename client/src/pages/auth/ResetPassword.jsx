@@ -33,7 +33,7 @@ const ResetPassword = () => {
 
     // Temporary success message (replace with API call)
     alert("Password reset successful!");
-    navigate("/", { replace: true }); // Redirect to login after reset
+    navigate("/login", { replace: true }); // Redirect to login after reset
   };
 
   return (
