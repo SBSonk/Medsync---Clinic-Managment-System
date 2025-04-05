@@ -67,7 +67,7 @@ def employees():
         'person_id': e.person_id,
         'occupation': e.occupation,
         'department': e.department,
-        'schedule': e.shift.schedule
+        'schedule': e.shift.schedule if e.shift else None
     } for e in all_employees]
 
     return jsonify(employees_list), 200
@@ -127,7 +127,7 @@ def get_user_info(id):
 @get.route('/api/get-person-info/<id>', methods=['GET'])
 @jwt_required()
 def get_person_info(id):
-    p = db.session.query(models.Person).filter_by(person_id=id).first()
+    p = db.session.query(models.Person).filter_by(id=id).first()
     if p is not None:
         return jsonify({
             'first_name': p.first_name,
@@ -180,7 +180,7 @@ def get_employee_info(person_id):
             'person_id': e.person_id,
             'occupation': e.occupation,
             'department': e.department,
-            'schedule': e.shift.schedule
+            'schedule': e.shift.schedule if e.shift else None
         }), 200
     else:
         return jsonify({'message': f'employee with id ({id}) not found.'}), 404

@@ -5,6 +5,37 @@ import axios from "axios";
 import "../../styles/MainLayout.css";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
+import {jsPDF} from 'jspdf';
+import {autoTable} from 'jspdf-autotable';
+
+const exportToPDF = (columns, data) => {
+  const doc = new jsPDF();
+
+  const cleanedColumns = columns.filter((col) => col.name !== "Actions");
+  const tableColumn = cleanedColumns.map((col) => col.name);
+  const tableRows = data.map((row) =>
+    columns.map((col) =>
+      typeof col.selector === 'function'
+        ? col.selector(row)
+        : row[col.selector]
+    )
+  );
+
+  const now = new Date();
+  const dateStr = now.toLocaleString();
+  const fileNameDate = now.toISOString().split("T")[0]; // YYYY-MM-DD
+
+  const title = `People Report - ${dateStr}`;
+  doc.text(title, 14, 15);
+
+  autoTable(doc, {
+    head: [tableColumn],
+    body: tableRows,
+    startY: 25,
+  });
+
+  doc.save(`People Report - ${fileNameDate}.pdf`);
+};
 
 const People = () => {
   const navigate = useNavigate();
@@ -28,6 +59,10 @@ const People = () => {
 
   const handleCreatePerson = (e) => {
     navigate("/create/person");
+  };
+
+  const handleReport = () => {
+    exportToPDF(columns, filteredPeople);
   };
 
   useEffect(() => {
@@ -154,6 +189,7 @@ const People = () => {
           </div>
         </div>
       </div>
+      <button onClick={handleReport}>Print table report</button>
     </MainLayout>
   );
 };

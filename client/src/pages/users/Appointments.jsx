@@ -5,6 +5,37 @@ import axios from "axios";
 import "../../styles/MainLayout.css";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
+import {jsPDF} from 'jspdf';
+import {autoTable} from 'jspdf-autotable';
+
+const exportToPDF = (columns, data) => {
+  const doc = new jsPDF();
+
+  const cleanedColumns = columns.filter((col) => col.name !== "Actions");
+  const tableColumn = cleanedColumns.map((col) => col.name);
+  const tableRows = data.map((row) =>
+    columns.map((col) =>
+      typeof col.selector === 'function'
+        ? col.selector(row)
+        : row[col.selector]
+    )
+  );
+
+  const now = new Date();
+  const dateStr = now.toLocaleString();
+  const fileNameDate = now.toISOString().split("T")[0]; // YYYY-MM-DD
+
+  const title = `Appointments Report - ${dateStr}`;
+  doc.text(title, 14, 15);
+
+  autoTable(doc, {
+    head: [tableColumn],
+    body: tableRows,
+    startY: 25,
+  });
+
+  doc.save(`Appointments Report - ${fileNameDate}.pdf`);
+};
 
 const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -12,6 +43,10 @@ const Appointments = () => {
     useState(appointments);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+
+  const handleReport = () => {
+    exportToPDF(columns, filteredAppointments);
+  };
 
   const handleSearchInputChange = (text) => {
     setSearchQuery(text);
@@ -184,6 +219,7 @@ const Appointments = () => {
           </div>
         </div>
       </div>
+      <button onClick={handleReport}>Print table report</button>
     </MainLayout>
   );
 };

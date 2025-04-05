@@ -107,7 +107,7 @@ const EmployeeForm = () => {
           person_id: selectedPersonID, // Link selected person ID
           occupation: data.occupation,
           department: data.department,
-          shift: data.schedule,
+          schedule: data.schedule,
         };
 
         await axios.post(
@@ -121,12 +121,13 @@ const EmployeeForm = () => {
         );
 
         alert("Employee created successfully!");
+        navigate('/admin/employees');
       } else if (isEditing) {
         const employeeData = {
           person_id: person_id, // Keep the same ID
           occupation: data.occupation,
           department: data.department,
-          shift: data.schedule,
+          schedule: data.schedule,
         };
 
         const personData = {
