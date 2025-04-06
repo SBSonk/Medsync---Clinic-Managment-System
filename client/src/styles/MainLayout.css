@@ -101,6 +101,12 @@ label {
   width: 100%;
 }
 
+.searchBar {
+  display: flex;
+  -moz-column-gap: 1vw;
+       column-gap: 1vw;
+}
+
 .table-container {
   width: 85%;
   background: white;

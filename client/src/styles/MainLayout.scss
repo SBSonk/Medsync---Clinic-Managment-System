@@ -42,6 +42,11 @@
   width: 100%;
 }
 
+.searchBar {
+  display: flex;
+  column-gap: 1vw;
+}
+
 .table-container {
   width: 85%;
   background: white;

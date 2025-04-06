@@ -168,28 +168,6 @@ iconify-icon {
   display: none;
 }
 
-.availableEmployees,
-.todaysAppointments {
-  width: 30vw;
-  height: 12vw;
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow-y: scroll;
-  overflow-x: hidden;
-  margin: 0 auto;
-  /* Hide scrollbar for Chrome, Safari */
-  /* Hide scrollbar for Firefox */
-  scrollbar-width: none;
-  /* Hide scrollbar for Internet Explorer/Edge */
-  -ms-overflow-style: none;
-}
-.availableEmployees::-webkit-scrollbar,
-.todaysAppointments::-webkit-scrollbar {
-  display: none;
-}
-
 .action-buttons {
   display: flex;
   gap: 8px;

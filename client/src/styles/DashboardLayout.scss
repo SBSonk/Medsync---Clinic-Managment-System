@@ -143,30 +143,6 @@ $body-width: 85%;
   -ms-overflow-style: none;
 }
 
-.availableEmployees,
-.todaysAppointments {
-  width: 30vw;
-  height: 12vw;
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: $boxShadow;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  margin: 0 auto;
-
-  /* Hide scrollbar for Chrome, Safari */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Hide scrollbar for Firefox */
-  scrollbar-width: none;
-
-  /* Hide scrollbar for Internet Explorer/Edge */
-  -ms-overflow-style: none;
-}
-
 .action-buttons {
   display: flex;
   gap: 8px;
