@@ -182,6 +182,12 @@ const Dashboard = () => {
       name: "Type",
       selector: (row) => row.type,
       width: "15%",
+      center: true,
+    },
+    {
+      name: "Type",
+      selector: (row) => row.type,
+      width: "15%",
       center: true
     },
     {
@@ -206,7 +212,7 @@ const Dashboard = () => {
       name: "Note",
       selector: (row) => row.note,
       width: "15%",
-      center: true
+      center: true,
     },
   ];
 
@@ -227,17 +233,17 @@ const Dashboard = () => {
       name: "ID",
       selector: (row) => row.id,
       width: "10%",
-      center: true
+      center: true,
     },
     {
       name: "Name",
       selector: (row) => row.name,
-      center: true
+      center: true,
     },
     {
       name: "Type",
       selector: (row) => row.type,
-      center: true
+      center: true,
     },
     {
       name: "Quantity",

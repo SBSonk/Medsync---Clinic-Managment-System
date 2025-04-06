@@ -3,14 +3,23 @@ import MainLayout from "../layouts/MainLayout";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import DatePicker from "react-datepicker";
 import "../styles/FormLayout.css";
 import { useAuth } from "../AuthProvider";
+
+function formatDate(date) {
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
 
 const PatientForm = () => {
   const auth = useAuth();
   const navigate = useNavigate();
   const { patient_id } = useParams(); // Only use patient_id in the URL
-  const { register, handleSubmit, setValue, watch } = useForm();
+  const { register, handleSubmit, setValue, watch, reset } = useForm();
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [selectedPersonID, setSelectedPersonID] = useState(null);
@@ -67,18 +76,24 @@ const PatientForm = () => {
         );
         const emergencyContactData = emergencyContactRes.data;
 
-        // Populate form fields with data
-        setSelectedPersonID(patientData.person_id); // Auto-select the person
-        setValue("contactNo", personData.contact_no || "");
-        setValue("address", personData.address || "");
-        setValue("height", patientData.height || "");
-        setValue("weight", patientData.weight || "");
-        setValue("bloodType", patientData.blood_type || "");
-        setValue("allergies", patientData.allergies || "");
-        setValue("medicalHistory", patientData.medical_history || "");
-        setValue("familyHistory", patientData.family_history || "");
-        setValue("emergencyContact", emergencyContactData?.person_id || "");
-        setValue("emergencyRelation", emergencyContactData?.relation || "");
+        reset({
+          firstName: personData.first_name || "",
+          lastName: personData.last_name || "",
+          gender: personData.gender || "",
+          dateOfBirth: personData.date_of_birth
+            ? formatDate(new Date(personData.date_of_birth))
+            : null,
+          contactNo: personData.contact_no || "",
+          address: personData.address || "",
+          height: patientData.height || "",
+          weight: patientData.weight || "",
+          bloodType: patientData.blood_type || "",
+          allergies: patientData.allergies || "",
+          medicalHistory: patientData.medical_history || "",
+          familyHistory: patientData.family_history || "",
+          emergencyContact: emergencyContactData?.person_id || "",
+          emergencyRelation: emergencyContactData?.relation || "",
+        });
 
         setIsEditing(true); // Set to edit mode
       } catch (error) {
@@ -159,20 +174,104 @@ const PatientForm = () => {
           <div className="columnsContainer">
             {/* Person Details Column */}
             <div className="column">
-              <label>Select Person:</label>
-              <select
-                value={selectedPersonID || ""}
-                onChange={(e) => setSelectedPersonID(e.target.value)}
+              {isCreating && ( // Render dropdown only if isCreating is true
+                <>
+                  <label>Select Person:</label>
+                  <select
+                    value={selectedPersonID || ""}
+                    disabled={!isCreating}
+                    onChange={(e) => {
+                      const selectedId = e.target.value;
+                      setSelectedPersonID(selectedId);
+
+                      // Find the selected person from the people list
+                      const selectedPerson = people.find(
+                        (person) => person.id === parseInt(selectedId)
+                      );
+
+                      if (selectedPerson) {
+                        // Automatically populate fields based on selected person
+                        reset({
+                          firstName: selectedPerson.first_name || "",
+                          lastName: selectedPerson.last_name || "",
+                          gender: selectedPerson.gender || "",
+                          dateOfBirth: selectedPerson.date_of_birth
+                            ? new Date(selectedPerson.date_of_birth)
+                            : null,
+                          contactNo: selectedPerson.contact_no || "",
+                          address: selectedPerson.address || "",
+                          height: "0", // Clear patient-specific fields
+                          weight: "0",
+                          bloodType: "",
+                          allergies: "",
+                          medicalHistory: "",
+                          familyHistory: "",
+                          emergencyContact: "",
+                          emergencyRelation: "",
+                        });
+                      }
+                    }}
+                  >
+                    <option value="">-- Select Person --</option>
+                    {people.map((person) => (
+                      <option key={person.id} value={person.id}>
+                        {person.first_name} {person.last_name}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
+
+              {/* These fields will be auto-filled or stay empty */}
+              <label>First Name:</label>
+              <input
+                type="text"
+                {...register("firstName")}
                 disabled={!isCreating}
-              >
-                <option value="">-- Select Person --</option>
-                {people.map((person) => (
-                  <option key={person.id} value={person.id}>
-                    {person.first_name} {person.last_name}
-                  </option>
-                ))}
+              />
+
+              <label>Last Name:</label>
+              <input
+                type="text"
+                {...register("lastName")}
+                disabled={!isCreating}
+              />
+
+              <label>Gender:</label>
+              <select {...register("gender")} disabled={!isCreating}>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="NON_BINARY">Non-Binary</option>
+                <option value="OTHER">Other</option>
               </select>
 
+              <label>Date of Birth:</label>
+              <DatePicker
+                selected={watch("dateOfBirth")}
+                onChange={(date) => setValue("dateOfBirth", date)}
+                dateFormat="dd-MM-yyyy"
+                showMonthDropdown
+                showYearDropdown
+                disabled={!isCreating}
+              />
+
+              <label>Contact Number:</label>
+              <input
+                type="text"
+                {...register("contactNo")}
+                disabled={!isCreating}
+              />
+
+              <label>Address:</label>
+              <input
+                type="text"
+                {...register("address")}
+                disabled={!isCreating}
+              />
+            </div>
+
+            {/* Patient Details Column */}
+            <div className="column">
               <label>Height:</label>
               <input
                 type="text"
@@ -186,10 +285,6 @@ const PatientForm = () => {
                 {...register("weight")}
                 disabled={!isEditing && !isCreating}
               />
-            </div>
-
-            {/* Patient Details Column */}
-            <div className="column">
               <label>Blood Type:</label>
               <input
                 type="text"
@@ -210,10 +305,23 @@ const PatientForm = () => {
                 disabled={!isEditing && !isCreating}
               />
 
+              <label>Family History:</label>
+              <textarea
+                {...register("familyHistory")}
+                disabled={!isEditing && !isCreating}
+              />
+
               <label>Emergency Contact:</label>
               <input
                 type="text"
                 {...register("emergencyContact")}
+                disabled={!isEditing && !isCreating}
+              />
+
+              <label>Relation:</label>
+              <input
+                type="text"
+                {...register("emergencyRelation")}
                 disabled={!isEditing && !isCreating}
               />
             </div>
