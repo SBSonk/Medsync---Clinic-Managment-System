@@ -181,7 +181,7 @@ const Patients = () => {
     {
       name: "Blood Type",
       selector: (row) => row.blood_type,
-      width: "10%",
+      width: "15%",
       center: true,
       sortable: true,
     },

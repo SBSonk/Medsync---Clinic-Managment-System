@@ -6,6 +6,16 @@ from dateutil.parser import parse
 import random
 from typing import List
 import math
+from datetime import datetime, timedelta
+
+
+def random_date(days_compared_to_now):
+    # Generate a random number of days to add to the start date
+    random_days = random.randint(-days_compared_to_now, days_compared_to_now)
+
+    # Create the random date
+    random_date = datetime.now() + timedelta(days=random_days)
+    return random_date
 
 def populate_people(db):
     session = db.session
@@ -82,7 +92,7 @@ def populate_inventory(db):
             name = random.choice(clinic_products),
             type = random.choice(product_types),
             quantity = random.randint(0, 50),
-            expiration_date = parse(user.get_dob()).date(),
+            expiration_date = random_date(50).date(),
             supplier = random.choice(suppliers),
             supplier_contact = user.get_cell()
         )
