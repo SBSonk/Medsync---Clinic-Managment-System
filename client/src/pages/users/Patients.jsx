@@ -57,15 +57,9 @@ const Patients = () => {
         : patients.filter((patient) => {
             return (
               patient.full_name.toLowerCase().includes(text.toLowerCase()) ||
-              (patient.allergies)
-                .toLowerCase()
-                .includes(text.toLowerCase()) ||
-              (patient.blood_type)
-                .toLowerCase()
-                .includes(text.toLowerCase()) ||
-              (patient.family_history)
-                .toLowerCase()
-                .includes(text.toLowerCase())
+              patient.allergies.toLowerCase().includes(text.toLowerCase()) ||
+              patient.blood_type.toLowerCase().includes(text.toLowerCase()) ||
+              patient.family_history.toLowerCase().includes(text.toLowerCase())
             );
           });
     setFilteredPatients(filtered);
@@ -254,9 +248,11 @@ const Patients = () => {
           value={searchQuery}
         ></SearchBar>
         <div className="table-buttons">
-          <button className="table-button" onClick={handleCreatePatient}>
-            Add patient
-          </button>
+          {isAdmin && (
+            <button className="table-button" onClick={handleCreatePatient}>
+              Add patient
+            </button>
+          )}
           <button className="table-button" onClick={handleReport}>
             Print table report
           </button>

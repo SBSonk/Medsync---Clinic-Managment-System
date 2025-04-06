@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "../styles/FormLayout.css";
 import { useAuth } from "../AuthProvider";
@@ -10,6 +10,7 @@ const UserForm = () => {
   const auth = useAuth();
   const { id } = useParams(); // Get user ID from URL
   const { register, handleSubmit, setValue } = useForm(); // React Hook Form
+  const navigate = useNavigate();
   const [isCreating, setIsCreating] = useState(!id); // Create mode if no ID
   const [isEditing, setIsEditing] = useState(!!id); // Edit mode if ID exists
 
