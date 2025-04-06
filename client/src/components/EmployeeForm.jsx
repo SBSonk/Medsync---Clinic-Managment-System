@@ -173,7 +173,7 @@ const EmployeeForm = () => {
             <select
               value={selectedPersonID || ""}
               onChange={(e) => setSelectedPersonID(e.target.value)}
-              disabled={isEditing && !isEditing && !isCreating}
+              disabled={!isCreating}
             >
               <option value="">-- Select Person --</option>
               {people.map((person) => (
