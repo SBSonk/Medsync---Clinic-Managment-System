@@ -3,29 +3,27 @@ import MainLayout from "../layouts/MainLayout";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
 import { useAuth } from "../AuthProvider";
 
 const PatientForm = () => {
   const auth = useAuth();
   const navigate = useNavigate();
-  const { patient_id, person_id } = useParams(); // Use useParams to get the 'id' from the URL
+  const { patient_id } = useParams(); // Only use patient_id in the URL
   const { register, handleSubmit, setValue, watch } = useForm();
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [selectedPersonID, setSelectedPersonID] = useState(null);
   const [people, setPeople] = useState([]);
 
+  // Fetch data for the form
   useEffect(() => {
-    setIsCreating(!patient_id && !person_id);
+    setIsCreating(!patient_id); // If no patient_id, we are in create mode
 
     const fetchPeople = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
-          headers: {
-            Authorization: "Bearer " + auth.access_token,
-          },
+          headers: { Authorization: "Bearer " + auth.access_token },
         });
         setPeople(response.data);
       } catch (error) {
@@ -35,67 +33,63 @@ const PatientForm = () => {
 
     fetchPeople(); // Load available people
 
-    if (!patient_id && !person_id) {
-      console.log("creating");
+    if (!patient_id) {
+      console.log("Creating new patient"); // Skip fetching details if creating
       return;
     }
 
-    const fetchPatientAndPerson = async () => {
+    const fetchPatientDetails = async () => {
       try {
+        // Fetch patient details using patient_id
         const patientRes = await axios.get(
           `http://localhost:8080/api/get-patient-info/${patient_id}`,
           {
-            headers: {
-              Authorization: "Bearer " + auth.access_token,
-            },
+            headers: { Authorization: "Bearer " + auth.access_token },
           }
         );
         const patientData = patientRes.data;
 
-        if (patientData && patientData.person_id) {
-          const personRes = await axios.get(
-            `http://localhost:8080/api/get-person-info/${person_id}`,
-            {
-              headers: {
-                Authorization: "Bearer " + auth.access_token,
-              },
-            }
-          );
-          const personData = personRes.data;
-
-          const emergencyContactRes = await axios.get(
-            `http://localhost:8080/api/get-emergency-contact/${patient_id}`,
-            {
-              headers: {
-                Authorization: "Bearer " + auth.access_token,
-              },
-            }
-          );
-          const emergencyContactData = emergencyContactRes.data;
-          setValue("height", patientData.height || "");
-          setValue("weight", patientData.weight || "");
-          setValue("bloodType", patientData.blood_type || "");
-          setValue("allergies", patientData.allergies || "");
-          setValue("medicalHistory", patientData.medical_history || "");
-          setValue("familyHistory", patientData.family_history || "");
-
-          if (emergencyContactData) {
-            setValue("emergencyContact", emergencyContactData.person_id || "");
-            setValue("emergencyRelation", emergencyContactData.relation || "");
+        // Fetch person details linked to the patient
+        const personRes = await axios.get(
+          `http://localhost:8080/api/get-person-info/${patientData.person_id}`,
+          {
+            headers: { Authorization: "Bearer " + auth.access_token },
           }
-        }
+        );
+        const personData = personRes.data;
+
+        // Fetch emergency contact details
+        const emergencyContactRes = await axios.get(
+          `http://localhost:8080/api/get-emergency-contact/${patient_id}`,
+          {
+            headers: { Authorization: "Bearer " + auth.access_token },
+          }
+        );
+        const emergencyContactData = emergencyContactRes.data;
+
+        // Populate form fields with data
+        setSelectedPersonID(patientData.person_id); // Auto-select the person
+        setValue("contactNo", personData.contact_no || "");
+        setValue("address", personData.address || "");
+        setValue("height", patientData.height || "");
+        setValue("weight", patientData.weight || "");
+        setValue("bloodType", patientData.blood_type || "");
+        setValue("allergies", patientData.allergies || "");
+        setValue("medicalHistory", patientData.medical_history || "");
+        setValue("familyHistory", patientData.family_history || "");
+        setValue("emergencyContact", emergencyContactData?.person_id || "");
+        setValue("emergencyRelation", emergencyContactData?.relation || "");
+
+        setIsEditing(true); // Set to edit mode
       } catch (error) {
         console.error("Error fetching patient details:", error);
       }
     };
 
-    fetchPatientAndPerson();
+    fetchPatientDetails();
+  }, [patient_id, setValue]);
 
-    if (person_id) {
-      setSelectedPersonID(person_id);
-    }
-  }, [patient_id, person_id, setValue]);
-
+  // Submit form
   const onSubmit = async (data) => {
     try {
       if (isCreating) {
@@ -120,14 +114,12 @@ const PatientForm = () => {
           "http://localhost:8080/api/create-patient",
           newPatient,
           {
-            headers: {
-              Authorization: "Bearer " + auth.access_token,
-            },
+            headers: { Authorization: "Bearer " + auth.access_token },
           }
         );
 
         alert("Patient created successfully!");
-        navigate("admin/patients");
+        navigate("/admin/patients");
       } else if (isEditing) {
         const patientData = {
           id: patient_id,
@@ -141,36 +133,20 @@ const PatientForm = () => {
           emergency_contact_relation: data.emergencyRelation,
         };
 
-        const personData = {
-          id: person_id,
-        };
-
-        console.log(patientData);
-        console.log(personData);
-
         // Update patient data
         await axios.put(
           "http://localhost:8080/api/update-patient",
           patientData,
           {
-            headers: {
-              Authorization: "Bearer " + auth.access_token,
-            },
+            headers: { Authorization: "Bearer " + auth.access_token },
           }
         );
-
-        // Update person data
-        await axios.put("http://localhost:8080/api/update-person", personData, {
-          headers: {
-            Authorization: "Bearer " + auth.access_token,
-          },
-        });
 
         alert("Patient updated successfully!");
         setIsEditing(false);
       }
     } catch (error) {
-      console.error("Error updating patient:", error);
+      console.error("Error saving patient:", error);
     }
   };
 
