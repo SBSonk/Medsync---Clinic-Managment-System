@@ -213,8 +213,6 @@ const AppointmentForm = () => {
               const person = people.find(
                 (p) => p.id === facultyMember.person_id
               ); // Find corresponding person
-              console.log(person);
-              console.log(facultyMember);
               return (
                 <option key={facultyMember.person_id} value={facultyMember.person_id}>
                   {person
