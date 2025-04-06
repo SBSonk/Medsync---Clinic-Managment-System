@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
 import { Dropdown } from "primereact/Dropdown";
+import { useAuth } from "../AuthProvider";
 const dropdown_test = {
   color: "black",
 };
@@ -22,6 +23,7 @@ function formatDateTime(date, time) {
 }
 
 const AppointmentForm = () => {
+  const auth = useAuth();
   const { register, handleSubmit, setValue, watch } = useForm();
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -38,7 +40,7 @@ const AppointmentForm = () => {
       try {
         const response = await axios.get("http://localhost:8080/api/patients", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: "Bearer " + auth.access_token,
           },
         });
         setPatients(response.data);
@@ -55,7 +57,7 @@ const AppointmentForm = () => {
           "http://localhost:8080/api/employees",
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -71,7 +73,7 @@ const AppointmentForm = () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: "Bearer " + auth.access_token,
           },
         });
         setPeople(response.data);
@@ -101,7 +103,7 @@ const AppointmentForm = () => {
         appointmentData,
         {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: "Bearer " + auth.access_token,
           },
         }
       );

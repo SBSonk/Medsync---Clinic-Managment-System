@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
+import { useAuth } from "../AuthProvider";
 
 function formatDate(date) {
   const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
@@ -16,6 +17,7 @@ function formatDate(date) {
 }
 
 const PersonForm = () => {
+  const auth = useAuth();
   const { register, handleSubmit, setValue, watch } = useForm();
   const navigate = useNavigate();
 
@@ -34,7 +36,7 @@ const PersonForm = () => {
       // Update person data
       await axios.post("http://127.0.0.1:8080/api/create-person", personData, {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
+          Authorization: "Bearer " + auth.access_token,
         },
       });
 

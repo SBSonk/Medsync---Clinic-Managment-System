@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import { Dropdown } from "primereact/Dropdown";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
+import { useAuth } from "../AuthProvider";
 
 function formatDate(date) {
   const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
@@ -17,6 +18,7 @@ function formatDate(date) {
 }
 
 const PatientForm = () => {
+  const auth = useAuth();
   const navigate = UseNavigate();
   const { patient_id, person_id } = useParams(); // Use useParams to get the 'id' from the URL
   const { register, handleSubmit, setValue, watch } = useForm();
@@ -32,7 +34,7 @@ const PatientForm = () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: "Bearer " + auth.access_token,
           },
         });
         setPeople(response.data);
@@ -54,7 +56,7 @@ const PatientForm = () => {
           `http://localhost:8080/api/get-patient-info/${patient_id}`,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -65,7 +67,7 @@ const PatientForm = () => {
             `http://localhost:8080/api/get-person-info/${person_id}`,
             {
               headers: {
-                Authorization: "Bearer " + localStorage.getItem("access_token"),
+                Authorization: "Bearer " + auth.access_token,
               },
             }
           );
@@ -75,7 +77,7 @@ const PatientForm = () => {
             `http://localhost:8080/api/get-emergency-contact/${patient_id}`,
             {
               headers: {
-                Authorization: "Bearer " + localStorage.getItem("access_token"),
+                Authorization: "Bearer " + auth.access_token,
               },
             }
           );
@@ -129,7 +131,7 @@ const PatientForm = () => {
           newPatient,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -164,7 +166,7 @@ const PatientForm = () => {
           patientData,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -172,7 +174,7 @@ const PatientForm = () => {
         // Update person data
         await axios.put("http://localhost:8080/api/update-person", personData, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: "Bearer " + auth.access_token,
           },
         });
 

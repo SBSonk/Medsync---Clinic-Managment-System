@@ -4,8 +4,10 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "../styles/FormLayout.css";
+import { useAuth } from "../AuthProvider";
 
 const UserForm = () => {
+  const auth = useAuth();
   const { id } = useParams(); // Get user ID from URL
   const { register, handleSubmit, setValue } = useForm(); // React Hook Form
   const [isCreating, setIsCreating] = useState(!id); // Create mode if no ID
@@ -25,7 +27,7 @@ const UserForm = () => {
           `http://localhost:8080/api/get-user-info/${id}`,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -62,7 +64,7 @@ const UserForm = () => {
         // Create new user
         await axios.post("http://localhost:8080/register", userData, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: "Bearer " + auth.access_token,
           },
         });
         alert("User created successfully!");
@@ -70,7 +72,7 @@ const UserForm = () => {
         // Update existing user
         await axios.put(`http://localhost:8080/api/update-user`, userData, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: "Bearer " + auth.access_token,
           },
         });
         alert("User updated successfully!");
