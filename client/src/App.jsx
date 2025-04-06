@@ -30,13 +30,18 @@ import { useAuth } from "./AuthProvider";
 
 function App() {
   const auth = useAuth();
-  const [isLoggedIn, SetLoggedIn] = useState([]);
-  const [isAdmin, SetIsAdmin] = useState([]);
+  const [isLoggedIn, SetLoggedIn] = useState(false);
+  const [isAdmin, SetIsAdmin] = useState(false);
 
   useEffect(() => {
-    SetLoggedIn((auth.userID != null)); // convert to boolean
-    SetIsAdmin(auth.role === "admin");
-  }, []);
+    if (auth.userID != null) {
+      SetLoggedIn(true);
+      SetIsAdmin(auth.role === "admin");
+    } else {
+      SetLoggedIn(false);
+      SetIsAdmin(false);
+    }
+  }, [auth]);
 
   return (
     <Router>

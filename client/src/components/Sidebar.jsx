@@ -9,7 +9,7 @@ function Sidebar() {
   const auth = useAuth();
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location (URL)
-
+  
   // Function to check if the link should be active based on the current route
   const isActive = (path) => location.pathname === path;
 
@@ -26,7 +26,8 @@ function Sidebar() {
           },
         }
       );
-      localStorage.clear();
+      
+      auth.logout();
       alert("Logged out successfully.");
       navigate("/logout");
     } catch (error) {

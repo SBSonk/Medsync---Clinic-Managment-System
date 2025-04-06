@@ -10,6 +10,11 @@ const AuthProvider = ({ children }) => {
   const [userID, SetUserID] = useState(localStorage.getItem("user_id"));
 
   useEffect(() => {
+    // clear sessions on startup
+    logout();
+  }, []);
+
+  useEffect(() => {
     if (access_token) {
       localStorage.setItem("access_token", access_token);
     }
@@ -21,9 +26,16 @@ const AuthProvider = ({ children }) => {
     }
   }, [access_token, role, userID]);
 
+  const logout = () => {
+    SetAccessToken(null);
+    SetRole(null);
+    SetUserID(null);
+    localStorage.clear(); 
+  };    
+
   return (
     <AuthContext.Provider
-      value={{ access_token, role, userID, SetUserID, SetAccessToken, SetRole }}
+      value={{ access_token, role, userID, SetUserID, SetAccessToken, SetRole, logout }}
     >
       {children}
     </AuthContext.Provider>

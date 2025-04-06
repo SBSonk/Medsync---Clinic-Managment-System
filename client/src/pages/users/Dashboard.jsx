@@ -31,8 +31,6 @@ const Dashboard = () => {
   const [expiringInventory, setExpiringInventory] = useState([]);
 
   useEffect(() => {
-    console.log(auth.access_token);
-
     const fetchPatients = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/patients", {
