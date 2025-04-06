@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
@@ -7,6 +7,7 @@ import patientIcon from "../../assets/hugeicons_patient.svg";
 import doctorIcon from "../../assets/hugeicons_doctor-03.svg";
 import appointmentIcon from "../../assets/la_calendar.svg";
 import inventoryIcon from "../../assets/ph_package.svg";
+import { useAuth } from "../../AuthProvider";
 
 const customStyles = {
   rdt_Table: {
@@ -17,7 +18,10 @@ const customStyles = {
 };
 
 const Dashboard = () => {
+  const auth = useAuth();
   const lowStockThreshhold = 25;
+
+  const [username, setUserName] = useState([]);
   const [patients, setPatients] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [appointments, setAppointments] = useState([]);
@@ -27,11 +31,13 @@ const Dashboard = () => {
   const [expiringInventory, setExpiringInventory] = useState([]);
 
   useEffect(() => {
+    console.log(auth.access_token);
+
     const fetchPatients = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/patients", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: "Bearer " + auth.access_token,
           },
         });
 
@@ -47,7 +53,7 @@ const Dashboard = () => {
           "http://localhost:8080/api/employees",
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -64,7 +70,7 @@ const Dashboard = () => {
           "http://localhost:8080/api/appointments",
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -89,7 +95,7 @@ const Dashboard = () => {
           "http://localhost:8080/api/inventory",
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -117,6 +123,25 @@ const Dashboard = () => {
       }
     };
 
+    const fetchUsername = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/get-user-info/" + auth.userID,
+          {
+            headers: {
+              Authorization: "Bearer " + auth.access_token,
+            },
+          }
+        );
+
+        setUserName(response.data['username']);
+      } catch (error) {
+        setUserName('err');
+        console.error("Error username Inventory:", error);
+      }
+    }
+
+    fetchUsername();
     fetchPatients();
     fetchEmployees();
     fetchAppointments();
@@ -239,7 +264,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <DashboardLayout title="Dashboard">
+    <DashboardLayout title={"Hello, " + username}>
       <div className="mainContent">
         <div className="topRow">
           <div className="totalPatients">

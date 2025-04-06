@@ -2,18 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AuthLayout from "../../layouts/AuthLayout";
-
+import { useAuth } from "../../AuthProvider";
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [userRole, setUserRole] = useState(null);
+  const auth = useAuth();
+
+  const [enteredUsername, setUsername] = useState("");
+  const [enteredPassword, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userRole === "admin") navigate("/admin/dashboard", {state: {role: userRole}});
-    if (userRole === "employee") navigate("/admin/dashboard", {state: {role: userRole}});
-  }, [userRole, navigate]);
+    if (auth.role === "admin") navigate("/admin/dashboard");
+    if (auth.role === "employee") navigate("/admin/dashboard");
+  }, [auth.role, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,14 +22,15 @@ const Login = () => {
 
     try {
       const response = await axios.post("http://localhost:8080/login", {
-        username,
-        password,
+        username: enteredUsername,
+        password: enteredPassword,
       });
 
-      const { access_token, role } = response.data;
+      const { user_id, access_token, role } = response.data;
 
-      localStorage.setItem("access_token", access_token);
-      setUserRole(role);
+      auth.SetUserID(user_id);
+      auth.SetAccessToken(access_token);
+      auth.SetRole(role);
     } catch (err) {
       console.log(err);
       setError("Invalid username or password");
@@ -41,7 +43,7 @@ const Login = () => {
         <label>Username</label>
         <input
           type="text"
-          value={username}
+          value={enteredUsername}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Enter username"
           required
@@ -50,7 +52,7 @@ const Login = () => {
         <label>Password</label>
         <input
           type="password"
-          value={password}
+          value={enteredPassword}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter password"
           required

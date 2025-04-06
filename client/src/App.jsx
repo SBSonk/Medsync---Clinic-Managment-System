@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -26,16 +26,16 @@ import UserForm from "./components/UserForm";
 import InventoryForm from "./components/InventoryForm";
 import EmployeeForm from "./components/EmployeeForm";
 import AppointmentForm from "./components/AppointmentForm";
+import { useAuth } from "./AuthProvider";
 
 function App() {
+  const auth = useAuth();
   const [isLoggedIn, SetLoggedIn] = useState([]);
   const [isAdmin, SetIsAdmin] = useState([]);
-  useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    const role = localStorage.getItem("role");
 
-    SetLoggedIn(!!token); // convert to boolean
-    SetIsAdmin(role === "admin");
+  useEffect(() => {
+    SetLoggedIn((auth.userID != null)); // convert to boolean
+    SetIsAdmin(auth.role === "admin");
   }, []);
 
   return (
@@ -77,10 +77,7 @@ function App() {
               path="/edit-patient/:patient_id/:person_id"
               element={<PatientForm />}
             />
-            <Route 
-              path="/edit-appointment/:id" 
-              element={<AppointmentForm />} 
-            />
+            <Route path="/edit-appointment/:id" element={<AppointmentForm />} />
             <Route
               path="/edit-inventory-item/:id"
               element={<InventoryForm />}

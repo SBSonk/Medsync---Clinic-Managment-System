@@ -37,10 +37,10 @@ const exportToPDF = (columns, data) => {
 };
 
 const Patients = () => {
+  const [role] = useContext(AuthProvider);
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState(patients);
   const [searchQuery, setSearchQuery] = useState("");
-  const searchParams = useSearchParams();
   const [isAdmin, setIsAdmin] = useState([]);
   const navigate = useNavigate();
 
@@ -138,7 +138,7 @@ const Patients = () => {
 
         setPatients(patientsWithPersonDetails);
         setFilteredPatients(patientsWithPersonDetails);
-        setIsAdmin(localStorage.getItem("role") === "admin");
+        setIsAdmin(role === "admin");
       } catch (error) {
         console.error("Error fetching Patients:", error);
       }
