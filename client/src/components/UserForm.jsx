@@ -1,46 +1,28 @@
 import React, { useEffect, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "../styles/FormLayout.css";
 
 const UserForm = () => {
-  const { id } = useParams(); // Get the user ID from the URL for edit functionality
-  const { register, handleSubmit, setValue, watch } = useForm();
-  const navigate = useNavigate();
-  const [people, setPeople] = useState([]); // List of people for dropdown
-  const [selectedPersonID, setSelectedPersonID] = useState(""); // Selected person ID
-  const [isCreating, setIsCreating] = useState(!id); // Determines if we are creating or editing
-  const [isEditing, setIsEditing] = useState(!!id); // Determines if we are creating or editing
+  const { id } = useParams(); // Get user ID from URL
+  const { register, handleSubmit, setValue } = useForm(); // React Hook Form
+  const [isCreating, setIsCreating] = useState(!id); // Create mode if no ID
+  const [isEditing, setIsEditing] = useState(!!id); // Edit mode if ID exists
 
   useEffect(() => {
-    // Fetch people for the dropdown
-    const fetchPeople = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/api/people", {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
-          },
-        });
-        setPeople(response.data);
-      } catch (error) {
-        console.error("Error fetching people:", error);
-      }
-    };
-
-    fetchPeople();
-
     if (!id) {
+      // If creating a new user, no need to fetch data
       console.log("Creating a new user");
       return;
     }
 
-    // Fetch user data for editing if ID is present
+    // Fetch user data for editing
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/user/${id}`,
+          `http://localhost:8080/api/get-user-info/${id}`,
           {
             headers: {
               Authorization: "Bearer " + localStorage.getItem("access_token"),
@@ -52,11 +34,10 @@ const UserForm = () => {
         // Pre-fill the form fields with existing user data
         setValue("username", userData.username || "");
         setValue("email", userData.email || "");
-        setValue("password", "********"); // Placeholder for password
+        setValue("password", "********"); // Use a placeholder for security
         setValue("role", userData.role || "");
         setValue("security_question", userData.security_question || "");
-        setValue("security_answer", userData.security_answer || "");
-        setSelectedPersonID(userData.person_id || "");
+        setValue("security_answer", "");
       } catch (error) {
         console.error("Error fetching user details:", error);
       }
@@ -68,19 +49,17 @@ const UserForm = () => {
   const onSubmit = async (data) => {
     try {
       const userData = {
+        id: id,
         username: data.username,
         email: data.email,
         password: data.password,
         role: data.role,
         security_question: data.security_question,
         security_answer: data.security_answer,
-        person_id: selectedPersonID
       };
 
-      console.log(userData);
-
       if (isCreating) {
-        // Create a new user
+        // Create new user
         await axios.post("http://localhost:8080/register", userData, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("access_token"),
@@ -88,16 +67,14 @@ const UserForm = () => {
         });
         alert("User created successfully!");
       } else {
-        // Update an existing user
-        await axios.put(`http://localhost:8080/api/user/${id}`, userData, {
+        // Update existing user
+        await axios.put(`http://localhost:8080/api/update-user`, userData, {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("access_token"),
           },
         });
         alert("User updated successfully!");
       }
-
-      navigate("/admin/users");
     } catch (error) {
       console.error(
         isCreating ? "Error creating user:" : "Error updating user:",
@@ -132,21 +109,6 @@ const UserForm = () => {
               disabled={!isEditing && !isCreating}
             />
 
-            <label>Person ID:</label>
-            <select
-              value={selectedPersonID}
-              onChange={(e) => setSelectedPersonID(e.target.value)}
-              disabled={!isEditing && !isCreating}
-            >
-              <option value="">-- Select Person --</option>
-              {people.map((person) => (
-                <option key={person.id} value={person.id}>
-                  {person.first_name} {person.last_name}
-                  disabled={!isEditing && !isCreating}
-                </option>
-              ))}
-            </select>
-
             <label>Role:</label>
             <select
               {...register("role", { required: true })}
@@ -167,18 +129,21 @@ const UserForm = () => {
               disabled={!isEditing && !isCreating}
             />
 
-            <label>Answer:</label>
+            <label>Security Answer:</label>
             <input
               type="text"
               {...register("security_answer", {
-                required: true,
-                maxLength: 50,
+                required: isCreating,
+                maxLength: 255,
               })}
+              placeholder={
+                isEditing ? "Enter new security answer to update" : ""
+              }
               disabled={!isEditing && !isCreating}
             />
 
             {isCreating ? (
-              <button type="submit">Create Patient</button>
+              <button type="submit">Create User</button>
             ) : (
               <>
                 <button type="button" onClick={() => setIsEditing(!isEditing)}>
