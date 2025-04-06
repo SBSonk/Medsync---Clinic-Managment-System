@@ -179,6 +179,7 @@ const PatientForm = () => {
                   <label>Select Person:</label>
                   <select
                     value={selectedPersonID || ""}
+                    disabled={!isCreating}
                     onChange={(e) => {
                       const selectedId = e.target.value;
                       setSelectedPersonID(selectedId);
@@ -199,8 +200,8 @@ const PatientForm = () => {
                             : null,
                           contactNo: selectedPerson.contact_no || "",
                           address: selectedPerson.address || "",
-                          height: "", // Clear patient-specific fields
-                          weight: "",
+                          height: "0", // Clear patient-specific fields
+                          weight: "0",
                           bloodType: "",
                           allergies: "",
                           medicalHistory: "",
@@ -249,6 +250,8 @@ const PatientForm = () => {
                 selected={watch("dateOfBirth")}
                 onChange={(date) => setValue("dateOfBirth", date)}
                 dateFormat="dd-MM-yyyy"
+                showMonthDropdown
+                showYearDropdown
                 disabled={!isCreating}
               />
 
@@ -306,6 +309,13 @@ const PatientForm = () => {
               <input
                 type="text"
                 {...register("emergencyContact")}
+                disabled={!isEditing && !isCreating}
+              />
+
+              <label>Relation:</label>
+              <input
+                type="text"
+                {...register("emergencyRelation")}
                 disabled={!isEditing && !isCreating}
               />
             </div>
