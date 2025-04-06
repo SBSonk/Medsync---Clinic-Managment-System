@@ -117,77 +117,75 @@ const AppointmentForm = () => {
 
   return (
     <MainLayout title="Create Appointment">
-      <div className="mainContent">
-        <div className="formContainer">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <label>Type:</label>
-            <input
-              type="text"
-              {...register("type", { required: true, maxLength: 30 })}
-            />
+      <div className="formContainer">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label>Type:</label>
+          <input
+            type="text"
+            {...register("type", { required: true, maxLength: 30 })}
+          />
 
-            <label>Patient ID:</label>
-            <select onChange={(e) => setSelectedPatientID(e.target.value)}>
-              <option value="">-- Select Patient --</option>
-              {patients.map((patient) => {
-                const person = people.find((p) => p.id === patient.person_id);
-                return (
-                  <option key={patient.id} value={patient.id}>
-                    {person
-                      ? `${person.first_name} ${person.last_name}`
-                      : "Unknown"}
-                  </option>
-                );
-              })}
-            </select>
+          <label>Patient ID:</label>
+          <select onChange={(e) => setSelectedPatientID(e.target.value)}>
+            <option value="">-- Select Patient --</option>
+            {patients.map((patient) => {
+              const person = people.find((p) => p.id === patient.person_id);
+              return (
+                <option key={patient.id} value={patient.id}>
+                  {person
+                    ? `${person.first_name} ${person.last_name}`
+                    : "Unknown"}
+                </option>
+              );
+            })}
+          </select>
 
-            <label>Faculty ID:</label>
-            <select onChange={(e) => setSelectedFacultyID(e.target.value)}>
-              <option value="">-- Select Faculty --</option>
-              {employees.map((facultyMember) => {
-                const person = people.find(
-                  (p) => p.id === facultyMember.person_id
-                );
-                return (
-                  <option key={facultyMember.id} value={facultyMember.id}>
-                    {person
-                      ? `${person.first_name} ${person.last_name}`
-                      : "Unknown"}
-                  </option>
-                );
-              })}
-            </select>
+          <label>Faculty ID:</label>
+          <select onChange={(e) => setSelectedFacultyID(e.target.value)}>
+            <option value="">-- Select Faculty --</option>
+            {employees.map((facultyMember) => {
+              const person = people.find(
+                (p) => p.id === facultyMember.person_id
+              );
+              return (
+                <option key={facultyMember.id} value={facultyMember.id}>
+                  {person
+                    ? `${person.first_name} ${person.last_name}`
+                    : "Unknown"}
+                </option>
+              );
+            })}
+          </select>
 
-            <label>Date:</label>
-            <DatePicker
-              selected={watch("date")}
-              onChange={(date) => setValue("date", date)}
-              dateFormat="dd-MM-yyyy"
-            />
+          <label>Date:</label>
+          <DatePicker
+            selected={watch("date")}
+            onChange={(date) => setValue("date", date)}
+            dateFormat="dd-MM-yyyy"
+          />
 
-            <label>Time:</label>
-            <input
-              type="time"
-              {...register("time", {
-                required: true,
-              })}
-            />
+          <label>Time:</label>
+          <input
+            type="time"
+            {...register("time", {
+              required: true,
+            })}
+          />
 
-            <label>Status:</label>
-            <input
-              type="text"
-              {...register("status", { required: true, maxLength: 31 })}
-            />
+          <label>Status:</label>
+          <input
+            type="text"
+            {...register("status", { required: true, maxLength: 31 })}
+          />
 
-            <label>Note:</label>
-            <input
-              type="text"
-              {...register("note", { required: true, maxLength: 255 })}
-            />
+          <label>Note:</label>
+          <input
+            type="text"
+            {...register("note", { required: true, maxLength: 255 })}
+          />
 
-            <button type="submit">Add Appointment</button>
-          </form>
-        </div>
+          <button type="submit">Add Appointment</button>
+        </form>
       </div>
     </MainLayout>
   );

@@ -166,63 +166,61 @@ const EmployeeForm = () => {
 
   return (
     <MainLayout title={isCreating ? "Create Employee" : "Edit Employee"}>
-      <div className="mainContent">
-        <div className="formContainer">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <label>Select Person</label>
-            <select
-              value={selectedPersonID || ""}
-              onChange={(e) => setSelectedPersonID(e.target.value)}
-              disabled={isEditing && !isEditing && !isCreating}
-            >
-              <option value="">-- Select Person --</option>
-              {people.map((person) => (
-                <option key={person.id} value={person.id}>
-                  {person.first_name} {person.last_name}
-                </option>
-              ))}
-            </select>
+      <div className="formContainer">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label>Select Person</label>
+          <select
+            value={selectedPersonID || ""}
+            onChange={(e) => setSelectedPersonID(e.target.value)}
+            disabled={isEditing && !isEditing && !isCreating}
+          >
+            <option value="">-- Select Person --</option>
+            {people.map((person) => (
+              <option key={person.id} value={person.id}>
+                {person.first_name} {person.last_name}
+              </option>
+            ))}
+          </select>
 
-            <label>Occupation:</label>
-            <input
-              type="text"
-              {...register("occupation", {
-                required: true,
-                maxLength: 50,
-              })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Occupation:</label>
+          <input
+            type="text"
+            {...register("occupation", {
+              required: true,
+              maxLength: 50,
+            })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Department:</label>
-            <input
-              type="text"
-              {...register("department", {
-                required: true,
-                maxLength: 50,
-              })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Department:</label>
+          <input
+            type="text"
+            {...register("department", {
+              required: true,
+              maxLength: 50,
+            })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Schedule:</label>
-            <input
-              type="text"
-              {...register("shift", { required: true, maxLength: 31 })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Schedule:</label>
+          <input
+            type="text"
+            {...register("shift", { required: true, maxLength: 31 })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            {isCreating ? (
-              <button type="submit">Create Employee</button>
-            ) : (
-              <>
-                <button type="button" onClick={() => setIsEditing(!isEditing)}>
-                  {isEditing ? "Cancel" : "Edit"}
-                </button>
+          {isCreating ? (
+            <button type="submit">Create Employee</button>
+          ) : (
+            <>
+              <button type="button" onClick={() => setIsEditing(!isEditing)}>
+                {isEditing ? "Cancel" : "Edit"}
+              </button>
 
-                {isEditing && <button type="submit">Save Changes</button>}
-              </>
-            )}
-          </form>
-        </div>
+              {isEditing && <button type="submit">Save Changes</button>}
+            </>
+          )}
+        </form>
       </div>
     </MainLayout>
   );

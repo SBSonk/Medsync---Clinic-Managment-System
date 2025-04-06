@@ -87,76 +87,72 @@ const UserForm = () => {
 
   return (
     <MainLayout title={isCreating ? "Create User" : "Edit User"}>
-      <div className="mainContent">
-        <div className="formContainer">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <label>Username:</label>
-            <input
-              type="text"
-              {...register("username", { required: true, maxLength: 255 })}
-              disabled={!isEditing && !isCreating}
-            />
+      <div className="formContainer">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label>Username:</label>
+          <input
+            type="text"
+            {...register("username", { required: true, maxLength: 255 })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Password:</label>
-            <input
-              type="password"
-              {...register("password", { required: true, maxLength: 50 })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Password:</label>
+          <input
+            type="password"
+            {...register("password", { required: true, maxLength: 50 })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Email:</label>
-            <input
-              type="email"
-              {...register("email", { required: true, maxLength: 255 })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Email:</label>
+          <input
+            type="email"
+            {...register("email", { required: true, maxLength: 255 })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Role:</label>
-            <select
-              {...register("role", { required: true })}
-              disabled={!isEditing && !isCreating}
-            >
-              <option value="">-- Select Role --</option>
-              <option value="employee">Employee</option>
-              <option value="admin">Admin</option>
-            </select>
+          <label>Role:</label>
+          <select
+            {...register("role", { required: true })}
+            disabled={!isEditing && !isCreating}
+          >
+            <option value="">-- Select Role --</option>
+            <option value="employee">Employee</option>
+            <option value="admin">Admin</option>
+          </select>
 
-            <label>Security Question:</label>
-            <input
-              type="text"
-              {...register("security_question", {
-                required: true,
-                maxLength: 255,
-              })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Security Question:</label>
+          <input
+            type="text"
+            {...register("security_question", {
+              required: true,
+              maxLength: 255,
+            })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Security Answer:</label>
-            <input
-              type="text"
-              {...register("security_answer", {
-                required: isCreating,
-                maxLength: 255,
-              })}
-              placeholder={
-                isEditing ? "Enter new security answer to update" : ""
-              }
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Security Answer:</label>
+          <input
+            type="text"
+            {...register("security_answer", {
+              required: isCreating,
+              maxLength: 255,
+            })}
+            placeholder={isEditing ? "Enter new security answer to update" : ""}
+            disabled={!isEditing && !isCreating}
+          />
 
-            {isCreating ? (
-              <button type="submit">Create User</button>
-            ) : (
-              <>
-                <button type="button" onClick={() => setIsEditing(!isEditing)}>
-                  {isEditing ? "Cancel" : "Edit"}
-                </button>
+          {isCreating ? (
+            <button type="submit">Create User</button>
+          ) : (
+            <>
+              <button type="button" onClick={() => setIsEditing(!isEditing)}>
+                {isEditing ? "Cancel" : "Edit"}
+              </button>
 
-                {isEditing && <button type="submit">Save Changes</button>}
-              </>
-            )}
-          </form>
-        </div>
+              {isEditing && <button type="submit">Save Changes</button>}
+            </>
+          )}
+        </form>
       </div>
     </MainLayout>
   );

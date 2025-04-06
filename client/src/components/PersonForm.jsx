@@ -50,52 +50,50 @@ const PersonForm = () => {
   return (
     <MainLayout title="Create User">
       <div className="mainContent">
-        <div className="formContainer">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <label>First Name:</label>
-            <input
-              type="text"
-              {...register("first_name", { required: true, maxLength: 50 })}
-            />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label>First Name:</label>
+          <input
+            type="text"
+            {...register("first_name", { required: true, maxLength: 50 })}
+          />
 
-            <label>Last Name:</label>
-            <input
-              type="text"
-              {...register("last_name", { required: true, maxLength: 50 })}
-            />
+          <label>Last Name:</label>
+          <input
+            type="text"
+            {...register("last_name", { required: true, maxLength: 50 })}
+          />
 
-            <label>Gender:</label>
-            <select {...register("gender", { required: true })}>
-              <option value="MALE">Male</option>
-              <option value="FEMALE">Female</option>
-              <option value="NON_BINARY">Non-Binary</option>
-              <option value="OTHER">Other</option>
-            </select>
+          <label>Gender:</label>
+          <select {...register("gender", { required: true })}>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+            <option value="NON_BINARY">Non-Binary</option>
+            <option value="OTHER">Other</option>
+          </select>
 
-            <label>Date of Birth:</label>
-            <DatePicker
-              selected={watch("date_of_birth")}
-              onChange={(date) => setValue("date_of_birth", date)}
-              dateFormat="dd-MM-yyyy"
-              showMonthDropdown
-              showYearDropdown
-            />
+          <label>Date of Birth:</label>
+          <DatePicker
+            selected={watch("date_of_birth")}
+            onChange={(date) => setValue("date_of_birth", date)}
+            dateFormat="dd-MM-yyyy"
+            showMonthDropdown
+            showYearDropdown
+          />
 
-            <label>Contact Number:</label>
-            <input
-              type="text"
-              {...register("contact_no", { required: true, maxLength: 31 })}
-            />
+          <label>Contact Number:</label>
+          <input
+            type="text"
+            {...register("contact_no", { required: true, maxLength: 31 })}
+          />
 
-            <label>Address:</label>
-            <input
-              type="text"
-              {...register("address", { required: true, maxLength: 255 })}
-            />
+          <label>Address:</label>
+          <input
+            type="text"
+            {...register("address", { required: true, maxLength: 255 })}
+          />
 
-            <button type="submit">Add Person</button>
-          </form>
-        </div>
+          <button type="submit">Add Person</button>
+        </form>
       </div>
     </MainLayout>
   );
