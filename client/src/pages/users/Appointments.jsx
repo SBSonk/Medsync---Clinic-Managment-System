@@ -292,11 +292,9 @@ const Appointments = () => {
           value={searchQuery}
         ></SearchBar>
         <div className="table-buttons">
-          {isAdmin && (
-            <button className="table-button" onClick={handleCreateAppointment}>
-              Book Appointment
-            </button>
-          )}
+          <button className="table-button" onClick={handleCreateAppointment}>
+            Book Appointment
+          </button>
           <button className="table-button" onClick={handleReport}>
             Print table report
           </button>

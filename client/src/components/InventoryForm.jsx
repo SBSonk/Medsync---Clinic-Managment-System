@@ -170,7 +170,7 @@ const InventoryForm = () => {
           />
 
           {isCreating ? (
-            <button type="submit">Create Inventory Item</button>
+            <button type="submit">Create Patient</button>
           ) : (
             <>
               <button type="button" onClick={() => setIsEditing(!isEditing)}>

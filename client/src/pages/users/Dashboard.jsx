@@ -39,7 +39,7 @@ function formatDateTime(dateStr) {
     year: "numeric",
     hour: "numeric",
     minute: "2-digit",
-    hour12: true,
+    hour12: true
   };
   return date.toLocaleString("en-US", options);
 }
@@ -49,7 +49,7 @@ function formatDate(dateStr) {
   const options = {
     month: "short",
     day: "numeric",
-    year: "numeric",
+    year: "numeric"
   };
   return date.toLocaleString("en-US", options);
 }
@@ -60,7 +60,7 @@ const Dashboard = () => {
 
   const [username, setUserName] = useState([]);
   const [patients, setPatients] = useState([]);
-  const [people, setPeople] = useState([]);
+  const [people, setPeople] = useState([]); 
   const [employees, setEmployees] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [mostRecentAppointments, setMostRecentAppointments] = useState([]);
@@ -149,7 +149,8 @@ const Dashboard = () => {
 
         setAppointments(appointments);
 
-        const sortedAppointments = getUpcomingAppointments(appointments);
+
+        const sortedAppointments = getUpcomingAppointments(appointments)
 
         setMostRecentAppointments(sortedAppointments);
       } catch (error) {
@@ -189,6 +190,7 @@ const Dashboard = () => {
       } catch (error) {
         console.error("Error fetching Inventory:", error);
       }
+      
     };
 
     const fetchUsername = async () => {
@@ -217,6 +219,7 @@ const Dashboard = () => {
           },
         });
         setPeople(response.data);
+        setFilteredPeople(response.data);
       } catch (error) {
         console.error("Error fetching People:", error);
       }
