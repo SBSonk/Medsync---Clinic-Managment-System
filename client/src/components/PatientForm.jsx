@@ -134,7 +134,6 @@ const PatientForm = () => {
         );
 
         alert("Patient created successfully!");
-        navigate("/admin/patients");
       } else if (isEditing) {
         const patientData = {
           id: patient_id,
@@ -160,6 +159,7 @@ const PatientForm = () => {
         alert("Patient updated successfully!");
         setIsEditing(false);
       }
+      navigate("/admin/patients"); // Redirect after submission
     } catch (error) {
       console.error("Error saving patient:", error);
     }

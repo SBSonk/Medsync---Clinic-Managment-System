@@ -77,6 +77,7 @@ const UserForm = () => {
         });
         alert("User updated successfully!");
       }
+      navigate("/admin/users"); // Redirect after submission
     } catch (error) {
       console.error(
         isCreating ? "Error creating user:" : "Error updating user:",

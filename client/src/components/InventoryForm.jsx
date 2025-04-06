@@ -99,7 +99,7 @@ const InventoryForm = () => {
         alert("Item updated successfully!");
       }
 
-      navigate("/admin/dashboard");
+      navigate("/admin/inventory");
     } catch (error) {
       console.error(
         isCreating ? "Error creating item:" : "Error updating item:",

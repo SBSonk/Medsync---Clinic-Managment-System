@@ -127,7 +127,7 @@ const EmployeeForm = () => {
         const employeeData = {
           person_id: person_id, // Keep the same ID
           occupation: data.occupation,
-          department: data.department,
+          department: data.department,  
         };
 
         const personData = {
@@ -157,6 +157,8 @@ const EmployeeForm = () => {
         alert("Employee updated successfully!");
         setIsEditing(false);
       }
+      navigate("/admin/employees"); // Redirect after submission
+
     } catch (error) {
       console.error("Error updating employee:", error);
     }
