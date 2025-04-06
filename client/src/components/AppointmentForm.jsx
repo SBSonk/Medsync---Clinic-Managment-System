@@ -24,7 +24,8 @@ function formatDateTime(date, time) {
 
 const AppointmentForm = () => {
   const auth = useAuth();
-  const { register, handleSubmit, setValue, watch } = useForm();
+  const { id } = useParams();
+  const { register, handleSubmit, setValue, watch, reset } = useForm();
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [selectedPatientID, setSelectedPatientID] = useState(null);
@@ -36,6 +37,8 @@ const AppointmentForm = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    setIsCreating(!id); // Set mode based on the existence of ID
+
     const fetchPatients = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/patients", {
@@ -48,8 +51,6 @@ const AppointmentForm = () => {
         console.error("Error fetching Patients:", error);
       }
     };
-
-    fetchPatients();
 
     const fetchEmployees = async () => {
       try {
@@ -67,56 +68,99 @@ const AppointmentForm = () => {
       }
     };
 
-    fetchEmployees();
+    const fetchAppointmentDetails = async () => {
+      if (!id) return; // Skip fetching if creating a new appointment
 
-    const fetchPeople = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/people", {
-          headers: {
-            Authorization: "Bearer " + auth.access_token,
-          },
+        const response = await axios.get(
+          `http://localhost:8080/api/get-appointment/${id}`,
+          {
+            headers: {
+              Authorization: "Bearer " + auth.access_token,
+            },
+          }
+        );
+        const appointmentData = response.data;
+
+        // Apply `formatDateTime` to combine and format the date and time
+        const formattedDateTime = formatDateTime(
+          new Date(appointmentData.date_time.split("T")[0]),
+          appointmentData.date_time.split("T")[1].slice(0, 5)
+        );
+
+        // Pre-fill form fields with formatted data
+        reset({
+          type: appointmentData.type || "",
+          patient_id: appointmentData.patient_id || "",
+          doctor_id: appointmentData.doctor_id || "",
+          date_time: formattedDateTime, // Combined and formatted date and time
+          status: appointmentData.status || "",
+          note: appointmentData.note || "",
         });
-        setPeople(response.data);
       } catch (error) {
-        console.error("Error fetching People:", error);
+        console.error("Error fetching appointment details:", error);
       }
     };
 
-    fetchPeople();
-  }, []);
+    fetchPatients();
+    fetchEmployees();
+    fetchAppointmentDetails();
+  }, [id, reset, auth.access_token]);
 
   const onSubmit = async (data) => {
     try {
-      const appointmentData = {
-        type: data.type,
-        patient_id: selectedPatientID,
-        doctor_id: selectedFacultyID,
-        date_time: formatDateTime(data.date, data.time),
-        status: data.status,
-        note: data.note,
-      };
+      if (isCreating) {
+        const newAppointment = {
+          type: data.type,
+          patient_id: selectedPatientID,
+          doctor_id: selectedFacultyID,
+          date_time: formatDateTime(data.date, data.time),
+          status: data.status,
+          note: data.note,
+        };
 
-      console.log(appointmentData);
-      // Update person data
-      await axios.post(
-        "http://127.0.0.1:8080/api/create-appointment",
-        appointmentData,
-        {
-          headers: {
-            Authorization: "Bearer " + auth.access_token,
-          },
-        }
-      );
+        console.log(appointmentData);
+        // Update person data
+        await axios.post(
+          "http://localhost:8080/api/create-appointment",
+          newAppointment,
+          {
+            headers: {
+              Authorization: "Bearer " + auth.access_token,
+            },
+          }
+        );
 
-      alert("Appointment created successfully!");
-      navigate("/admin/appointments");
+        alert("Appointment created successfully!");
+        navigate("/admin/appointments");
+      } else if (isEditing) {
+        const appointmentData = {
+          type: data.type,
+          patient_id: selectedPatientID,
+          doctor_id: selectedFacultyID,
+          date_time: formatDateTime(data.date, data.time),
+          status: data.status,
+          note: data.note,
+        };
+
+        await axios.put(
+          "http://localhost:8080/api/update-appointment",
+          appointmentData,
+          {
+            headers: { Authorization: "Bearer " + auth.access_token },
+          }
+        );
+
+        alert("Appointment updated successfully!");
+        setIsEditing(false);
+      }
     } catch (error) {
       console.error("Error creating appointment:", error);
     }
   };
 
   return (
-    <MainLayout title="Create Appointment">
+    <MainLayout title={isCreating ? "Create Appointment" : "Edit Appointment"}>
       <div className="formContainer">
         <form onSubmit={handleSubmit(onSubmit)}>
           <label>Type:</label>
@@ -125,33 +169,41 @@ const AppointmentForm = () => {
             {...register("type", { required: true, maxLength: 30 })}
           />
 
-          <label>Patient ID:</label>
-          <select onChange={(e) => setSelectedPatientID(e.target.value)}>
+          <label>Select Patient</label>
+          <select
+            value={selectedPatientID || ""} // Ensure the value reflects the state
+            onChange={(e) => setSelectedPatientID(e.target.value)} // Update state on change
+          >
             <option value="">-- Select Patient --</option>
             {patients.map((patient) => {
-              const person = people.find((p) => p.id === patient.person_id);
+              const person = people.find((p) => p.id === patient.person_id); // Find corresponding person
               return (
                 <option key={patient.id} value={patient.id}>
                   {person
                     ? `${person.first_name} ${person.last_name}`
-                    : "Unknown"}
+                    : "Unknown"}{" "}
+                  // Display name or fallback
                 </option>
               );
             })}
           </select>
 
-          <label>Faculty ID:</label>
-          <select onChange={(e) => setSelectedFacultyID(e.target.value)}>
+          <label>Select Faculty</label>
+          <select
+            value={selectedFacultyID || ""} // Ensure the value reflects the state
+            onChange={(e) => setSelectedFacultyID(e.target.value)} // Update state on change
+          >
             <option value="">-- Select Faculty --</option>
             {employees.map((facultyMember) => {
               const person = people.find(
                 (p) => p.id === facultyMember.person_id
-              );
+              ); // Find corresponding person
               return (
                 <option key={facultyMember.id} value={facultyMember.id}>
                   {person
                     ? `${person.first_name} ${person.last_name}`
-                    : "Unknown"}
+                    : "Unknown"}{" "}
+                  // Display name or fallback
                 </option>
               );
             })}
@@ -162,6 +214,8 @@ const AppointmentForm = () => {
             selected={watch("date")}
             onChange={(date) => setValue("date", date)}
             dateFormat="dd-MM-yyyy"
+            showMonthDropdown
+            showYearDropdown
           />
 
           <label>Time:</label>
