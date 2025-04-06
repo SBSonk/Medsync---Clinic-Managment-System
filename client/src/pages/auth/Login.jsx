@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AuthLayout from "../../layouts/AuthLayout";
@@ -6,8 +6,14 @@ import AuthLayout from "../../layouts/AuthLayout";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [userRole, setUserRole] = useState(null);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userRole === "admin") navigate("/admin/dashboard", {state: {role: userRole}});
+    if (userRole === "employee") navigate("/admin/dashboard", {state: {role: userRole}});
+  }, [userRole, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,19 +22,13 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:8080/login", {
         username,
-        password
+        password,
       });
 
       const { access_token, role } = response.data;
 
       localStorage.setItem("access_token", access_token);
-      localStorage.setItem("role", role);
-
-      console.log(localStorage.getItem("access_token"));
-      console.log(localStorage.getItem("role"));
-
-      if (role === "admin") navigate("/admin/dashboard");
-      if (role === "employee") navigate("/employee/dashboard");
+      setUserRole(role);
     } catch (err) {
       console.log(err);
       setError("Invalid username or password");
