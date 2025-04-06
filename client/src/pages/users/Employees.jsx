@@ -140,7 +140,7 @@ const Employees = () => {
     {
       name: "Person ID",
       selector: (row) => row.person_id,
-      width: "10%",
+      width: "15%",
       sortable: true,
     },
     {

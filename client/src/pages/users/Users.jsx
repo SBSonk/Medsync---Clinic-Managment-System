@@ -53,12 +53,13 @@ const Users = () => {
       alert(`User deleted successfully!`);
 
       // Update state to remove the deleted item
-      const updatedUser = user.filter((user) => user.id !== id);
-      setUser(updatedUser);
-      setFilteredUser(updatedUser);
+      const updatedUser = users.filter((user) => user.id !== id);
+      setUsers(updatedUser);
+      setFilteredUsers(updatedUser);
     } catch (error) {
+      console.log(error); 
       alert("Failed to delete user.");
-    }
+    }   
   };
 
   useEffect(() => {
