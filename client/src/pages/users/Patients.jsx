@@ -110,26 +110,22 @@ const Patients = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        // Fetch only patient IDs with their basic details
         const response = await axios.get("http://localhost:8080/api/patients", {
-          headers: {
-            Authorization: "Bearer " + auth.access_token,
-          },
+          headers: { Authorization: "Bearer " + auth.access_token },
         });
 
-        // Map through patient IDs and fetch person details dynamically
         const patientsWithDetails = await Promise.all(
           response.data.map(async (patient) => {
             try {
               const personRes = await axios.get(
-                `http://localhost:8080/api/get-person-info/${patient.id}`, // Use patient.id here
+                `http://localhost:8080/api/get-person-info/${patient.person_id}`, // Correctly using person_id
                 { headers: { Authorization: "Bearer " + auth.access_token } }
               );
+              const person = personRes.data;
 
-              const person = personRes.data; // Fetch person info for full name
               return {
                 ...patient,
-                full_name: `${person.first_name} ${person.last_name}`, // Merge the full name
+                full_name: `${person.first_name} ${person.last_name}`,
               };
             } catch (error) {
               console.error(
@@ -138,7 +134,7 @@ const Patients = () => {
               );
               return {
                 ...patient,
-                full_name: "N/A", // Use fallback if the fetch fails
+                full_name: "N/A",
               };
             }
           })
@@ -153,7 +149,7 @@ const Patients = () => {
     };
 
     fetchPatients();
-  }, []);
+  }, [auth.access_token]); // Added dependency
 
   const columns = [
     {
