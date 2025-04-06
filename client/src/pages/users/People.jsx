@@ -208,11 +208,14 @@ const People = () => {
 
   return (
     <MainLayout title="People">
-      <SearchBar
-        onChange={(e) => handleSearchInputChange(e.target.value)}
-        value={searchQuery}
-      ></SearchBar>
-      <button onClick={handleCreatePerson}>Add new person</button>
+      <div className="searchBar">
+        <SearchBar
+          onChange={(e) => handleSearchInputChange(e.target.value)}
+          value={searchQuery}
+        ></SearchBar>
+        <button onClick={handleCreatePerson}>Add new person</button>
+        <button onClick={handleReport}>Print table report</button>
+      </div>
       <div className="mainContent">
         <div className="table-container">
           <DataTable
@@ -222,7 +225,6 @@ const People = () => {
           />
         </div>
       </div>
-      <button onClick={handleReport}>Print table report</button>
     </MainLayout>
   );
 };

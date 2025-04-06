@@ -224,11 +224,14 @@ const Inventory = () => {
   return (
     <>
       <MainLayout title="Inventory">
-        <SearchBar
-          onChange={(e) => handleSearchInputChange(e.target.value)}
-          value={searchQuery}
-        ></SearchBar>
-        <button onClick={handleCreateItem}>Add new item</button>
+        <div className="searchBar">
+          <SearchBar
+            onChange={(e) => handleSearchInputChange(e.target.value)}
+            value={searchQuery}
+          ></SearchBar>
+          <button onClick={handleCreateItem}>Add new item</button>
+          <button onClick={handleReport}>Print table report</button>
+        </div>
         <div className="mainContent">
           <div className="table-container">
             <DataTable
@@ -238,7 +241,6 @@ const Inventory = () => {
             />
           </div>
         </div>
-        <button onClick={handleReport}>Print table report</button>
       </MainLayout>
     </>
   );
