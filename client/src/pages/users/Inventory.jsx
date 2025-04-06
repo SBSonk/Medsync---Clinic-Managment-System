@@ -39,6 +39,7 @@ const Inventory = () => {
   const [filteredInventory, setFilteredInventory] = useState(inventory);
   const [searchQuery, setSearchQuery] = useState("");
   const [isAdmin, setIsAdmin] = useState([]);
+  // const { access_token, role } = useContext(AuthProvider);
 
   const navigate = useNavigate();
 
