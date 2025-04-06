@@ -14,8 +14,8 @@ function Sidebar() {
   const isActive = (path) =>
     location.pathname === path || location.pathname.includes(path);
 
-  const dynamicDashboardLink = () => (auth.role === "admin") ? "/admin/dashboard" : "/employee/dashboard";
-
+  const dynamicDashboardLink = () =>
+    auth.role === "admin" ? "/admin/dashboard" : "/employee/dashboard";
 
   const handleLogout = async (e) => {
     console.log("t");
@@ -72,7 +72,7 @@ function Sidebar() {
                     : ""
                 }
               >
-                <iconify-icon icon="lucide:users"></iconify-icon>
+                <iconify-icon icon="mdi:account-cog-outline"></iconify-icon>
                 Users
               </NavLink>
               <NavLink
@@ -85,7 +85,7 @@ function Sidebar() {
                     : ""
                 }
               >
-                <iconify-icon icon="mdi:account"></iconify-icon>
+                <iconify-icon icon="ion:people-outline"></iconify-icon>
                 People
               </NavLink>
 
