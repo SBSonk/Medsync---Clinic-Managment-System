@@ -7,6 +7,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
 import { jsPDF } from "jspdf";
 import { autoTable } from "jspdf-autotable";
+import { useAuth } from "../../AuthProvider";
 
 const exportToPDF = (columns, data) => {
   const doc = new jsPDF();
@@ -36,6 +37,7 @@ const exportToPDF = (columns, data) => {
 };
 
 const People = () => {
+  const auth = useAuth();
   const navigate = useNavigate();
   const [people, setPeople] = useState([]);
   const [filteredPeople, setFilteredPeople] = useState(people);
@@ -68,7 +70,7 @@ const People = () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: "Bearer " + auth.access_token,
           },
         });
         setPeople(response.data);

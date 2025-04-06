@@ -5,8 +5,10 @@ import axios from "axios";
 import "../../styles/MainLayout.css";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
+import { useAuth } from "../../AuthProvider";
 
 const Users = () => {
+  const auth = useAuth();
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState(users);
   const [searchQuery, setSearchQuery] = useState("");
@@ -44,7 +46,7 @@ const Users = () => {
       console.log("Deleting user ID:", id);
       await axios.delete(`http://localhost:8080/api/user/${id}`, {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
+          Authorization: "Bearer " + auth.access_token,
         },
       });
 
