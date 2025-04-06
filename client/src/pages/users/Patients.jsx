@@ -39,6 +39,7 @@ const exportToPDF = (columns, data) => {
 
 const Patients = () => {
   const auth = useAuth();
+  const [persons, setPersons] = useState([]);
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState(patients);
   const [searchQuery, setSearchQuery] = useState("");
@@ -55,18 +56,15 @@ const Patients = () => {
       text === ""
         ? patients
         : patients.filter((patient) => {
-            const fullName = patient.person
-              ? `${patient.person.first_name} ${patient.person.last_name}`.toLowerCase()
-              : ""; // Fallback to an empty string if person is undefined
             return (
-              fullName.includes(text.toLowerCase()) ||
-              (patient.allergies || "")
+              patient.full_name.toLowerCase().includes(text.toLowerCase()) ||
+              (patient.allergies)
                 .toLowerCase()
                 .includes(text.toLowerCase()) ||
-              (patient.blood_type || "")
+              (patient.blood_type)
                 .toLowerCase()
                 .includes(text.toLowerCase()) ||
-              (patient.family_history || "")
+              (patient.family_history)
                 .toLowerCase()
                 .includes(text.toLowerCase())
             );
@@ -143,6 +141,7 @@ const Patients = () => {
         setPatients(patientsWithDetails);
         setFilteredPatients(patientsWithDetails);
         setIsAdmin(auth.role === "admin");
+        console.log(patientsWithDetails);
       } catch (error) {
         console.error("Error fetching patients:", error);
       }
