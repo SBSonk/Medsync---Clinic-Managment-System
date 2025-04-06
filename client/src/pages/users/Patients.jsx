@@ -73,8 +73,8 @@ const Patients = () => {
     setFilteredPatients(filtered);
   };
 
-  const handleEdit = (patient_id, person_id) => {
-    navigate(`/edit-patient/${patient_id}/${person_id}`);
+  const handleEdit = (patient_id) => {
+    navigate(`/edit-patient/${patient_id}`);
   };
 
   const handleCreatePatient = (e) => {
@@ -109,39 +109,45 @@ const Patients = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        // Fetch all patients
+        // Fetch only patient IDs with their basic details
         const response = await axios.get("http://localhost:8080/api/patients", {
           headers: {
             Authorization: "Bearer " + auth.access_token,
           },
         });
 
-        // For each patient, fetch their person details
-        const patientsWithPersonDetails = await Promise.all(
+        // Map through patient IDs and fetch person details dynamically
+        const patientsWithDetails = await Promise.all(
           response.data.map(async (patient) => {
-            const personRes = await axios.get(
-              `http://localhost:8080/api/get-person-info/${patient.person_id}`,
-              {
-                headers: {
-                  Authorization:
-                    "Bearer " + auth.access_token,
-                },
-              }
-            );
-            const person = personRes.data;
-            return {
-              ...patient,
-              person,
-              full_name: `${person.first_name} ${person.last_name}`,
-            };
+            try {
+              const personRes = await axios.get(
+                `http://localhost:8080/api/get-person-info/${patient.id}`, // Use patient.id here
+                { headers: { Authorization: "Bearer " + auth.access_token } }
+              );
+
+              const person = personRes.data; // Fetch person info for full name
+              return {
+                ...patient,
+                full_name: `${person.first_name} ${person.last_name}`, // Merge the full name
+              };
+            } catch (error) {
+              console.error(
+                `Error fetching person info for Patient ID ${patient.id}:`,
+                error
+              );
+              return {
+                ...patient,
+                full_name: "N/A", // Use fallback if the fetch fails
+              };
+            }
           })
         );
 
-        setPatients(patientsWithPersonDetails);
-        setFilteredPatients(patientsWithPersonDetails);
+        setPatients(patientsWithDetails);
+        setFilteredPatients(patientsWithDetails);
         setIsAdmin(auth.role === "admin");
       } catch (error) {
-        console.error("Error fetching Patients:", error);
+        console.error("Error fetching patients:", error);
       }
     };
 
