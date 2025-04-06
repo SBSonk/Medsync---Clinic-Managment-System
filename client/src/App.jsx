@@ -30,29 +30,33 @@ import { useAuth } from "./AuthProvider";
 
 function App() {
   const auth = useAuth();
-  const [isLoggedIn, SetLoggedIn] = useState([]);
-  const [isAdmin, SetIsAdmin] = useState([]);
+  const [isLoggedIn, SetLoggedIn] = useState(false);
+  const [isAdmin, SetIsAdmin] = useState(false);
+  const [loading, SetLoading] = useState(true); // Add loading state to wait for auth data
 
   useEffect(() => {
-    SetLoggedIn((auth.userID != null)); // convert to boolean
-    SetIsAdmin(auth.role === "admin");
-  }, []);
+    if (auth.userID != null) {
+      SetLoggedIn(true);
+      SetIsAdmin(auth.role === "admin");
+    } else {
+      SetLoggedIn(false);
+      SetIsAdmin(false);
+    }
+    SetLoading(false); // Set loading to false once the auth data is loaded
+  }, [auth]);
+
+  if (loading) {
+    return <div>Loading...</div>; // Optional: Show loading state while auth data is fetched
+  }
 
   return (
     <Router>
       <Routes>
         {isLoggedIn ? (
-          isAdmin ? (
-            <Route
-              path="/"
-              element={<Navigate to="/admin/dashboard" replace />}
-            />
-          ) : (
-            <Route
-              path="/"
-              element={<Navigate to="/employee/dashboard" replace />}
-            />
-          )
+          <Route
+            path="/"
+            element={<Navigate to={"/" + auth.role + "/dashboard"} replace />}
+          />
         ) : (
           <Route path="/" element={<Navigate to="/login" replace />} />
         )}
@@ -101,10 +105,17 @@ function App() {
           </>
         )}
 
-        <Route path="/login" element={<Login />} />
+        {/* Public Routes */}
+        {!isLoggedIn && (
+          <>
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/resetpassword" element={<ResetPassword />} />
+          </>
+        )}
+
         <Route path="/logout" element={<Navigate to="/login" replace />} />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/resetpassword" element={<ResetPassword />} />
+        {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
       </Routes>
     </Router>
   );

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
+import { useAuth } from "../AuthProvider";
 
 function formatDate(date) {
   const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
@@ -16,6 +17,7 @@ function formatDate(date) {
 }
 
 const EmployeeForm = () => {
+  const auth = useAuth();
   const { person_id } = useParams();
   const { register, handleSubmit, setValue, watch } = useForm();
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ const EmployeeForm = () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: "Bearer " + auth.access_token,
           },
         });
         setPeople(response.data);
@@ -53,7 +55,7 @@ const EmployeeForm = () => {
           `http://localhost:8080/api/get-employee-info/${person_id}`,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -64,7 +66,7 @@ const EmployeeForm = () => {
             `http://localhost:8080/api/get-person-info/${person_id}`,
             {
               headers: {
-                Authorization: "Bearer " + localStorage.getItem("access_token"),
+                Authorization: "Bearer " + auth.access_token,
               },
             }
           );
@@ -115,7 +117,7 @@ const EmployeeForm = () => {
           newEmployee,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -142,7 +144,7 @@ const EmployeeForm = () => {
           employeeData,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -150,7 +152,7 @@ const EmployeeForm = () => {
         // Update person data
         await axios.put("http://localhost:8080/api/update-person", personData, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: "Bearer " + auth.access_token,
           },
         });
 

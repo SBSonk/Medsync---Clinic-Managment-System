@@ -13,7 +13,7 @@ const Login = () => {
 
   useEffect(() => {
     if (auth.role === "admin") navigate("/admin/dashboard");
-    if (auth.role === "employee") navigate("/admin/dashboard");
+    if (auth.role === "employee") navigate("/employee/dashboard");
   }, [auth.role, navigate]);
 
   const handleSubmit = async (e) => {

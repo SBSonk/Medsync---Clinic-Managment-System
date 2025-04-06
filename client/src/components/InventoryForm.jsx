@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
+import { useAuth } from "../AuthProvider";
 
 // Utility function to format dates as dd-MM-yyyy
 function formatDate(date) {
@@ -16,6 +17,7 @@ function formatDate(date) {
 }
 
 const InventoryForm = () => {
+  const auth = useAuth();
   const { id } = useParams(); // Get the inventory ID from the URL
   const { register, handleSubmit, setValue, watch } = useForm();
   const navigate = useNavigate();
@@ -33,7 +35,7 @@ const InventoryForm = () => {
             `http://localhost:8080/api/get-inventory-info/${id}`,
             {
               headers: {
-                Authorization: "Bearer " + localStorage.getItem("access_token"),
+                Authorization: "Bearer " + auth.access_token,
               },
             }
           );
@@ -78,7 +80,7 @@ const InventoryForm = () => {
           inventoryData,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -90,7 +92,7 @@ const InventoryForm = () => {
           inventoryData,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );

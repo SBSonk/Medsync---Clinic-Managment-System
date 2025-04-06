@@ -8,6 +8,7 @@ import { Navigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
 import { jsPDF } from "jspdf";
 import { autoTable } from "jspdf-autotable";
+import { useAuth } from "../../AuthProvider";
 
 const exportToPDF = (columns, data) => {
   const doc = new jsPDF();
@@ -37,7 +38,7 @@ const exportToPDF = (columns, data) => {
 };
 
 const Patients = () => {
-  const [role] = useContext(AuthProvider);
+  const auth = useAuth();
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState(patients);
   const [searchQuery, setSearchQuery] = useState("");
@@ -92,7 +93,7 @@ const Patients = () => {
           `http://localhost:8080/api/delete-patient/${patient_id}`,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -111,7 +112,7 @@ const Patients = () => {
         // Fetch all patients
         const response = await axios.get("http://localhost:8080/api/patients", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: "Bearer " + auth.access_token,
           },
         });
 
@@ -123,7 +124,7 @@ const Patients = () => {
               {
                 headers: {
                   Authorization:
-                    "Bearer " + localStorage.getItem("access_token"),
+                    "Bearer " + auth.access_token,
                 },
               }
             );
@@ -138,7 +139,7 @@ const Patients = () => {
 
         setPatients(patientsWithPersonDetails);
         setFilteredPatients(patientsWithPersonDetails);
-        setIsAdmin(role === "admin");
+        setIsAdmin(auth.role === "admin");
       } catch (error) {
         console.error("Error fetching Patients:", error);
       }

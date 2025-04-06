@@ -3,10 +3,11 @@ import MainLayout from "../../layouts/MainLayout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import "../../styles/MainLayout.css";
-import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
 import { jsPDF } from "jspdf";
 import { autoTable } from "jspdf-autotable";
+import { useAuth } from "../../AuthProvider";
 
 const exportToPDF = (columns, data) => {
   const doc = new jsPDF();
@@ -36,12 +37,12 @@ const exportToPDF = (columns, data) => {
 };
 
 const Appointments = () => {
+  const auth = useAuth();
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] =
     useState(appointments);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const searchParams = useSearchParams();
   const [isAdmin, setIsAdmin] = useState([]);
 
   const handleReport = () => {
@@ -79,7 +80,7 @@ const Appointments = () => {
           `http://localhost:8080/api/delete-appointment/${id}`,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -101,7 +102,7 @@ const Appointments = () => {
           "http://localhost:8080/api/appointments",
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -114,7 +115,7 @@ const Appointments = () => {
 
     fetchAppointments();
 
-    setIsAdmin(searchParams.get('role') === "admin");
+    setIsAdmin(auth.role === "admin");
   }, []);
 
   const columns = [

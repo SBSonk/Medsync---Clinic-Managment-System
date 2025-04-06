@@ -7,6 +7,7 @@ import SearchBar from "../../components/SearchBar";
 import { useNavigate } from "react-router-dom";
 import { jsPDF } from "jspdf";
 import { autoTable } from "jspdf-autotable";
+import { useAuth } from "../../AuthProvider";
 
 const exportToPDF = (columns, data) => {
   const doc = new jsPDF();
@@ -35,12 +36,11 @@ const exportToPDF = (columns, data) => {
   doc.save(`Appointments Report - ${fileNameDate}.pdf`);
 };
 const Inventory = () => {
+  const auth = useAuth();
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState(inventory);
   const [searchQuery, setSearchQuery] = useState("");
-  const searchParams = useSearchParams();
   const [isAdmin, setIsAdmin] = useState([]);
-  // const { access_token, role } = useContext(AuthProvider);
 
   const navigate = useNavigate();
 
@@ -81,7 +81,7 @@ const Inventory = () => {
       console.log("Deleting inventory item ID:", id);
       await axios.delete(`http://localhost:8080/api/delete-inventory/${id}`, {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
+          Authorization: "Bearer " + auth.access_token,
         },
       });
 
@@ -105,7 +105,7 @@ const Inventory = () => {
           "http://localhost:8080/api/inventory",
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -117,7 +117,7 @@ const Inventory = () => {
     };
 
     fetchInventory();
-    setIsAdmin(searchParams.get('role') === "admin");
+    setIsAdmin(auth.role === "admin");
   }, []);
 
   const columns = [

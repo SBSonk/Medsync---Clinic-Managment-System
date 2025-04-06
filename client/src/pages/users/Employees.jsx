@@ -7,6 +7,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
 import { jsPDF } from "jspdf";
 import { autoTable } from "jspdf-autotable";
+import { useAuth } from "../../AuthProvider";
 
 const exportToPDF = (columns, data) => {
   const doc = new jsPDF();
@@ -36,6 +37,7 @@ const exportToPDF = (columns, data) => {
 };
 
 const Employees = () => {
+  const auth = useAuth();
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState(employees);
   const [searchQuery, setSearchQuery] = useState("");
@@ -63,7 +65,7 @@ const Employees = () => {
           `http://localhost:8080/api/delete-employee/${person_id}`,
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -99,7 +101,7 @@ const Employees = () => {
           "http://localhost:8080/api/employees",
           {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("access_token"),
+              Authorization: "Bearer " + auth.access_token,
             },
           }
         );
@@ -112,7 +114,7 @@ const Employees = () => {
               {
                 headers: {
                   Authorization:
-                    "Bearer " + localStorage.getItem("access_token"),
+                    "Bearer " + auth.access_token,
                 },
               }
             );
@@ -202,7 +204,7 @@ const Employees = () => {
     },
   };
 
-  if (localStorage.getItem("role") != "admin") {
+  if (auth.role != "admin") {
     alert("You don't have permission to access page: Employees");
     return Navigate("/dashboard");
   }
