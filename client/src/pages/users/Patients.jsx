@@ -39,7 +39,6 @@ const exportToPDF = (columns, data) => {
 
 const Patients = () => {
   const auth = useAuth();
-  const [persons, setPersons] = useState([]);
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState(patients);
   const [searchQuery, setSearchQuery] = useState("");
