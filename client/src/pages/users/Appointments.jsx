@@ -52,11 +52,23 @@ function formatDateTime(dateStr) {
 const Appointments = () => {
   const auth = useAuth();
   const [appointments, setAppointments] = useState([]);
+  const [people, setPeople] = useState([]);
+  const [patients, setPatients] = useState([]);
   const [filteredAppointments, setFilteredAppointments] =
     useState(appointments);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState([]);
+
+  const getFullNameFromFaculty = (faculty_id) => {
+    const faculty = people.find((p) => p.id === faculty_id);
+    return faculty ? `${faculty.first_name} ${faculty.last_name}` : "Unknown";
+  };
+
+  const getFullNameFromPatient = (patient_id) => {
+    const patient = patients.find((p) => p.id === patient_id); // ← RIGHT one!
+    return patient ? `${patient.full_name}` : "Unknown";
+  };
 
   const handleReport = () => {
     exportToPDF(columns, filteredAppointments);
@@ -98,7 +110,9 @@ const Appointments = () => {
           }
         );
         alert("Appointment deleted successfully!");
-        const updatedAppointments = appointments.filter((appointment) => appointment.id !== id);
+        const updatedAppointments = appointments.filter(
+          (appointment) => appointment.id !== id
+        );
         setAppointments(updatedAppointments);
         setFilteredAppointments(updatedAppointments);
       } catch (error) {
@@ -129,6 +143,60 @@ const Appointments = () => {
     fetchAppointments();
 
     setIsAdmin(auth.role === "admin");
+
+    const fetchPeople = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/people", {
+          headers: {
+            Authorization: "Bearer " + auth.access_token,
+          },
+        });
+        setPeople(response.data);
+      } catch (error) {
+        console.error("Error fetching People:", error);
+      }
+    };
+
+    const fetchPatients = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/patients", {
+          headers: { Authorization: "Bearer " + auth.access_token },
+        });
+
+        const patientsWithDetails = await Promise.all(
+          response.data.map(async (patient) => {
+            try {
+              const personRes = await axios.get(
+                `http://localhost:8080/api/get-person-info/${patient.person_id}`,
+                { headers: { Authorization: "Bearer " + auth.access_token } }
+              );
+              const person = personRes.data;
+
+              return {
+                ...patient,
+                full_name: `${person.first_name} ${person.last_name}`,
+              };
+            } catch (error) {
+              console.error(
+                `Error fetching person info for Patient ID ${patient.id}:`,
+                error
+              );
+              return {
+                ...patient,
+                full_name: "N/A",
+              };
+            }
+          })
+        );
+
+        setPatients(patientsWithDetails);
+      } catch (error) {
+        console.error("Error fetching patients:", error);
+      }
+    };
+
+    fetchPatients();
+    fetchPeople();
   }, []);
 
   const columns = [
@@ -148,14 +216,16 @@ const Appointments = () => {
     },
     {
       name: "Patient ID",
-      selector: (row) => row.patient_id,
+      selector: (row) =>
+        getFullNameFromPatient(row.patient_id) + "/" + row.patient_id,
       width: "15%",
       center: true,
       sortable: true,
     },
     {
-      name: "Doctor ID",
-      selector: (row) => row.doctor_id,
+      name: "Doctor Name/ID",
+      selector: (row) =>
+        getFullNameFromFaculty(row.doctor_id) + "/" + row.doctor_id,
       width: "15%",
       center: true,
       sortable: true,

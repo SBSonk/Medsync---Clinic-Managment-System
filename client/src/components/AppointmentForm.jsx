@@ -209,6 +209,7 @@ const AppointmentForm = () => {
                   {person
                     ? `${person.first_name} ${person.last_name}`
                     : "Unknown"}{" "}
+                  {/* // Display name or fallback */}
                 </option>
               );
             })}
