@@ -213,8 +213,14 @@ const People = () => {
           onChange={(e) => handleSearchInputChange(e.target.value)}
           value={searchQuery}
         ></SearchBar>
-        <button onClick={handleCreatePerson}>Add new person</button>
-        <button onClick={handleReport}>Print table report</button>
+        <div className="table-buttons">
+          <button className="table-button" onClick={handleCreatePerson}>
+            Add person
+          </button>
+          <button className="table-button" onClick={handleReport}>
+            Print table report
+          </button>
+        </div>
       </div>
       <div className="mainContent">
         <div className="table-container">

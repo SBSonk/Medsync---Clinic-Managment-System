@@ -18,8 +18,7 @@
   border-radius: 5px;
   background-color: white;
   outline: none;
-  color: black;
-  width: 35em; /* Adjust width of the input */
+  color: black; /* Adjust width of the input */
 }
 
 .search-icon {

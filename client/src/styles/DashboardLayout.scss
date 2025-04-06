@@ -1,241 +1,275 @@
-  @import "./Variables";
+@import "./Variables";
 
-  $body-width: 87%;
+$body-width: 87%;
 
-  .mainContainer {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.mainHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 0px;
+  padding-left: 16vw;
+
+  .mainTitle {
+    padding-top: 3vh;
+    padding-bottom: 2vh;
+    margin: 0;
+    font-size: 40px;
+    text-align: left;
+    font-family: "Helvetica";
+    font-weight: 600;
+    color: white;
+  }
+}
+
+.mainBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: calc(100vw - 15vw);
+  height: calc(100vh - 80px);
+  padding-left: 15vw;
+  overflow: hidden;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.mainContent::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.mainContent {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.topRow {
+  display: flex;
+  width: $body-width;
+  column-gap: 1vw;
+  margin: 0;
+}
+
+.text,
+.text h1,
+.text p {
+  color: black;
+  text-align: center;
+}
+
+.middleRow {
+  display: flex;
+  column-gap: 1vw;
+}
+
+.bottomRow {
+  display: flex;
+  column-gap: 1vw;
+}
+
+.totalPatients,
+.totalEmployees,
+.totalAppointments,
+.totalInventory {
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  width: 25%;
+  height: 8vw;
+  column-gap: 5px;
+  border-radius: 8px;
+  box-shadow: $boxShadow;
+
+  .icon {
+    padding: 10px;
+    width: 70px;
+    height: 70px;
   }
 
-  .mainHeader {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 0px;
-    padding-left: 16vw;
+  .text {
+    text-align: left;
 
-    .mainTitle {
-      padding-top: 3vh;
-      padding-bottom: 2vh;
-      margin: 0;
-      font-size: 40px;
-      text-align: left;
-      font-family: 'Helvetica';
-      font-weight: 600;
-      color: white;
+    h1 {
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+
+    p {
+      margin-top: 0;
+      font-size: 0.75em;
+      width: 8vw;
     }
   }
+}
 
-  .mainBox {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: calc(100vw - 15vw);
-    height: calc(100vh - 80px);
-    padding-left: 15vw;
-    overflow: hidden;
-  }
+.recentAppointments {
+  width: 100%;
+}
 
-  .mainContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-y: scroll;
-  }
+.recentAppointments,
+.lowStockInventory,
+.expiringInventory {
+  height: 100%;
+  background: white;
+  border-radius: 8px;
+  box-shadow: $boxShadow;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin: 0 auto;
 
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  .mainContent::-webkit-scrollbar {
+  /* Hide scrollbar for Chrome, Safari */
+  &::-webkit-scrollbar {
     display: none;
   }
 
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .mainContent {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
+  /* Hide scrollbar for Firefox */
+  scrollbar-width: none;
 
-  .topRow {
-    display: flex;
-    width: $body-width;
-    column-gap: 1vw;
-    margin: 0;
-  }
+  /* Hide scrollbar for Internet Explorer/Edge */
+  -ms-overflow-style: none;
+}
 
-  .text,
-  .text h1,
-  .text p {
-    color: black;
-    text-align: center;
-  }
+.action-buttons {
+  display: flex;
+  gap: 8px;
 
-  .middleRow {
-    display: flex;
-    column-gap: 1vw;
-  }
-
-  .bottomRow {
-    display: flex;
-    column-gap: 1vw;
-  }
-
-  .totalPatients,
-  .totalEmployees,
-  .totalAppointments,
-  .totalInventory {
-    background-color: #ffffff;
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
     display: flex;
     align-items: center;
-    width: 25%;
-    height: 8vw;
-    column-gap: 5px;
-    border-radius: 8px;
-    box-shadow: $boxShadow;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    transition: background 0.2s ease-in-out;
 
-    .icon {
-      padding: 10px;
-      width: 70px;
-      height: 70px;
+    &:hover {
+      background: rgba(0, 0, 0, 0.1);
     }
 
-    .text {
-      text-align: left;
-
-      h1 {
-        margin-top: 10px;
-        margin-bottom: 0;
-      }
-
-      p {
-        margin-top: 0;
-        font-size: 0.75em;
-        width: 8vw;
-      }
+    iconify-icon {
+      color: black;
+      font-size: 18px;
     }
   }
+}
 
-  .recentAppointments {
-    width: 100%;
-  }
+.view-btn:hover {
+  background-color: lightblue;
+}
 
-  .recentAppointments,
-  .lowStockInventory,
-  .expiringInventory {
-    height: 100%;
-    background: white;
-    border-radius: 8px;
-    box-shadow: $boxShadow;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    margin: 0 auto;
+.edit-btn:hover {
+  background-color: yellow;
+}
 
-    /* Hide scrollbar for Chrome, Safari */
-    &::-webkit-scrollbar {
-      display: none;
-    }
+.delete-btn:hover {
+  background-color: red;
+  opacity: 0.8;
+}
 
-    /* Hide scrollbar for Firefox */
-    scrollbar-width: none;
+.dashboard-row {
+  width: $body-width;
+  flex-direction: row;
+  display: flex;
+  gap: 10px;
+}
 
-    /* Hide scrollbar for Internet Explorer/Edge */
-    -ms-overflow-style: none;
-  }
+.lowStockInventory,
+.expiringInventory {
+  flex: 1; // Make them grow equally
+  min-width: 0; // Prevent overflow issues
+}
 
-  .action-buttons {
-    display: flex;
-    gap: 8px;
+.dashboard-tables {
+  width: $body-width;
 
-    button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 5px;
-      transition: background 0.2s ease-in-out;
+  height: 60vh;
+}
 
-      &:hover {
-        background: rgba(0, 0, 0, 0.1);
-      }
+.dashboard-row label {
+  margin: auto;
+}
 
-      iconify-icon {
-        color: black;
-        font-size: 18px;
-      }
-    }
-  }
+.mainContent {
+  padding: 0;
+  padding-bottom: 1rem;
+}
 
-  .view-btn:hover {
-    background-color: lightblue;
-  }
+.dashboard-row > div > label,
+.dashboard-row > label {
+  color: white;
+  font-weight: 600;
+  font-size: 1.25rem;
+  align-self: flex-start;
+  padding: 10px 0 10px;
+}
 
-  .edit-btn:hover {
-    background-color: yellow;
-  }
-
-  .delete-btn:hover {
-    background-color: red;
-    opacity: 0.8;
-  }
-
-  .dashboard-row {
-    width: $body-width;
-    flex-direction: row;
-    display: flex;
-    gap: 10px;
-  }
-
-  .lowStockInventory,
-  .expiringInventory {
-    flex: 1; // Make them grow equally
-    min-width: 0; // Prevent overflow issues
-  }
-
-  .dashboard-tables {
-    width: $body-width;
-
-    height: 60vh;
-  }
-
-  .dashboard-row label {
-    margin: auto;
-  }
-
-  .mainContent {
-    padding: 0;
-    padding-bottom: 1rem;
-  }
-
-  .dashboard-row > div > label,
-  .dashboard-row > label {
-    color: white;
-    font-weight: 600;
-    font-size: 1.25rem;
-    align-self: flex-start;
-    padding: 10px 0 10px;
-  }
-
-  .dashboard-label {
-    width: 50%;
-  }
+.dashboard-label {
+  width: 50%;
+}
 
 .searchBar {
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 87%;
   padding: 0 1rem;
-  margin-bottom: 1rem;
+  gap: 10px;
+}
 
-  .button-group {
-    display: flex;
-    gap: 10px;
-  }
+.table-buttons {
+  display: inline-flex;
+  gap: 10px;
+  height: 40px;
+  width: 30%;
+}
+
+.table-button {
+  background-color: white;
+  color: black;
+  width: 50%;
+  align-items: center;
+  text-transform: capitalize;
+}
+
+.table-buttons-users {
+  width: 15%;
+}
+
+.table-buttons-users > .table-button {
+  width: 100%;
+}
+
+.search-bar-container {
+  height: 40px;
+  width: 70%;
+}
+
+.search-bar-users > .search-bar-container {
+  width: 85%;
+}
+
+.search-input-container {
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
 }

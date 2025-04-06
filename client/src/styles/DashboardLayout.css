@@ -248,13 +248,48 @@ iconify-icon {
 
 .searchBar {
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 87%;
   padding: 0 1rem;
-  margin-bottom: 1rem;
-}
-.searchBar .button-group {
-  display: flex;
   gap: 10px;
+}
+
+.table-buttons {
+  display: inline-flex;
+  gap: 10px;
+  height: 40px;
+  width: 30%;
+}
+
+.table-button {
+  background-color: white;
+  color: black;
+  width: 50%;
+  align-items: center;
+  text-transform: capitalize;
+}
+
+.table-buttons-users {
+  width: 15%;
+}
+
+.table-buttons-users > .table-button {
+  width: 100%;
+}
+
+.search-bar-container {
+  height: 40px;
+  width: 70%;
+}
+
+.search-bar-users > .search-bar-container {
+  width: 85%;
+}
+
+.search-input-container {
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
 }/*# sourceMappingURL=DashboardLayout.css.map */
