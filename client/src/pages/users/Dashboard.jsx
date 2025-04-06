@@ -296,7 +296,7 @@ const Dashboard = () => {
         </div>
 
         <div className="dashboard-tables dashboard-row">
-          <label>Recent Appointments</label>
+          <label>Upcoming Appointments</label>
         </div>
 
         <div className="dashboard-tables dashboard-row">
@@ -304,7 +304,7 @@ const Dashboard = () => {
             <div>
               <DataTable
                 columns={recentAppointmentsTable}
-                data={appointments}
+                data={mostRecentAppointments}
                 customStyles={customStyles}
               />
             </div>
