@@ -81,7 +81,7 @@ const PatientForm = () => {
           lastName: personData.last_name || "",
           gender: personData.gender || "",
           dateOfBirth: personData.date_of_birth
-            ? new Date(personData.date_of_birth)
+            ? formatDate(new Date(personData.date_of_birth))
             : null,
           contactNo: personData.contact_no || "",
           address: personData.address || "",
@@ -302,6 +302,12 @@ const PatientForm = () => {
               <label>Medical History:</label>
               <textarea
                 {...register("medicalHistory")}
+                disabled={!isEditing && !isCreating}
+              />
+
+              <label>Family History:</label>
+              <textarea
+                {...register("familyHistory")}
                 disabled={!isEditing && !isCreating}
               />
 

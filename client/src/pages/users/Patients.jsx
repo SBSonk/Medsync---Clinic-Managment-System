@@ -55,8 +55,9 @@ const Patients = () => {
       text === ""
         ? patients
         : patients.filter((patient) => {
-            const fullName =
-              `${patient.person.first_name} ${patient.person.last_name}`.toLowerCase();
+            const fullName = patient.person
+              ? `${patient.person.first_name} ${patient.person.last_name}`.toLowerCase()
+              : ""; // Fallback to an empty string if person is undefined
             return (
               fullName.includes(text.toLowerCase()) ||
               (patient.allergies || "")

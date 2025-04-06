@@ -25,6 +25,7 @@ const Dashboard = () => {
   const [patients, setPatients] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [appointments, setAppointments] = useState([]);
+  const [mostRecentAppointments, setMostRecentAppointments] = useState([]);
   const [inventory, setInventory] = useState([]);
   const [lowStockInventory, setLowStockInventory] = useState([]);
   const [expiringInventory, setExpiringInventory] = useState([]);
@@ -131,12 +132,12 @@ const Dashboard = () => {
           }
         );
 
-        setUserName(response.data['username']);
+        setUserName(response.data["username"]);
       } catch (error) {
-        setUserName('err');
+        setUserName("err");
         console.error("Error username Inventory:", error);
       }
-    }
+    };
 
     fetchUsername();
     fetchPatients();
@@ -150,7 +151,7 @@ const Dashboard = () => {
       name: "Type",
       selector: (row) => row.type,
       width: "15%",
-      center: true
+      center: true,
     },
     {
       name: "Patient ID",
@@ -180,7 +181,7 @@ const Dashboard = () => {
       name: "Note",
       selector: (row) => row.note,
       width: "15%",
-      center: true
+      center: true,
     },
   ];
 
@@ -201,17 +202,17 @@ const Dashboard = () => {
       name: "ID",
       selector: (row) => row.id,
       width: "10%",
-      center: true
+      center: true,
     },
     {
       name: "Name",
       selector: (row) => row.name,
-      center: true
+      center: true,
     },
     {
       name: "Type",
       selector: (row) => row.type,
-      center: true
+      center: true,
     },
     {
       name: "Quantity",
