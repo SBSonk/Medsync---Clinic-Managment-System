@@ -58,14 +58,13 @@ function Sidebar() {
               </NavLink>
               <NavLink
                 to="/admin/users"
-                className={isActive("/admin/users") ? "activeLink" : ""}
               >
                 <iconify-icon icon="lucide:users"></iconify-icon>
                 Users
               </NavLink>
               <NavLink
                 to="/admin/people"
-                className={isActive("/admin/people") ? "activeLink" : ""}
+                className={isActive("/admin/people") || isActive("/create/person") || isActive("/edit-person/:id") ? "activeLink" : ""}
               >
                 <iconify-icon icon="mdi:account"></iconify-icon>
                 People
@@ -73,28 +72,28 @@ function Sidebar() {
 
               <NavLink
                 to="/admin/employees"
-                className={isActive("/admin/employees") ? "activeLink" : ""}
+                className={isActive("/admin/employees") || isActive("/create/employee") || isActive("/edit-employee/:id") ? "activeLink" : ""}
               >
                 <iconify-icon icon="hugeicons:doctor-03"></iconify-icon>
                 Employees
               </NavLink>
               <NavLink
                 to="/admin/patients"
-                className={isActive("/admin/patients") ? "activeLink" : ""}
+                className={isActive("/admin/patients") || isActive("/create/patient") || isActive("/edit-patient/:id") ? "activeLink" : ""}
               >
                 <iconify-icon icon="hugeicons:patient"></iconify-icon>
                 Patients
               </NavLink>
               <NavLink
                 to="/admin/appointments"
-                className={isActive("/admin/appointments") ? "activeLink" : ""}
+                className={isActive("/admin/appointments") || isActive("/create/appointment") || isActive("/edit-appointment/:id") ? "activeLink" : ""}
               >
                 <iconify-icon icon="la:calendar"></iconify-icon>
                 Appointments
               </NavLink>
               <NavLink
                 to="/admin/inventory"
-                className={isActive("/admin/inventory") ? "activeLink" : ""}
+                className={isActive("/admin/inventory")  || isActive("/create/inventory") || isActive("/edit-inventory-item/:id") ? "activeLink" : ""}
               >
                 <iconify-icon icon="ph:package"></iconify-icon>
                 Inventory
@@ -102,7 +101,6 @@ function Sidebar() {
               <NavLink
                 to="#"
                 onClick={handleLogout}
-                className={({ isActive }) => (isActive ? "activeLink" : "")}
               >
                 <iconify-icon icon="material-symbols:logout"></iconify-icon>
                 Logout
@@ -118,7 +116,6 @@ function Sidebar() {
               </NavLink>
               <NavLink
                 to="/employee/dashboard"
-                className={isActive("/employee/dashboard") ? "activeLink" : ""}
               >
                 <iconify-icon icon="clarity:dashboard-line"></iconify-icon>
                 Dashboard
@@ -149,7 +146,6 @@ function Sidebar() {
               <NavLink
                 to="#"
                 onClick={handleLogout}
-                className={({ isActive }) => (isActive ? "activeLink" : "")}
               >
                 <iconify-icon icon="material-symbols:logout"></iconify-icon>
                 Logout
