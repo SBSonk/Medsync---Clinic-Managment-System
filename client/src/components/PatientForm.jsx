@@ -188,92 +188,90 @@ const PatientForm = () => {
 
   return (
     <MainLayout title={isCreating ? "Create Patient" : "Edit Patient"}>
-      <div className="mainContent">
-        <div className="formContainer">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <label>Select Person:</label>
-            <select
-              value={selectedPersonID || ""}
-              onChange={(e) => setSelectedPersonID(e.target.value)}
-              disabled={!isCreating} // Prevent changing person while editing
-            >
-              <option value="">-- Select Person --</option>
-              {people.map((person) => (
-                <option key={person.id} value={person.id}>
-                  {person.first_name} {person.last_name}
-                </option>
-              ))}
-            </select>
+      <div className="formContainer">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label>Select Person:</label>
+          <select
+            value={selectedPersonID || ""}
+            onChange={(e) => setSelectedPersonID(e.target.value)}
+            disabled={!isCreating} // Prevent changing person while editing
+          >
+            <option value="">-- Select Person --</option>
+            {people.map((person) => (
+              <option key={person.id} value={person.id}>
+                {person.first_name} {person.last_name}
+              </option>
+            ))}
+          </select>
 
-            <label>Height:</label>
-            <input
-              type="text"
-              {...register("height")}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Height:</label>
+          <input
+            type="text"
+            {...register("height")}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Weight:</label>
-            <input
-              type="text"
-              {...register("weight")}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Weight:</label>
+          <input
+            type="text"
+            {...register("weight")}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Blood Type:</label>
-            <input
-              type="text"
-              {...register("bloodType")}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Blood Type:</label>
+          <input
+            type="text"
+            {...register("bloodType")}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Allergies:</label>
-            <input
-              type="text"
-              {...register("allergies")}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Allergies:</label>
+          <input
+            type="text"
+            {...register("allergies")}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Medical History:</label>
-            <input
-              type="text"
-              {...register("medicalHistory")}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Medical History:</label>
+          <input
+            type="text"
+            {...register("medicalHistory")}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Family History:</label>
-            <input
-              type="text"
-              {...register("familyHistory")}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Family History:</label>
+          <input
+            type="text"
+            {...register("familyHistory")}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Emergency Contact:</label>
-            <input
-              type="text"
-              {...register("emergencyContact")}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Emergency Contact:</label>
+          <input
+            type="text"
+            {...register("emergencyContact")}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Relation:</label>
-            <input
-              type="text"
-              {...register("emergencyRelation")}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Relation:</label>
+          <input
+            type="text"
+            {...register("emergencyRelation")}
+            disabled={!isEditing && !isCreating}
+          />
 
-            {isCreating ? (
-              <button type="submit">Create Patient</button>
-            ) : (
-              <>
-                <button type="button" onClick={() => setIsEditing(!isEditing)}>
-                  {isEditing ? "Cancel" : "Edit"}
-                </button>
+          {isCreating ? (
+            <button type="submit">Create Patient</button>
+          ) : (
+            <>
+              <button type="button" onClick={() => setIsEditing(!isEditing)}>
+                {isEditing ? "Cancel" : "Edit"}
+              </button>
 
-                {isEditing && <button type="submit">Save Changes</button>}
-              </>
-            )}
-          </form>
-        </div>
+              {isEditing && <button type="submit">Save Changes</button>}
+            </>
+          )}
+        </form>
       </div>
     </MainLayout>
   );

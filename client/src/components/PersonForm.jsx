@@ -106,71 +106,69 @@ const PersonForm = () => {
 
   return (
     <MainLayout title={isCreating ? "Create Person" : "Edit Person"}>
-      <div className="mainContent">
-        <div className="formContainer">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <label>First Name:</label>
-            <input
-              type="text"
-              {...register("first_name", { required: true, maxLength: 50 })}
-              disabled={!isEditing && !isCreating}
-            />
+      <div className="formContainer">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label>First Name:</label>
+          <input
+            type="text"
+            {...register("first_name", { required: true, maxLength: 50 })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Last Name:</label>
-            <input
-              type="text"
-              {...register("last_name", { required: true, maxLength: 50 })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Last Name:</label>
+          <input
+            type="text"
+            {...register("last_name", { required: true, maxLength: 50 })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Gender:</label>
-            <select
-              {...register("gender", { required: true })}
-              disabled={!isEditing && !isCreating}
-            >
-              <option value="MALE">Male</option>
-              <option value="FEMALE">Female</option>
-              <option value="NON_BINARY">Non-Binary</option>
-              <option value="OTHER">Other</option>
-            </select>
+          <label>Gender:</label>
+          <select
+            {...register("gender", { required: true })}
+            disabled={!isEditing && !isCreating}
+          >
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+            <option value="NON_BINARY">Non-Binary</option>
+            <option value="OTHER">Other</option>
+          </select>
 
-            <label>Date of Birth:</label>
-            <DatePicker
-              selected={watch("date_of_birth")}
-              onChange={(date) => setValue("date_of_birth", date)}
-              dateFormat="dd-MM-yyyy"
-              showMonthDropdown
-              showYearDropdown
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Date of Birth:</label>
+          <DatePicker
+            selected={watch("date_of_birth")}
+            onChange={(date) => setValue("date_of_birth", date)}
+            dateFormat="dd-MM-yyyy"
+            showMonthDropdown
+            showYearDropdown
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Contact Number:</label>
-            <input
-              type="text"
-              {...register("contact_no", { required: true, maxLength: 31 })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Contact Number:</label>
+          <input
+            type="text"
+            {...register("contact_no", { required: true, maxLength: 31 })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Address:</label>
-            <input
-              type="text"
-              {...register("address", { required: true, maxLength: 255 })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Address:</label>
+          <input
+            type="text"
+            {...register("address", { required: true, maxLength: 255 })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            {isCreating ? (
-              <button type="submit">Create Person</button>
-            ) : (
-              <>
-                <button type="button" onClick={() => setIsEditing(!isEditing)}>
-                  {isEditing ? "Cancel" : "Edit"}
-                </button>
+          {isCreating ? (
+            <button type="submit">Create Person</button>
+          ) : (
+            <>
+              <button type="button" onClick={() => setIsEditing(!isEditing)}>
+                {isEditing ? "Cancel" : "Edit"}
+              </button>
 
-                {isEditing && <button type="submit">Save Changes</button>}
-              </>
-            )}
-          </form>
-        </div>
+              {isEditing && <button type="submit">Save Changes</button>}
+            </>
+          )}
+        </form>
       </div>
     </MainLayout>
   );
