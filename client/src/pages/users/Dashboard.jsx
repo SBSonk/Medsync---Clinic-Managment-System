@@ -44,6 +44,16 @@ function formatDateTime(dateStr) {
   return date.toLocaleString("en-US", options);
 }
 
+function formatDate(dateStr) {
+  const date = new Date(dateStr);
+  const options = {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  };
+  return date.toLocaleString("en-US", options);
+}
+
 const Dashboard = () => {
   const auth = useAuth();
   const lowStockThreshhold = 25;
@@ -299,7 +309,7 @@ const Dashboard = () => {
     },
     {
       name: "Expiration Date",
-      selector: (row) => row.expiration_date,
+      selector: (row) => formatDate(row.expiration_date),
       center: true,
     },
   ];
