@@ -84,10 +84,7 @@ function App() {
               path="/edit-employee/:person_id"
               element={<EmployeeForm />}
             />
-            <Route
-              path="/edit-patient/:patient_id/:person_id"
-              element={<PatientForm />}
-            />
+            <Route path="/edit-patient/:patient_id" element={<PatientForm />} />
             <Route path="/edit-appointment/:id" element={<AppointmentForm />} />
             <Route
               path="/edit-inventory-item/:id"

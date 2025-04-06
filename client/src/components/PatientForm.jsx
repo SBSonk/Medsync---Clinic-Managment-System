@@ -1,25 +1,15 @@
 import React, { useEffect, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import DatePicker from "react-datepicker";
-import { Dropdown } from "primereact/Dropdown";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/FormLayout.css";
 import { useAuth } from "../AuthProvider";
 
-function formatDate(date) {
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
-  const day = String(date.getDate()).padStart(2, "0");
-  const year = date.getFullYear();
-
-  return `${day}-${month}-${year}`;
-}
-
 const PatientForm = () => {
   const auth = useAuth();
-  const navigate = UseNavigate();
+  const navigate = useNavigate();
   const { patient_id, person_id } = useParams(); // Use useParams to get the 'id' from the URL
   const { register, handleSubmit, setValue, watch } = useForm();
   const [isEditing, setIsEditing] = useState(false);
@@ -150,8 +140,6 @@ const PatientForm = () => {
           emergency_contact_person_id: data.emergencyContact,
           emergency_contact_relation: data.emergencyRelation,
         };
-
-        console.log(formatDate(data.dateOfBirth));
 
         const personData = {
           id: person_id,
