@@ -202,3 +202,21 @@ def get_inventory_info(inventory_id):
         }), 200
     else:
         return jsonify({'message': f'Inventory item with ID ({inventory_id}) not found.'}), 404
+
+@get.route('/api/get-appointment/<id>', methods=['GET'])
+@jwt_required()
+def get_appointment(id):
+    appointment = db.session.query(models.Appointment).filter_by(id=id).first()
+
+    if appointment is not None:
+        return jsonify({
+            'id': appointment.id,
+            'type': appointment.type,
+            'patient_id': appointment.patient_id,
+            'doctor_id': appointment.doctor_id,
+            'date_time': appointment.date_time,
+            'status': appointment.status,
+            'note': appointment.note
+        }), 200
+    else:
+        return jsonify({'message': f'Appointment item with ID ({id}) not found.'}), 404

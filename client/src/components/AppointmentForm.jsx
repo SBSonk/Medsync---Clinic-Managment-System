@@ -47,6 +47,7 @@ const AppointmentForm = () => {
           },
         });
         setPatients(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching Patients:", error);
       }
@@ -68,8 +69,24 @@ const AppointmentForm = () => {
       }
     };
 
+    const fetchPeople = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/people",
+          {
+            headers: {
+              Authorization: "Bearer " + auth.access_token,
+            },
+          }
+        );
+        setPeople(response.data);
+      } catch (error) {
+        console.error("Error fetching People:", error);
+      }
+    };
+
     const fetchAppointmentDetails = async () => {
-      if (!id) return; // Skip fetching if creating a new appointment
+      if (isCreating) return; // Skip fetching if creating a new appointment
 
       try {
         const response = await axios.get(
@@ -102,6 +119,7 @@ const AppointmentForm = () => {
       }
     };
 
+    fetchPeople();
     fetchPatients();
     fetchEmployees();
     fetchAppointmentDetails();
@@ -119,7 +137,7 @@ const AppointmentForm = () => {
           note: data.note,
         };
 
-        console.log(appointmentData);
+        console.log(newAppointment);
         // Update person data
         await axios.post(
           "http://localhost:8080/api/create-appointment",
@@ -176,13 +194,14 @@ const AppointmentForm = () => {
           >
             <option value="">-- Select Patient --</option>
             {patients.map((patient) => {
-              const person = people.find((p) => p.id === patient.person_id); // Find corresponding person
+              const person = people.find((p) => p.id === patient.person_id); 
               return (
                 <option key={patient.id} value={patient.id}>
-                  {person
-                    ? `${person.first_name} ${person.last_name}`
-                    : "Unknown"}{" "}
-                  // Display name or fallback
+                  {
+                  person ? 
+                  `${person.first_name} ${person.last_name}`
+                    : "Unknown"}{ " "}
+                  {/* // Display name or fallback */}
                 </option>
               );
             })}
@@ -203,7 +222,8 @@ const AppointmentForm = () => {
                   {person
                     ? `${person.first_name} ${person.last_name}`
                     : "Unknown"}{" "}
-                  // Display name or fallback
+
+                    {" | "+ facultyMember.occupation}
                 </option>
               );
             })}

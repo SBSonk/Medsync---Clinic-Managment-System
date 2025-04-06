@@ -98,9 +98,9 @@ const Appointments = () => {
           }
         );
         alert("Appointment deleted successfully!");
-        setAppointments(
-          appointments.filter((appointment) => appointment.id !== id)
-        ); // Update the UI
+        const updatedAppointments = appointments.filter((appointment) => appointment.id !== id);
+        setAppointments(updatedAppointments);
+        setFilteredAppointments(updatedAppointments);
       } catch (error) {
         console.error("Error deleting appointment:", error);
         alert("Failed to delete appointment...");
@@ -129,7 +129,7 @@ const Appointments = () => {
     fetchAppointments();
 
     setIsAdmin(auth.role === "admin");
-  }, [appointments]);
+  }, []);
 
   const columns = [
     {
