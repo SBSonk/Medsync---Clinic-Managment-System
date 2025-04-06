@@ -244,4 +244,17 @@ iconify-icon {
 
 .dashboard-label {
   width: 50%;
+}
+
+.searchBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+}
+.searchBar .button-group {
+  display: flex;
+  gap: 10px;
 }/*# sourceMappingURL=DashboardLayout.css.map */

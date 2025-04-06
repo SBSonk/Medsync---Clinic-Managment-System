@@ -51,6 +51,7 @@ const Dashboard = () => {
   const [patients, setPatients] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [appointments, setAppointments] = useState([]);
+  const [mostRecentAppointments, setMostRecentAppointments] = useState([]);
   const [inventory, setInventory] = useState([]);
   const [lowStockInventory, setLowStockInventory] = useState([]);
   const [expiringInventory, setExpiringInventory] = useState([]);
