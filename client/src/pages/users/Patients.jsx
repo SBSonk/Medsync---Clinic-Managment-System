@@ -255,8 +255,14 @@ const Patients = () => {
           onChange={(e) => handleSearchInputChange(e.target.value)}
           value={searchQuery}
         ></SearchBar>
-        <button onClick={handleCreatePatient}>Add new patient</button>
-        <button onClick={handleReport}>Print table report</button>
+        <div className="table-buttons">
+          <button className="table-button" onClick={handleCreatePatient}>
+            Add patient
+          </button>
+          <button className="table-button" onClick={handleReport}>
+            Print table report
+          </button>
+        </div>
       </div>
       <div className="mainContent">
         <div className="table-container">

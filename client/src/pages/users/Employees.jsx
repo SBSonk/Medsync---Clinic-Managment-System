@@ -113,8 +113,7 @@ const Employees = () => {
               `http://localhost:8080/api/get-person-info/${employee.person_id}`,
               {
                 headers: {
-                  Authorization:
-                    "Bearer " + auth.access_token,
+                  Authorization: "Bearer " + auth.access_token,
                 },
               }
             );
@@ -216,8 +215,14 @@ const Employees = () => {
           onChange={(e) => handleSearchInputChange(e.target.value)}
           value={searchQuery}
         ></SearchBar>
-        <button onClick={handleCreateItem}>Add new employee</button>
-        <button onClick={handleReport}>Print table report</button>
+        <div className="table-buttons">
+          <button className="table-button" onClick={handleCreateItem}>
+            Add employee
+          </button>
+          <button className="table-button" onClick={handleReport}>
+            Print table report
+          </button>
+        </div>
       </div>
       <div className="mainContent">
         <div className="table-container">

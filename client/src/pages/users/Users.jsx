@@ -143,12 +143,16 @@ const Users = () => {
 
   return (
     <MainLayout title="Users">
-      <div className="searchBar">
+      <div className="searchBar search-bar-users">
         <SearchBar
           onChange={(e) => handleSearchInputChange(e.target.value)}
           value={searchQuery}
         ></SearchBar>
-        <button onClick={handleCreateUser}>Add new user</button>
+        <div className="table-buttons table-buttons-users">
+          <button className="table-button" onClick={handleCreateUser}>
+            Add new user
+          </button>
+        </div>
       </div>
       <div className="mainContent">
         <div className="table-container">

@@ -36,6 +36,19 @@ const exportToPDF = (columns, data) => {
   doc.save(`Appointments Report - ${fileNameDate}.pdf`);
 };
 
+function formatDateTime(dateStr) {
+  const date = new Date(dateStr);
+  const options = {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true
+  };
+  return date.toLocaleString("en-US", options);
+}
+
 const Appointments = () => {
   const auth = useAuth();
   const [appointments, setAppointments] = useState([]);
@@ -148,11 +161,8 @@ const Appointments = () => {
       sortable: true,
     },
     {
-      name: "Date and Time",
-      selector: (row) => {
-        const dateTime = new Date(row.date_time);
-        return `${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString()}`;
-      },
+      name: "Date/Time",
+      selector: (row) => formatDateTime(row.date_time ),
       width: "20%",
       center: true,
       sortable: true,
@@ -213,8 +223,14 @@ const Appointments = () => {
           onChange={(e) => handleSearchInputChange(e.target.value)}
           value={searchQuery}
         ></SearchBar>
-        <button onClick={handleCreateAppointment}>Add new appointment</button>
-        <button onClick={handleReport}>Print table report</button>
+        <div className="table-buttons">
+          <button className="table-button" onClick={handleCreateAppointment}>
+            Book Appointment
+          </button>
+          <button className="table-button" onClick={handleReport}>
+            Print table report
+          </button>
+        </div>
       </div>
       <div className="mainContent">
         <div className="table-container">

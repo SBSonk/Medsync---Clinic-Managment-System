@@ -166,22 +166,21 @@ const EmployeeForm = () => {
 
   return (
     <MainLayout title={isCreating ? "Create Employee" : "Edit Employee"}>
-      <div className="mainContent">
-        <div className="formContainer">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <label>Select Person</label>
-            <select
-              value={selectedPersonID || ""}
-              onChange={(e) => setSelectedPersonID(e.target.value)}
-              disabled={!isCreating}
-            >
-              <option value="">-- Select Person --</option>
-              {people.map((person) => (
-                <option key={person.id} value={person.id}>
-                  {person.first_name} {person.last_name}
-                </option>
-              ))}
-            </select>
+      <div className="formContainer">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label>Select Person</label>
+          <select
+            value={selectedPersonID || ""}
+            onChange={(e) => setSelectedPersonID(e.target.value)}
+            disabled={!isCreating}
+          >
+            <option value="">-- Select Person --</option>
+            {people.map((person) => (
+              <option key={person.id} value={person.id}>
+                {person.first_name} {person.last_name}
+              </option>
+            ))}
+          </select>
 
             <label>Occupation:</label>
             <input
@@ -218,11 +217,10 @@ const EmployeeForm = () => {
                   {isEditing ? "Cancel" : "Edit"}
                 </button>
 
-                {isEditing && <button type="submit">Save Changes</button>}
-              </>
-            )}
-          </form>
-        </div>
+              {isEditing && <button type="submit">Save Changes</button>}
+            </>
+          )}
+        </form>
       </div>
     </MainLayout>
   );

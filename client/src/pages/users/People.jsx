@@ -36,6 +36,14 @@ const exportToPDF = (columns, data) => {
   doc.save(`People Report - ${fileNameDate}.pdf`);
 };
 
+function dateToStr(dateStr) {
+  const date = new Date(dateStr);
+  const options = { month: "short", day: "numeric", year: "numeric" };
+
+  const [month, day, year] = date.toLocaleDateString("en-US", options).split(" ");
+  return `${month.replace(",", "")}, ${day.replace(",", "")}, ${year}`;
+}
+
 const People = () => {
   const auth = useAuth();
   const navigate = useNavigate();
@@ -144,7 +152,7 @@ const People = () => {
     },
     {
       name: "Date of Birth",
-      selector: (row) => row.date_of_birth,
+      selector: (row) => dateToStr(row.date_of_birth),
       width: "10%",
       sortable: true,
       center: true,
@@ -205,8 +213,14 @@ const People = () => {
           onChange={(e) => handleSearchInputChange(e.target.value)}
           value={searchQuery}
         ></SearchBar>
-        <button onClick={handleCreatePerson}>Add new person</button>
-        <button onClick={handleReport}>Print table report</button>
+        <div className="table-buttons">
+          <button className="table-button" onClick={handleCreatePerson}>
+            Add person
+          </button>
+          <button className="table-button" onClick={handleReport}>
+            Print table report
+          </button>
+        </div>
       </div>
       <div className="mainContent">
         <div className="table-container">

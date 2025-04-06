@@ -17,6 +17,32 @@ const customStyles = {
   },
 };
 
+function getUpcomingAppointments(data) {
+  const now = new Date();
+
+  return data
+    .map((item) => ({
+      ...item,
+      dateObj: new Date(item.date_time),
+    }))
+    .filter((item) => item.dateObj >= now)
+    .sort((a, b) => a.dateObj - b.dateObj)
+    .slice(0, 5);
+}
+
+function formatDateTime(dateStr) {
+  const date = new Date(dateStr);
+  const options = {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true
+  };
+  return date.toLocaleString("en-US", options);
+}
+
 const Dashboard = () => {
   const auth = useAuth();
   const lowStockThreshhold = 25;
@@ -77,11 +103,10 @@ const Dashboard = () => {
 
         setAppointments(appointments);
 
-        const sortedAppointments = appointments
-          .filter((app) => new Date(app.date) >= new Date()) // keep only upcoming
-          .sort((a, b) => new Date(a.date) - new Date(b.date)); // sort by nearest
 
-        setMostRecentAppointments(sortedAppointments.slice(0, 5));
+        const sortedAppointments = getUpcomingAppointments(appointments)
+
+        setMostRecentAppointments(sortedAppointments);
       } catch (error) {
         console.error("Error fetching Appointments:", error);
       }
@@ -167,8 +192,8 @@ const Dashboard = () => {
     },
     {
       name: "Date/Time",
-      selector: (row) => row.date_time,
-      width: "20%",
+      selector: (row) => formatDateTime(row.date_time),
+      width: "15%",
       center: true,
     },
     {
