@@ -71,14 +71,11 @@ const AppointmentForm = () => {
 
     const fetchPeople = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/api/people",
-          {
-            headers: {
-              Authorization: "Bearer " + auth.access_token,
-            },
-          }
-        );
+        const response = await axios.get("http://localhost:8080/api/people", {
+          headers: {
+            Authorization: "Bearer " + auth.access_token,
+          },
+        });
         setPeople(response.data);
       } catch (error) {
         console.error("Error fetching People:", error);
@@ -194,13 +191,12 @@ const AppointmentForm = () => {
           >
             <option value="">-- Select Patient --</option>
             {patients.map((patient) => {
-              const person = people.find((p) => p.id === patient.person_id); 
+              const person = people.find((p) => p.id === patient.person_id);
               return (
                 <option key={patient.id} value={patient.id}>
-                  {
-                  person ? 
-                  `${person.first_name} ${person.last_name}`
-                    : "Unknown"}{ " "}
+                  {person
+                    ? `${person.first_name} ${person.last_name}`
+                    : "Unknown"}{" "}
                   {/* // Display name or fallback */}
                 </option>
               );
@@ -220,10 +216,8 @@ const AppointmentForm = () => {
               return (
                 <option key={facultyMember.id} value={facultyMember.id}>
                   {person
-                    ? `${person.first_name} ${person.last_name}`
-                    : "Unknown"}{" "}
-
-                    {" | "+ facultyMember.occupation}
+                    ? `${person.first_name} ${person.last_name} | ${facultyMember.occupation}`
+                    : "Unknown"}
                 </option>
               );
             })}
