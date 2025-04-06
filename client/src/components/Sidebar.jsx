@@ -58,7 +58,6 @@ function Sidebar() {
               </NavLink>
               <NavLink
                 to="/admin/users"
-                className={isActive("/admin/users") ? "activeLink" : ""}
               >
                 <iconify-icon icon="lucide:users"></iconify-icon>
                 Users
@@ -102,7 +101,6 @@ function Sidebar() {
               <NavLink
                 to="#"
                 onClick={handleLogout}
-                className={({ isActive }) => (isActive ? "activeLink" : "")}
               >
                 <iconify-icon icon="material-symbols:logout"></iconify-icon>
                 Logout
@@ -118,7 +116,6 @@ function Sidebar() {
               </NavLink>
               <NavLink
                 to="/employee/dashboard"
-                className={isActive("/employee/dashboard") ? "activeLink" : ""}
               >
                 <iconify-icon icon="clarity:dashboard-line"></iconify-icon>
                 Dashboard
@@ -149,7 +146,6 @@ function Sidebar() {
               <NavLink
                 to="#"
                 onClick={handleLogout}
-                className={({ isActive }) => (isActive ? "activeLink" : "")}
               >
                 <iconify-icon icon="material-symbols:logout"></iconify-icon>
                 Logout
