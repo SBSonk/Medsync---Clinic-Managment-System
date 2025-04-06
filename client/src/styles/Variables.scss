@@ -1,4 +1,4 @@
-$primaryBg: #0a0a4a;
+$primaryBg: white;
 $secondary-color: #e0e0e0;
 $button-dark: #222; // Changed from full black for better contrast
 $button-light: #fff;
@@ -11,7 +11,7 @@ html {
   width: 100%;
   margin: 0;
   padding: 0;
-  background-color: $primaryBg; // Ensures full background coverage
+  // background-color: $primaryBg; // Ensures full background coverage
   overflow: hidden;
   position: fixed;
 }
