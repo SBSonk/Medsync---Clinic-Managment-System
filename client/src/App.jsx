@@ -65,6 +65,13 @@ function App() {
           <>
             {" "}
             {/* ADMIN ROUTES */}
+            <Route path="/admin/users" element={<Users />} />
+            <Route path="/admin/dashboard" element={<Dashboard />} />
+            <Route path="/admin/people" element={<People />} />
+            <Route path="/admin/patients" element={<Patients />} />
+            <Route path="/admin/employees" element={<Employees />} />
+            <Route path="/admin/appointments" element={<Appointments />} />
+            <Route path="/admin/inventory" element={<Inventory />} />
             <Route path="/create/patient" element={<PatientForm />} />
             <Route path="/create/person" element={<PersonForm />} />
             <Route path="/create/user" element={<UserForm />} />
@@ -72,7 +79,7 @@ function App() {
             <Route path="/create/inventory" element={<InventoryForm />} />
             <Route path="/create/appointment" element={<AppointmentForm />} />
             <Route path="/edit-user/:id" element={<UserForm />} />
-            <Route path="/update-user/:id" element={<UserForm />} />
+            <Route path="/edit-person/:id" element={<PersonForm />} />
             <Route
               path="/edit-employee/:person_id"
               element={<EmployeeForm />}
@@ -86,13 +93,6 @@ function App() {
               path="/edit-inventory-item/:id"
               element={<InventoryForm />}
             />
-            <Route path="/admin/users" element={<Users />} />
-            <Route path="/admin/dashboard" element={<Dashboard />} />
-            <Route path="/admin/people" element={<People />} />
-            <Route path="/admin/patients" element={<Patients />} />
-            <Route path="/admin/employees" element={<Employees />} />
-            <Route path="/admin/appointments" element={<Appointments />} />
-            <Route path="/admin/inventory" element={<Inventory />} />
           </>
         ) : (
           <>

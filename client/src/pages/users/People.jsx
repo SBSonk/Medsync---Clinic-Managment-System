@@ -49,10 +49,10 @@ const People = () => {
       text === ""
         ? people
         : people.filter(
-            (patients) =>
-              patients.gender.toLowerCase().includes(text.toLowerCase()) ||
-              patients.last_name.toLowerCase().includes(text.toLowerCase()) ||
-              patients.first_name.toLowerCase().includes(text.toLowerCase())
+            (people) =>
+              people.gender.toLowerCase().includes(text.toLowerCase()) ||
+              people.last_name.toLowerCase().includes(text.toLowerCase()) ||
+              people.first_name.toLowerCase().includes(text.toLowerCase())
           );
     setFilteredPeople(filtered);
   };
@@ -61,12 +61,42 @@ const People = () => {
     navigate("/create/person");
   };
 
+  const handleEdit = (id) => {
+    navigate(`/edit-person/${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete person ID: "${id}"?`
+    );
+    if (!confirmDelete) return;
+
+    try {
+      console.log("Deleting person ID:", id);
+      await axios.delete(`http://localhost:8080/api/delete-person/${id}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+      });
+
+      // Update state to remove the deleted item
+      const updatedPeople = people.filter((person) => person.id !== id);
+      setPeople(updatedPeople);
+      setFilteredPeople(updatedPeople);
+
+      alert(`Person deleted successfully!`);
+    } catch (error) {
+      console.error("Error during deletion:", error);
+      alert("Failed to delete person.");
+    }
+  };
+
   const handleReport = () => {
     exportToPDF(columns, filteredPeople);
   };
 
   useEffect(() => {
-    const fetchPatients = async () => {
+    const fetchPeople = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/people", {
           headers: {
@@ -76,11 +106,11 @@ const People = () => {
         setPeople(response.data);
         setFilteredPeople(response.data);
       } catch (error) {
-        console.error("Error fetching Patients:", error);
+        console.error("Error fetching People:", error);
       }
     };
 
-    fetchPatients();
+    fetchPeople();
   }, []);
 
   const columns = [
@@ -137,15 +167,12 @@ const People = () => {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
-          <Link to="/edit/${row.id}">
-            <button className="edit-btn">
+          <Link to={`/edit-person/${row.id}`}>
+            <button className="edit-btn" onClick={() => handleEdit(row.id)}>
               <iconify-icon icon="mdi:pencil"></iconify-icon>
             </button>
           </Link>
-          <button
-            className="delete-btn"
-            onClick={() => alert(`Deleting ${row.name}`)}
-          >
+          <button className="delete-btn" onClick={() => handleDelete(row.id)}>
             <iconify-icon icon="mdi:trash-can"></iconify-icon>
           </button>
         </div>

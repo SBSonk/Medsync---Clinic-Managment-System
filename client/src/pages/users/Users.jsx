@@ -57,7 +57,7 @@ const Users = () => {
       setUser(updatedUser);
       setFilteredUser(updatedUser);
     } catch (error) {
-      // alert("Failed to delete user.");
+      alert("Failed to delete user.");
     }
   };
 
