@@ -112,77 +112,75 @@ const InventoryForm = () => {
     <MainLayout
       title={isCreating ? "Create Inventory Item" : "Edit Inventory Item"}
     >
-      <div className="mainContent">
-        <div className="formContainer">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <label>Batch ID:</label>
-            <input
-              type="number"
-              {...register("batch_id", { required: true, maxLength: 50 })}
-              disabled={!isEditing && !isCreating}
-            />
+      <div className="formContainer">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label>Batch ID:</label>
+          <input
+            type="number"
+            {...register("batch_id", { required: true, maxLength: 50 })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Name:</label>
-            <input
-              type="text"
-              {...register("name", { required: true, maxLength: 50 })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Name:</label>
+          <input
+            type="text"
+            {...register("name", { required: true, maxLength: 50 })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Type:</label>
-            <input
-              type="text"
-              {...register("type", { required: true, maxLength: 50 })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Type:</label>
+          <input
+            type="text"
+            {...register("type", { required: true, maxLength: 50 })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Quantity:</label>
-            <input
-              type="number"
-              {...register("quantity", { required: true })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Quantity:</label>
+          <input
+            type="number"
+            {...register("quantity", { required: true })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Expiration Date:</label>
-            <DatePicker
-              selected={watch("expiration_date")}
-              onChange={(date) => setValue("expiration_date", date)}
-              dateFormat="dd-MM-yyyy"
-              showMonthDropdown
-              showYearDropdown
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Expiration Date:</label>
+          <DatePicker
+            selected={watch("expiration_date")}
+            onChange={(date) => setValue("expiration_date", date)}
+            dateFormat="dd-MM-yyyy"
+            showMonthDropdown
+            showYearDropdown
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Supplier:</label>
-            <input
-              type="text"
-              {...register("supplier", { required: true, maxLength: 255 })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Supplier:</label>
+          <input
+            type="text"
+            {...register("supplier", { required: true, maxLength: 255 })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Supplier Contact:</label>
-            <input
-              type="text"
-              {...register("supplier_contact", {
-                required: true,
-                maxLength: 255,
-              })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Supplier Contact:</label>
+          <input
+            type="text"
+            {...register("supplier_contact", {
+              required: true,
+              maxLength: 255,
+            })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            {isCreating ? (
-              <button type="submit">Create Patient</button>
-            ) : (
-              <>
-                <button type="button" onClick={() => setIsEditing(!isEditing)}>
-                  {isEditing ? "Cancel" : "Edit"}
-                </button>
+          {isCreating ? (
+            <button type="submit">Create Patient</button>
+          ) : (
+            <>
+              <button type="button" onClick={() => setIsEditing(!isEditing)}>
+                {isEditing ? "Cancel" : "Edit"}
+              </button>
 
-                {isEditing && <button type="submit">Save Changes</button>}
-              </>
-            )}
-          </form>
-        </div>
+              {isEditing && <button type="submit">Save Changes</button>}
+            </>
+          )}
+        </form>
       </div>
     </MainLayout>
   );

@@ -4,7 +4,6 @@ html {
   width: 100%;
   margin: 0;
   padding: 0;
-  background-color: #0a0a4a;
   overflow: hidden;
   position: fixed;
 }
@@ -30,15 +29,16 @@ iconify-icon {
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 0px;
-  padding-left: 15vw;
+  padding-left: 16vw;
 }
 .mainHeader .mainTitle {
   padding-top: 3vh;
   padding-bottom: 2vh;
   margin: 0;
-  font-size: 35px;
+  font-size: 40px;
   text-align: left;
-  font-weight: 500;
+  font-family: "Helvetica";
+  font-weight: 600;
   color: white;
 }
 
@@ -73,7 +73,7 @@ iconify-icon {
 
 .topRow {
   display: flex;
-  width: 85%;
+  width: 87%;
   -moz-column-gap: 1vw;
        column-gap: 1vw;
   margin: 0;
@@ -229,7 +229,7 @@ iconify-icon {
 }
 
 .dashboard-row {
-  width: 85%;
+  width: 87%;
   flex-direction: row;
   display: flex;
   gap: 10px;
@@ -242,7 +242,7 @@ iconify-icon {
 }
 
 .dashboard-tables {
-  width: 85%;
+  width: 87%;
   height: 60vh;
 }
 
