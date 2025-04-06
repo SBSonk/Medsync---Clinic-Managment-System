@@ -179,7 +179,7 @@ def update_user():
         if 'username' in data:
             user.username = data['username']
 
-        if 'password' in data:
+        if 'password' in data and data['password'] != "********":
             user.set_password(data['password'])
 
         if 'role' in data:
@@ -188,7 +188,7 @@ def update_user():
         if 'security_question' in data:
             user.security_question = data['security_question']
 
-        if 'security_answer' in data:
+        if 'security_answer' in data and data['security_answer']:
             user.set_security_answer(data['security_answer'])
 
         db.session.commit()

@@ -40,6 +40,7 @@ const Inventory = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const searchParams = useSearchParams();
   const [isAdmin, setIsAdmin] = useState([]);
+  // const { access_token, role } = useContext(AuthProvider);
 
   const navigate = useNavigate();
 
