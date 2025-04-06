@@ -253,11 +253,14 @@ const Patients = () => {
 
   return (
     <MainLayout title="Patients">
-      <SearchBar
-        onChange={(e) => handleSearchInputChange(e.target.value)}
-        value={searchQuery}
-      ></SearchBar>
-      <button onClick={handleCreatePatient}>Add new patient</button>
+      <div className="searchBar">
+        <SearchBar
+          onChange={(e) => handleSearchInputChange(e.target.value)}
+          value={searchQuery}
+        ></SearchBar>
+        <button onClick={handleCreatePatient}>Add new patient</button>
+        <button onClick={handleReport}>Print table report</button>
+      </div>
       <div className="mainContent">
         <div className="table-container">
           <DataTable
@@ -267,7 +270,6 @@ const Patients = () => {
           />
         </div>
       </div>
-      <button onClick={handleReport}>Print table report</button>
     </MainLayout>
   );
 };

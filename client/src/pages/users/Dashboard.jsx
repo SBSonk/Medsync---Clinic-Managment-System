@@ -25,7 +25,6 @@ const Dashboard = () => {
   const [patients, setPatients] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [appointments, setAppointments] = useState([]);
-  const [mostRecentAppointments, setMostRecentAppointments] = useState([]);
   const [inventory, setInventory] = useState([]);
   const [lowStockInventory, setLowStockInventory] = useState([]);
   const [expiringInventory, setExpiringInventory] = useState([]);
@@ -147,23 +146,28 @@ const Dashboard = () => {
   }, []);
 
   const recentAppointmentsTable = [
-    { name: "Type", selector: (row) => row.type, width: "15%", center: true },
+    {
+      name: "Type",
+      selector: (row) => row.type,
+      width: "15%",
+      center: true
+    },
     {
       name: "Patient ID",
       selector: (row) => row.patient_id,
-      width: "15%",
+      width: "10%",
       center: true,
     },
     {
-      name: "Doctor ID",
+      name: "Doctor",
       selector: (row) => row.doctor_id,
-      width: "15%",
+      width: "25%",
       center: true,
     },
     {
       name: "Date/Time",
       selector: (row) => row.date_time,
-      width: "15%",
+      width: "20%",
       center: true,
     },
     {
@@ -172,7 +176,12 @@ const Dashboard = () => {
       width: "15%",
       center: true,
     },
-    { name: "Note", selector: (row) => row.note, width: "15%", center: true },
+    {
+      name: "Note",
+      selector: (row) => row.note,
+      width: "15%",
+      center: true
+    },
   ];
 
   const lowStockInventoryTable = [
@@ -188,13 +197,26 @@ const Dashboard = () => {
   ];
 
   const expiringInventoryTable = [
-    { name: "ID", selector: (row) => row.id, width: "10%", center: true },
-    { name: "Name", selector: (row) => row.name, center: true },
-    { name: "Type", selector: (row) => row.type, center: true },
+    {
+      name: "ID",
+      selector: (row) => row.id,
+      width: "10%",
+      center: true
+    },
+    {
+      name: "Name",
+      selector: (row) => row.name,
+      center: true
+    },
+    {
+      name: "Type",
+      selector: (row) => row.type,
+      center: true
+    },
     {
       name: "Quantity",
       selector: (row) => row.quantity,
-      width: "20%",
+      width: "15%",
       center: true,
     },
     {
@@ -202,63 +224,6 @@ const Dashboard = () => {
       selector: (row) => row.expiration_date,
       center: true,
     },
-  ];
-
-  const availableEmployeesTable = [
-    {
-      name: "Person ID",
-      selector: (row) => row.person_id,
-      width: "15%",
-      center: true,
-    },
-    {
-      name: "Occupation",
-      selector: (row) => row.occupation,
-      width: "15%",
-      center: true,
-    },
-    {
-      name: "Department",
-      selector: (row) => row.department,
-      width: "15%",
-      center: true,
-    },
-    {
-      name: "Schedule",
-      selector: (row) => row.schedule,
-      width: "15%",
-      center: true,
-    },
-  ];
-
-  const todaysAppointmentsTable = [
-    { name: "ID", selector: (row) => row.id, width: "10%", center: true },
-    { name: "Type", selector: (row) => row.type, width: "15%", center: true },
-    {
-      name: "Patient ID",
-      selector: (row) => row.patient_id,
-      width: "15%",
-      center: true,
-    },
-    {
-      name: "Doctor ID",
-      selector: (row) => row.doctor_id,
-      width: "15%",
-      center: true,
-    },
-    {
-      name: "Date/Time",
-      selector: (row) => row.date_time,
-      width: "15%",
-      center: true,
-    },
-    {
-      name: "Status",
-      selector: (row) => row.status,
-      width: "15%",
-      center: true,
-    },
-    { name: "Note", selector: (row) => row.note, width: "15%", center: true },
   ];
 
   return (
@@ -322,7 +287,6 @@ const Dashboard = () => {
 
         <div className="dashboard-tables dashboard-row">
           <div className="lowStockInventory">
-            <label>Low Stock Inventory</label>
             <DataTable
               columns={lowStockInventoryTable}
               data={lowStockInventory}
@@ -330,7 +294,6 @@ const Dashboard = () => {
             />
           </div>
           <div className="expiringInventory">
-            <label>Expiring Inventory</label>
             <DataTable
               columns={expiringInventoryTable}
               data={expiringInventory}
