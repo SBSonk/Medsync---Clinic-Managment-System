@@ -3,10 +3,11 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "../styles/Sidebar.css";
 import medsync from "../assets/medsync.svg";
 import axios from "axios";
+import { useAuth } from "../AuthProvider";
 
 function Sidebar() {
+  const auth = useAuth();
   const navigate = useNavigate();
-  const role = localStorage.getItem("role");
   const location = useLocation(); // Get the current location (URL)
 
   // Function to check if the link should be active based on the current route
@@ -21,7 +22,7 @@ function Sidebar() {
         {},
         {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
+            Authorization: "Bearer " + auth.access_token,
           },
         }
       );
@@ -41,7 +42,7 @@ function Sidebar() {
       {/* User Role and Navigation */}
       <div className="sidebarMenu">
         <div className="sidebarLinks">
-          {role === "admin" && (
+          {auth.role === "admin" && (
             <>
               <NavLink to="">
                 <iconify-icon icon="qlementine-icons:user-16"></iconify-icon>
@@ -108,7 +109,7 @@ function Sidebar() {
             </>
           )}
 
-          {role === "employee" && (
+          {auth.role === "employee" && (
             <>
               <NavLink to="">
                 <iconify-icon icon="qlementine-icons:user-16"></iconify-icon>

@@ -16,7 +16,7 @@ def login():
     user: models.User = models.User.query.filter_by(username=data['username']).first()
 
     if user and user.check_password(data['password']):
-        return jsonify({'message': 'Authorization success!', 'access_token': create_access_token(identity=str(user.id)), 'role': user.role}), 200
+        return jsonify({'message': 'Authorization success!', 'user_id': user.id, 'access_token': create_access_token(identity=str(user.id)), 'role': user.role}), 200
     else: 
         return jsonify({'message': 'Authorization failed...'}), 401
 
@@ -60,7 +60,7 @@ def register():
     data = request.get_json()
 
     try:
-        user = models.User(data['email'], data['username'], data['password'], data['role'], data['person_id'], data['security_question'], data['security_answer'])
+        user = models.User(data['email'], data['username'], data['password'], data['role'], data['security_question'], data['security_answer'])
         db.session.add(user)
         db.session.commit()
 
