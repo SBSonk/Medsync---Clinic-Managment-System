@@ -69,8 +69,6 @@ const PatientForm = () => {
 
         // Populate form fields with data
         setSelectedPersonID(patientData.person_id); // Auto-select the person
-        setValue("contactNo", personData.contact_no || "");
-        setValue("address", personData.address || "");
         setValue("height", patientData.height || "");
         setValue("weight", patientData.weight || "");
         setValue("bloodType", patientData.blood_type || "");
