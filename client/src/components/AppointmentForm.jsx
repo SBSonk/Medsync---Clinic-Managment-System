@@ -13,14 +13,24 @@ const dropdown_test = {
 };
 
 function formatDateTime(date, time) {
-  const [hours, minutes] = time.split(":").map(Number);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
 
-  // Ensure date is a valid JavaScript Date object
-  const formattedDate = new Date(date);
-  formattedDate.setHours(hours);
-  formattedDate.setMinutes(minutes);
+  const [hours, minutes] = time.split(":").map(Number); // Split and convert to numbers
 
-  return formattedDate.toISOString(); // Convert to ISO format
+  return `${month}-${day}-${year}-${hours}-${minutes}`;
+}
+
+function extractDate(dateTime) {
+  // Extract date portion "YYYY-MM-DD"
+  return dateTime.split("T")[0]; // "2025-04-06"
+}
+
+// Function to extract the time part from an ISO string (e.g., "2025-04-06T22:02:00.000Z")
+function extractTime(dateTime) {
+  // Extract time portion "HH:mm"
+  return dateTime.split("T")[1].slice(0, 5); // "22:02"
 }
 
 const AppointmentForm = () => {
@@ -29,8 +39,8 @@ const AppointmentForm = () => {
   const { register, handleSubmit, setValue, watch, reset } = useForm();
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-  const [selectedPatientID, setSelectedPatientID] = useState("");
-  const [selectedFacultyID, setSelectedFacultyID] = useState("");
+  const [selectedPatientID, setSelectedPatientID] = useState(null);
+  const [selectedFacultyID, setSelectedFacultyID] = useState(null);
   const [patients, setPatients] = useState([]);
   const [people, setPeople] = useState([]);
   const [employees, setEmployees] = useState([]);
@@ -48,7 +58,6 @@ const AppointmentForm = () => {
           },
         });
         setPatients(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Error fetching Patients:", error);
       }
@@ -84,32 +93,32 @@ const AppointmentForm = () => {
     };
 
     const fetchAppointmentDetails = async () => {
-      if (isCreating) return;
+      if (isCreating) return; // Skip fetching if creating a new appointment
 
       try {
         const response = await axios.get(
           `http://localhost:8080/api/get-appointment/${id}`,
           {
-            headers: { Authorization: `Bearer ${auth.access_token}` },
+            headers: {
+              Authorization: "Bearer " + auth.access_token,
+            },
           }
         );
-
         const appointmentData = response.data;
-        const [date, time] = appointmentData.date_time.split("T");
-        const formattedTime = time.slice(0, 5); // Get HH:mm
 
+        const formattedDateTime = new Date(appointmentData.date_time).toISOString();
+
+
+        // Pre-fill form fields with formatted data
+        setSelectedFacultyID(appointmentData.doctor_id);
+        setSelectedPatientID(appointmentData.patient_id);
         reset({
           type: appointmentData.type || "",
-          patient_id: appointmentData.patient_id || "",
-          doctor_id: appointmentData.doctor_id || "",
-          date: date, // Save `YYYY-MM-DD`
-          time: formattedTime, // Save `HH:mm`
+          date: new Date(extractDate(formattedDateTime)), // Pass a Date object for DatePicker
+          time: extractTime(formattedDateTime), // Combined and formatted date and time
           status: appointmentData.status || "",
           note: appointmentData.note || "",
         });
-
-        setSelectedPatientID(appointmentData.patient_id || "");
-        setSelectedFacultyID(appointmentData.doctor_id || "");
       } catch (error) {
         console.error("Error fetching appointment details:", error);
       }
@@ -124,11 +133,16 @@ const AppointmentForm = () => {
   const onSubmit = async (data) => {
     try {
       if (isCreating) {
+        const appointmentData = response.data;
+        const [date, time] = appointmentData.date_time.split("T"); // Separate date and time
+        const formattedTime = time.slice(0, 5); // Get the time portion (HH:mm)
+
         const newAppointment = {
           type: data.type,
           patient_id: selectedPatientID,
           doctor_id: selectedFacultyID,
-          date_time: formatDateTime(data.date, data.time),
+          date: new Date(date), // Convert the date to a Date object
+          time: formattedTime,
           status: data.status,
           note: data.note,
         };
@@ -186,11 +200,7 @@ const AppointmentForm = () => {
           <label>Select Patient</label>
           <select
             value={selectedPatientID || ""} // Ensure the value reflects the state
-            disabled={!isCreating && !isEditing}
-            onChange={(e) => {
-              setSelectedPatientID(e.target.value);
-              setValue("patient_id", e.target.value);
-            }} // Update state on change
+            onChange={(e) => setSelectedPatientID(e.target.value)} // Update state on change
           >
             <option value="">-- Select Patient --</option>
             {patients.map((patient) => {
@@ -209,7 +219,6 @@ const AppointmentForm = () => {
           <label>Select Faculty</label>
           <select
             value={selectedFacultyID || ""} // Ensure the value reflects the state
-            disabled={!isCreating && !isEditing}
             onChange={(e) => setSelectedFacultyID(e.target.value)} // Update state on change
           >
             <option value="">-- Select Faculty --</option>
@@ -218,11 +227,13 @@ const AppointmentForm = () => {
                 (p) => p.id === facultyMember.person_id
               ); // Find corresponding person
               return (
-                <option key={facultyMember.id} value={facultyMember.id}>
+                <option
+                  key={facultyMember.person_id}
+                  value={facultyMember.person_id}
+                >
                   {person
-                    ? `${person.first_name} ${person.last_name}`
-                    : "Unknown"}{" "}
-                  {" | " + facultyMember.occupation}
+                    ? `${person.first_name} ${person.last_name} | ${facultyMember.occupation}`
+                    : "Unknown"}
                 </option>
               );
             })}
@@ -230,11 +241,9 @@ const AppointmentForm = () => {
 
           <label>Date:</label>
           <DatePicker
-            selected={watch("date") ? new Date(watch("date")) : "null"} // Ensure valid Date object
-            onChange={(date) =>
-              setValue("date", date.toISOString().split("T")[0])
-            } // Save in `YYYY-MM-DD`
-            dateFormat="yyyy-MM-dd" // Use a compatible format
+            selected={watch("date")}
+            onChange={(date) => setValue("date", date)}
+            dateFormat="dd-MM-yyyy"
             showMonthDropdown
             showYearDropdown
           />
@@ -259,17 +268,7 @@ const AppointmentForm = () => {
             {...register("note", { required: true, maxLength: 255 })}
           />
 
-          {isCreating ? (
-            <button type="submit">Add Employee</button>
-          ) : (
-            <>
-              <button type="button" onClick={() => setIsEditing(!isEditing)}>
-                {isEditing ? "Cancel" : "Edit"}
-              </button>
-
-              {isEditing && <button type="submit">Save Changes</button>}
-            </>
-          )}
+          <button type="submit">Add Appointment</button>
         </form>
       </div>
     </MainLayout>
