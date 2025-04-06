@@ -173,16 +173,22 @@ const Dashboard = () => {
 
   const recentAppointmentsTable = [
     {
+      name: "Patient ID",
+      selector: (row) => row.patient_id,
+      width: "10%",
+      center: true,
+    },
+    {
       name: "Type",
       selector: (row) => row.type,
       width: "15%",
       center: true,
     },
     {
-      name: "Patient ID",
-      selector: (row) => row.patient_id,
-      width: "10%",
-      center: true,
+      name: "Type",
+      selector: (row) => row.type,
+      width: "15%",
+      center: true
     },
     {
       name: "Doctor",
