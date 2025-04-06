@@ -35,6 +35,17 @@ const exportToPDF = (columns, data) => {
 
   doc.save(`Appointments Report - ${fileNameDate}.pdf`);
 };
+
+function formatDate(dateStr) {
+  const date = new Date(dateStr);
+  const options = {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  };
+  return date.toLocaleString("en-US", options);
+}
+
 const Inventory = () => {
   const auth = useAuth();
   const [inventory, setInventory] = useState([]);
@@ -158,7 +169,7 @@ const Inventory = () => {
     },
     {
       name: "Expiration Date",
-      selector: (row) => row.expiration_date,
+      selector: (row) => formatDate(row.expiration_date),
       width: "15%",
       center: true,
       sortable: true,
