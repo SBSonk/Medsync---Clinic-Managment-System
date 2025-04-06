@@ -9,9 +9,13 @@ function Sidebar() {
   const auth = useAuth();
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location (URL)
-  
+
   // Function to check if the link should be active based on the current route
-  const isActive = (path) => location.pathname === path || location.pathname.includes(path);
+  const isActive = (path) =>
+    location.pathname === path || location.pathname.includes(path);
+
+  const dynamicDashboardLink = () => (auth.role === "admin") ? "/admin/dashboard" : "/employee/dashboard";
+
 
   const handleLogout = async (e) => {
     console.log("t");
@@ -26,7 +30,7 @@ function Sidebar() {
           },
         }
       );
-      
+
       auth.logout();
       alert("Logged out successfully.");
       navigate("/logout");
@@ -38,7 +42,9 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebarHeader">
-        <img src={medsync} className="sidebarLogo" alt="medsync logo" />
+        <NavLink to={dynamicDashboardLink()}>
+          <img src={medsync} className="sidebarLogo" alt="medsync logo" />
+        </NavLink>
       </div>
       {/* User Role and Navigation */}
       <div className="sidebarMenu">
@@ -58,14 +64,26 @@ function Sidebar() {
               </NavLink>
               <NavLink
                 to="/admin/users"
-                className={isActive("/admin/users") || isActive("/create/user") || isActive("/edit-user") ? "activeLink" : ""}
+                className={
+                  isActive("/admin/users") ||
+                  isActive("/create/user") ||
+                  isActive("/edit-user")
+                    ? "activeLink"
+                    : ""
+                }
               >
                 <iconify-icon icon="lucide:users"></iconify-icon>
                 Users
               </NavLink>
-              <NavLink  
+              <NavLink
                 to="/admin/people"
-                className={isActive("/admin/people") || isActive("/create/person") || isActive("/edit-person") ? "activeLink" : ""}
+                className={
+                  isActive("/admin/people") ||
+                  isActive("/create/person") ||
+                  isActive("/edit-person")
+                    ? "activeLink"
+                    : ""
+                }
               >
                 <iconify-icon icon="mdi:account"></iconify-icon>
                 People
@@ -73,36 +91,57 @@ function Sidebar() {
 
               <NavLink
                 to="/admin/employees"
-                className={isActive("/admin/employees") || isActive("/create/employee") || isActive("/edit-employee") ? "activeLink" : ""}
+                className={
+                  isActive("/admin/employees") ||
+                  isActive("/create/employee") ||
+                  isActive("/edit-employee")
+                    ? "activeLink"
+                    : ""
+                }
               >
                 <iconify-icon icon="hugeicons:doctor-03"></iconify-icon>
                 Employees
               </NavLink>
               <NavLink
                 to="/admin/patients"
-                className={isActive("/admin/patients") || isActive("/create/patient") || isActive("/edit-patient") ? "activeLink" : ""}
+                className={
+                  isActive("/admin/patients") ||
+                  isActive("/create/patient") ||
+                  isActive("/edit-patient")
+                    ? "activeLink"
+                    : ""
+                }
               >
                 <iconify-icon icon="hugeicons:patient"></iconify-icon>
                 Patients
               </NavLink>
               <NavLink
                 to="/admin/appointments"
-                className={isActive("/admin/appointments") || isActive("/create/appointment") || isActive("/edit-appointment") ? "activeLink" : ""}
+                className={
+                  isActive("/admin/appointments") ||
+                  isActive("/create/appointment") ||
+                  isActive("/edit-appointment")
+                    ? "activeLink"
+                    : ""
+                }
               >
                 <iconify-icon icon="la:calendar"></iconify-icon>
                 Appointments
               </NavLink>
               <NavLink
                 to="/admin/inventory"
-                className={isActive("/admin/inventory")  || isActive("/create/inventory") || isActive("/edit-inventory-item") ? "activeLink" : ""}
+                className={
+                  isActive("/admin/inventory") ||
+                  isActive("/create/inventory") ||
+                  isActive("/edit-inventory-item")
+                    ? "activeLink"
+                    : ""
+                }
               >
                 <iconify-icon icon="ph:package"></iconify-icon>
                 Inventory
               </NavLink>
-              <NavLink
-                to="#"
-                onClick={handleLogout}
-              >
+              <NavLink to="#" onClick={handleLogout}>
                 <iconify-icon icon="material-symbols:logout"></iconify-icon>
                 Logout
               </NavLink>
@@ -115,9 +154,7 @@ function Sidebar() {
                 <iconify-icon icon="qlementine-icons:user-16"></iconify-icon>
                 EMPLOYEE
               </NavLink>
-              <NavLink
-                to="/employee/dashboard"
-              >
+              <NavLink to="/employee/dashboard">
                 <iconify-icon icon="clarity:dashboard-line"></iconify-icon>
                 Dashboard
               </NavLink>
@@ -144,10 +181,7 @@ function Sidebar() {
                 <iconify-icon icon="ph:package"></iconify-icon>
                 Inventory
               </NavLink>
-              <NavLink
-                to="#"
-                onClick={handleLogout}
-              >
+              <NavLink to="#" onClick={handleLogout}>
                 <iconify-icon icon="material-symbols:logout"></iconify-icon>
                 Logout
               </NavLink>
