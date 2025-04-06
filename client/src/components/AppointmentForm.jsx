@@ -106,8 +106,9 @@ const AppointmentForm = () => {
         );
         const appointmentData = response.data;
 
-        const formattedDateTime = new Date(appointmentData.date_time).toISOString();
-
+        const formattedDateTime = new Date(
+          appointmentData.date_time
+        ).toISOString();
 
         // Pre-fill form fields with formatted data
         setSelectedFacultyID(appointmentData.doctor_id);
@@ -133,16 +134,11 @@ const AppointmentForm = () => {
   const onSubmit = async (data) => {
     try {
       if (isCreating) {
-        const appointmentData = response.data;
-        const [date, time] = appointmentData.date_time.split("T"); // Separate date and time
-        const formattedTime = time.slice(0, 5); // Get the time portion (HH:mm)
-
         const newAppointment = {
           type: data.type,
           patient_id: selectedPatientID,
           doctor_id: selectedFacultyID,
-          date: new Date(date), // Convert the date to a Date object
-          time: formattedTime,
+          date_time: formatDateTime(data.date, data.time), // Convert the date to a Date object
           status: data.status,
           note: data.note,
         };
@@ -163,10 +159,11 @@ const AppointmentForm = () => {
         navigate("/admin/appointments");
       } else if (isEditing) {
         const appointmentData = {
+          id: id,
           type: data.type,
           patient_id: selectedPatientID,
           doctor_id: selectedFacultyID,
-          date_time: formatDateTime(data.date, data.time),
+          date_time: formatDateTime(data.date, data.time), // Convert the date to a Date object
           status: data.status,
           note: data.note,
         };
@@ -195,12 +192,14 @@ const AppointmentForm = () => {
           <input
             type="text"
             {...register("type", { required: true, maxLength: 30 })}
+            disabled={!isEditing && !isCreating} // Disabled unless editing or creating
           />
 
           <label>Select Patient</label>
           <select
-            value={selectedPatientID || ""} // Ensure the value reflects the state
-            onChange={(e) => setSelectedPatientID(e.target.value)} // Update state on change
+            value={selectedPatientID || ""}
+            onChange={(e) => setSelectedPatientID(e.target.value)}
+            disabled={!isEditing && !isCreating} // Disabled unless editing or creating
           >
             <option value="">-- Select Patient --</option>
             {patients.map((patient) => {
@@ -210,7 +209,6 @@ const AppointmentForm = () => {
                   {person
                     ? `${person.first_name} ${person.last_name}`
                     : "Unknown"}{" "}
-                  {/* // Display name or fallback */}
                 </option>
               );
             })}
@@ -218,14 +216,15 @@ const AppointmentForm = () => {
 
           <label>Select Faculty</label>
           <select
-            value={selectedFacultyID || ""} // Ensure the value reflects the state
-            onChange={(e) => setSelectedFacultyID(e.target.value)} // Update state on change
+            value={selectedFacultyID || ""}
+            onChange={(e) => setSelectedFacultyID(e.target.value)}
+            disabled={!isEditing && !isCreating} // Disabled unless editing or creating
           >
             <option value="">-- Select Faculty --</option>
             {employees.map((facultyMember) => {
               const person = people.find(
                 (p) => p.id === facultyMember.person_id
-              ); // Find corresponding person
+              );
               return (
                 <option
                   key={facultyMember.person_id}
@@ -246,29 +245,41 @@ const AppointmentForm = () => {
             dateFormat="dd-MM-yyyy"
             showMonthDropdown
             showYearDropdown
+            disabled={!isEditing && !isCreating} // Disabled unless editing or creating
           />
 
           <label>Time:</label>
           <input
             type="time"
-            {...register("time", {
-              required: true,
-            })}
+            {...register("time", { required: true })}
+            disabled={!isEditing && !isCreating} // Disabled unless editing or creating
           />
 
           <label>Status:</label>
           <input
             type="text"
             {...register("status", { required: true, maxLength: 31 })}
+            disabled={!isEditing && !isCreating} // Disabled unless editing or creating
           />
 
           <label>Note:</label>
           <input
             type="text"
             {...register("note", { required: true, maxLength: 255 })}
+            disabled={!isEditing && !isCreating} // Disabled unless editing or creating
           />
 
-          <button type="submit">Add Appointment</button>
+          {isCreating ? (
+            <button type="submit">Create Appointment</button>
+          ) : (
+            <>
+              <button type="button" onClick={() => setIsEditing(!isEditing)}>
+                {isEditing ? "Cancel" : "Edit"}
+              </button>
+
+              {isEditing && <button type="submit">Save Changes</button>}
+            </>
+          )}
         </form>
       </div>
     </MainLayout>
