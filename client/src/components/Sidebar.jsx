@@ -58,6 +58,7 @@ function Sidebar() {
               </NavLink>
               <NavLink
                 to="/admin/users"
+                className={isActive("/admin/users") || isActive("/create/user") || isActive("/edit-user/:id") ? "activeLink" : ""}
               >
                 <iconify-icon icon="lucide:users"></iconify-icon>
                 Users
