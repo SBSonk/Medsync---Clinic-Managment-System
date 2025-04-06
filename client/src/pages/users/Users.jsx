@@ -36,26 +36,26 @@ const Users = () => {
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
-      `Are you sure you want to delete inventory ID: "${id}"?`
+      `Are you sure you want to delete user ID: "${id}"?`
     );
     if (!confirmDelete) return;
 
     try {
-      console.log("Deleting user D:", id);
-      await axios.delete(`http://localhost:8080/api/delete-user/${id}`, {
+      console.log("Deleting user ID:", id);
+      await axios.delete(`http://localhost:8080/api/user/${id}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
       });
 
-      alert(`Item deleted successfully!`);
+      alert(`User deleted successfully!`);
 
       // Update state to remove the deleted item
       const updatedUser = user.filter((user) => user.id !== id);
-      setInventory(updatedUser);
-      setFilteredInventory(updatedInventory);
+      setUser(updatedUser);
+      setFilteredUser(updatedUser);
     } catch (error) {
-      alert("Failed to delete the item.");
+      // alert("Failed to delete user.");
     }
   };
 
