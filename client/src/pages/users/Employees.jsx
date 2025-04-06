@@ -160,11 +160,6 @@ const Employees = () => {
       sortable: true,
     },
     {
-      name: "Shift",
-      selector: (row) => (row.shift ? row.schedule : "N/A"), // Assuming `shift_name` is an attribute of the related `EmployeeShift` model
-      width: "10%",
-    },
-    {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">

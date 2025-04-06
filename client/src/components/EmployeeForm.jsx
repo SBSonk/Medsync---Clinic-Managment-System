@@ -81,7 +81,6 @@ const EmployeeForm = () => {
 
           setValue("occupation", employeeData.occupation || "");
           setValue("department", employeeData.department || "");
-          setValue("shift", employeeData.schedule || "");
 
           console.log(employeeData);
         }
@@ -129,7 +128,6 @@ const EmployeeForm = () => {
           person_id: person_id, // Keep the same ID
           occupation: data.occupation,
           department: data.department,
-          schedule: data.schedule,
         };
 
         const personData = {
@@ -199,13 +197,6 @@ const EmployeeForm = () => {
                 required: true,
                 maxLength: 50,
               })}
-              disabled={!isEditing && !isCreating}
-            />
-
-            <label>Schedule:</label>
-            <input
-              type="text"
-              {...register("shift", { required: true, maxLength: 31 })}
               disabled={!isEditing && !isCreating}
             />
 
