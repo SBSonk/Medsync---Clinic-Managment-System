@@ -44,7 +44,7 @@ function formatDateTime(dateStr) {
     year: "numeric",
     hour: "numeric",
     minute: "2-digit",
-    hour12: true
+    hour12: true,
   };
   return date.toLocaleString("en-US", options);
 }
@@ -99,7 +99,7 @@ const Appointments = () => {
         );
         alert("Appointment deleted successfully!");
         setAppointments(
-          appointment.filter((appointment) => appointment.id !== id)
+          appointments.filter((appointment) => appointment.id !== id)
         ); // Update the UI
       } catch (error) {
         console.error("Error deleting appointment:", error);
@@ -129,7 +129,7 @@ const Appointments = () => {
     fetchAppointments();
 
     setIsAdmin(auth.role === "admin");
-  }, []);
+  }, [appointments]);
 
   const columns = [
     {
@@ -162,7 +162,7 @@ const Appointments = () => {
     },
     {
       name: "Date/Time",
-      selector: (row) => formatDateTime(row.date_time ),
+      selector: (row) => formatDateTime(row.date_time),
       width: "20%",
       center: true,
       sortable: true,
@@ -181,26 +181,24 @@ const Appointments = () => {
       center: true,
       sortable: true,
     },
-    isAdmin && ({
+    isAdmin && {
       name: "Actions",
       cell: (row) => (
-        
-          <div className="action-buttons">
-            <button className="edit-btn" onClick={() => handleEdit(row.id)}>
-              <iconify-icon icon="mdi:pencil"></iconify-icon>
-            </button>
-            <button className="delete-btn" onClick={() => handleDelete(row.id)}>
-              <iconify-icon icon="mdi:trash-can"></iconify-icon>
-            </button>
-          </div>
-        
+        <div className="action-buttons">
+          <button className="edit-btn" onClick={() => handleEdit(row.id)}>
+            <iconify-icon icon="mdi:pencil"></iconify-icon>
+          </button>
+          <button className="delete-btn" onClick={() => handleDelete(row.id)}>
+            <iconify-icon icon="mdi:trash-can"></iconify-icon>
+          </button>
+        </div>
       ),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
       width: "25%",
       center: true,
-    }),
+    },
   ];
 
   const customStyles = {
