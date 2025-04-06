@@ -8,6 +8,7 @@ import doctorIcon from "../../assets/hugeicons_doctor-03.svg";
 import appointmentIcon from "../../assets/la_calendar.svg";
 import inventoryIcon from "../../assets/ph_package.svg";
 import { useAuth } from "../../AuthProvider";
+import People from "./People";
 
 const customStyles = {
   rdt_Table: {
@@ -49,6 +50,7 @@ const Dashboard = () => {
 
   const [username, setUserName] = useState([]);
   const [patients, setPatients] = useState([]);
+  const [people, setPeople] = useState([]); 
   const [employees, setEmployees] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [mostRecentAppointments, setMostRecentAppointments] = useState([]);
@@ -56,18 +58,52 @@ const Dashboard = () => {
   const [lowStockInventory, setLowStockInventory] = useState([]);
   const [expiringInventory, setExpiringInventory] = useState([]);
 
+  const getFullNameFromFaculty = (faculty_id) => {
+    const faculty = people.find((p) => p.id === faculty_id);
+    return faculty ? `${faculty.first_name} ${faculty.last_name}` : "Unknown";
+  };
+
+  const getFullNameFromPatient = (patient_id) => {
+    const patient = patients.find((p) => p.id === patient_id);
+    return patient ? `${patient.full_name}` : "Unknown";
+  };
+
   useEffect(() => {
     const fetchPatients = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/patients", {
-          headers: {
-            Authorization: "Bearer " + auth.access_token,
-          },
+          headers: { Authorization: "Bearer " + auth.access_token },
         });
 
-        setPatients(response.data);
+        const patientsWithDetails = await Promise.all(
+          response.data.map(async (patient) => {
+            try {
+              const personRes = await axios.get(
+                `http://localhost:8080/api/get-person-info/${patient.person_id}`,
+                { headers: { Authorization: "Bearer " + auth.access_token } }
+              );
+              const person = personRes.data;
+
+              return {
+                ...patient,
+                full_name: `${person.first_name} ${person.last_name}`,
+              };
+            } catch (error) {
+              console.error(
+                `Error fetching person info for Patient ID ${patient.id}:`,
+                error
+              );
+              return {
+                ...patient,
+                full_name: "N/A",
+              };
+            }
+          })
+        );
+
+        setPatients(patientsWithDetails);
       } catch (error) {
-        console.error("Error fetching Patients:", error);
+        console.error("Error fetching patients:", error);
       }
     };
 
@@ -144,6 +180,7 @@ const Dashboard = () => {
       } catch (error) {
         console.error("Error fetching Inventory:", error);
       }
+      
     };
 
     const fetchUsername = async () => {
@@ -164,6 +201,21 @@ const Dashboard = () => {
       }
     };
 
+    const fetchPeople = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/people", {
+          headers: {
+            Authorization: "Bearer " + auth.access_token,
+          },
+        });
+        setPeople(response.data);
+        setFilteredPeople(response.data);
+      } catch (error) {
+        console.error("Error fetching People:", error);
+      }
+    };
+
+    fetchPeople();
     fetchUsername();
     fetchPatients();
     fetchEmployees();
@@ -174,7 +226,7 @@ const Dashboard = () => {
   const recentAppointmentsTable = [
     {
       name: "Patient ID",
-      selector: (row) => row.patient_id,
+      selector: (row) => getFullNameFromPatient(row.patient_id),
       width: "10%",
       center: true,
     },
@@ -185,14 +237,8 @@ const Dashboard = () => {
       center: true,
     },
     {
-      name: "Type",
-      selector: (row) => row.type,
-      width: "15%",
-      center: true
-    },
-    {
       name: "Doctor",
-      selector: (row) => row.doctor_id,
+      selector: (row) => getFullNameFromFaculty(row.doctor_id),
       width: "25%",
       center: true,
     },
