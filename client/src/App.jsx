@@ -69,6 +69,7 @@ function App() {
             <Route path="/create/inventory" element={<InventoryForm />} />
             <Route path="/create/appointment" element={<AppointmentForm />} />
             <Route path="/edit-user/:id" element={<UserForm />} />
+            <Route path="/update-user/:id" element={<UserForm />} />
             <Route
               path="/edit-employee/:person_id"
               element={<EmployeeForm />}
