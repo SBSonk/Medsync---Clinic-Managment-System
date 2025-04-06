@@ -11,7 +11,7 @@ function Sidebar() {
   const location = useLocation(); // Get the current location (URL)
   
   // Function to check if the link should be active based on the current route
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => location.pathname === path || location.pathname.includes(path);
 
   const handleLogout = async (e) => {
     console.log("t");
@@ -58,14 +58,14 @@ function Sidebar() {
               </NavLink>
               <NavLink
                 to="/admin/users"
-                className={isActive("/admin/users") || isActive("/create/user") || isActive("/edit-user/:id") ? "activeLink" : ""}
+                className={isActive("/admin/users") || isActive("/create/user") || isActive("/edit-user") ? "activeLink" : ""}
               >
                 <iconify-icon icon="lucide:users"></iconify-icon>
                 Users
               </NavLink>
-              <NavLink
+              <NavLink  
                 to="/admin/people"
-                className={isActive("/admin/people") || isActive("/create/person") || isActive("/edit-person/:id") ? "activeLink" : ""}
+                className={isActive("/admin/people") || isActive("/create/person") || isActive("/edit-person") ? "activeLink" : ""}
               >
                 <iconify-icon icon="mdi:account"></iconify-icon>
                 People
@@ -73,28 +73,28 @@ function Sidebar() {
 
               <NavLink
                 to="/admin/employees"
-                className={isActive("/admin/employees") || isActive("/create/employee") || isActive("/edit-employee/:id") ? "activeLink" : ""}
+                className={isActive("/admin/employees") || isActive("/create/employee") || isActive("/edit-employee") ? "activeLink" : ""}
               >
                 <iconify-icon icon="hugeicons:doctor-03"></iconify-icon>
                 Employees
               </NavLink>
               <NavLink
                 to="/admin/patients"
-                className={isActive("/admin/patients") || isActive("/create/patient") || isActive("/edit-patient/:id") ? "activeLink" : ""}
+                className={isActive("/admin/patients") || isActive("/create/patient") || isActive("/edit-patient") ? "activeLink" : ""}
               >
                 <iconify-icon icon="hugeicons:patient"></iconify-icon>
                 Patients
               </NavLink>
               <NavLink
                 to="/admin/appointments"
-                className={isActive("/admin/appointments") || isActive("/create/appointment") || isActive("/edit-appointment/:id") ? "activeLink" : ""}
+                className={isActive("/admin/appointments") || isActive("/create/appointment") || isActive("/edit-appointment") ? "activeLink" : ""}
               >
                 <iconify-icon icon="la:calendar"></iconify-icon>
                 Appointments
               </NavLink>
               <NavLink
                 to="/admin/inventory"
-                className={isActive("/admin/inventory")  || isActive("/create/inventory") || isActive("/edit-inventory-item/:id") ? "activeLink" : ""}
+                className={isActive("/admin/inventory")  || isActive("/create/inventory") || isActive("/edit-inventory-item") ? "activeLink" : ""}
               >
                 <iconify-icon icon="ph:package"></iconify-icon>
                 Inventory
