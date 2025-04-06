@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useSearchParams } from "react";
 import MainLayout from "../../layouts/MainLayout";
 import DataTable from "react-data-table-component";
 import axios from "axios";
@@ -38,6 +38,7 @@ const Inventory = () => {
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState(inventory);
   const [searchQuery, setSearchQuery] = useState("");
+  const searchParams = useSearchParams();
   const [isAdmin, setIsAdmin] = useState([]);
   // const { access_token, role } = useContext(AuthProvider);
 
@@ -116,7 +117,7 @@ const Inventory = () => {
     };
 
     fetchInventory();
-    setIsAdmin(localStorage.getItem("role") === "admin");
+    setIsAdmin(searchParams.get('role') === "admin");
   }, []);
 
   const columns = [

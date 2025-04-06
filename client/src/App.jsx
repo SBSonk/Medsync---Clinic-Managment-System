@@ -16,7 +16,6 @@ import Employees from "./pages/users/Employees";
 import Dashboard from "./pages/users/Dashboard";
 import Patients from "./pages/users/Patients";
 import Appointments from "./pages/users/Appointments";
-import Reports from "./pages/users/Reports";
 import Inventory from "./pages/users/Inventory";
 import PatientForm from "./components/PatientForm";
 
@@ -78,7 +77,10 @@ function App() {
               path="/edit-patient/:patient_id/:person_id"
               element={<PatientForm />}
             />
-            <Route path="/edit-appointment/:id" element={<AppointmentForm />} />
+            <Route 
+              path="/edit-appointment/:id" 
+              element={<AppointmentForm />} 
+            />
             <Route
               path="/edit-inventory-item/:id"
               element={<InventoryForm />}
@@ -90,7 +92,6 @@ function App() {
             <Route path="/admin/employees" element={<Employees />} />
             <Route path="/admin/appointments" element={<Appointments />} />
             <Route path="/admin/inventory" element={<Inventory />} />
-            <Route path="/admin/reports" element={<Reports />} />
           </>
         ) : (
           <>

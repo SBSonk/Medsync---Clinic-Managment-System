@@ -24,8 +24,6 @@ class User(db.Model):
     security_question: Mapped[str] = mapped_column(db.String(255), nullable = False)
     security_hash: Mapped[str] = mapped_column(db.String(50), nullable=False)
 
-    person_id: Mapped[int] = mapped_column(ForeignKey('person.id'), unique=True)
-
     def set_password(self, password: str):
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
 
@@ -38,12 +36,11 @@ class User(db.Model):
     def check_security_answer(self, security_answer: str):
         return bcrypt.check_password_hash(self.security_hash, security_answer)
     
-    def __init__(self, email: str, username: str, password: str, role: str, person_id: int, security_question: str, security_answer: str):
+    def __init__(self, email: str, username: str, password: str, role: str, security_question: str, security_answer: str):
         self.email = email
         self.username = username
         self.set_password(password)
         self.role = role
-        self.person_id = person_id
         self.security_question = security_question
         self.set_security_answer(security_answer)
         
