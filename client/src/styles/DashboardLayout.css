@@ -267,6 +267,7 @@ iconify-icon {
   width: 50%;
   align-items: center;
   text-transform: capitalize;
+  font-size: 0.9rem;
 }
 
 .table-buttons-users {
