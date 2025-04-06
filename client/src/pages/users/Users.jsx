@@ -44,7 +44,7 @@ const Users = () => {
 
     try {
       console.log("Deleting user ID:", id);
-      await axios.delete(`http://localhost:8080/api/user/${id}`, {
+      await axios.delete(`http://localhost:8080/api/delete-user/${id}`, {
         headers: {
           Authorization: "Bearer " + auth.access_token,
         },

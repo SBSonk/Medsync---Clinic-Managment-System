@@ -5,8 +5,8 @@ from flask_jwt_extended import jwt_required
 
 delete = Blueprint('delete', __name__)
 
-# Creation routes
-@delete.route('/api/user/<id>', methods=['DELETE'])
+# Deletion routes
+@delete.route('/api/delete-user/<id>', methods=['DELETE'])
 @jwt_required()
 def delete_user(id):
     u = db.session.query(models.User).filter_by(id=id).first()
