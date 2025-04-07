@@ -276,9 +276,11 @@ const Patients = () => {
           value={searchQuery}
         ></SearchBar>
         <div className="table-buttons">
-          <button className="table-button" onClick={handleCreatePatient}>
-            Add patient
-          </button>
+          {isAdmin && (
+            <button className="table-button" onClick={handleCreatePatient}>
+              Add patient
+            </button>
+          )}
           <button className="table-button" onClick={handleReport}>
             Print table report
           </button>

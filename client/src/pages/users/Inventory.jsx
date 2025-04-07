@@ -230,13 +230,15 @@ const Inventory = () => {
             value={searchQuery}
           ></SearchBar>
           <div className="table-buttons">
-          <button className="table-button" onClick={handleCreateItem}>
-            Add item
-          </button>
-          <button className="table-button" onClick={handleReport}>
-            Print table report
-          </button>
-        </div>
+            {isAdmin && (
+              <button className="table-button" onClick={handleCreateItem}>
+                Add item
+              </button>
+            )}
+            <button className="table-button" onClick={handleReport}>
+              Print table report
+            </button>
+          </div>
         </div>
         <div className="mainContent">
           <div className="table-container">
