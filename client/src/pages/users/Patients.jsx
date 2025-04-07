@@ -80,27 +80,34 @@ const Patients = () => {
   };
 
   const handleDelete = async (patient_id) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete Patient ID: ${patient_id}?`
-      )
-    ) {
-      try {
-        console.log("Deleting patient ID:", patient_id);
-        await axios.delete(
-          `http://localhost:8080/api/delete-patient/${patient_id}`,
-          {
-            headers: {
-              Authorization: "Bearer " + auth.access_token,
-            },
-          }
-        );
-        alert("Patient deleted successfully!");
-        setPatients(patients.filter((patient) => patient.id !== patient_id)); // Update the UI
-      } catch (error) {
-        console.error("Error deleting patient:", error);
-        alert("Failed to delete patient...");
-      }
+    // Confirm deletion with the user
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete Patient ID: "${patient_id}"?`
+    );
+    if (!confirmDelete) return; // Exit if deletion is canceled
+
+    try {
+      console.log("Deleting patient ID:", patient_id);
+      // Make the DELETE request to the backend
+      await axios.delete(
+        `http://localhost:8080/api/delete-patient/${patient_id}`,
+        {
+          headers: {
+            Authorization: "Bearer " + auth.access_token,
+          },
+        }
+      );
+      alert("Patient deleted successfully!");
+
+      const updatedPatients = patients.filter(
+        (patient) => patient.id !== patient_id
+      );
+      setPatients(updatedPatients);
+      setFilteredPatients(updatedPatients);
+    } catch (error) {
+      // Handle and display error
+      console.error("Error deleting patient:", error);
+      alert("Failed to delete patient...");
     }
   };
 

@@ -63,15 +63,16 @@ const PatientForm = () => {
           }
         );
         const personData = personRes.data;
+        console.log(personData);
 
-        // Fetch emergency contact details
-        if (patientData.emergency_contact_person_id) {
-          reset({
-            emergencyContact: patientData.emergency_contact_person_id || "",
-            emergencyRelation: patientData.emergency_contact_person_relation || ""
-          })
-        }
-        
+        // // Fetch emergency contact details
+        // if (patientData.emergency_contact_person_id) {
+        //   reset({
+        //     emergencyContact: patientData.emergency_contact_person_id || "",
+        //     emergencyRelation:
+        //       patientData.emergency_contact_person_relation || "",
+        //   });
+        // }
 
         reset({
           firstName: personData.first_name || "",
@@ -88,6 +89,9 @@ const PatientForm = () => {
           allergies: patientData.allergies || "",
           medicalHistory: patientData.medical_history || "",
           familyHistory: patientData.family_history || "",
+          emergencyContact: patientData.emergency_contact_person_id || "",
+          emergencyRelation:
+            patientData.emergency_contact_person_relation || "",
         });
 
         setIsEditing(true); // Set to edit mode
