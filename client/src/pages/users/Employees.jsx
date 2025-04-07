@@ -56,27 +56,36 @@ const Employees = () => {
   };
 
   const handleDelete = async (person_id) => {
-    if (
-      window.confirm(`Are you sure you want to delete person ID: ${person_id}?`)
-    ) {
-      try {
-        console.log("Deleting person ID:", person_id);
-        await axios.delete(
-          `http://localhost:8080/api/delete-employee/${person_id}`,
-          {
-            headers: {
-              Authorization: "Bearer " + auth.access_token,
-            },
-          }
-        );
-        alert("Employee deleted successfully!");
-        setEmployees(
-          employees.filter((employee) => employee.person_id !== person_id)
-        ); // Update the UI
-      } catch (error) {
-        console.error("Error deleting employee:", error);
-        alert("Failed to delete employee...");
-      }
+    // Confirm deletion with the user
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete Employee ID: "${person_id}"?`
+    );
+    if (!confirmDelete) return; // Exit if deletion is canceled
+
+    try {
+      console.log("Deleting employee ID:", person_id);
+      // Make the DELETE request to the backend
+      await axios.delete(
+        `http://localhost:8080/api/delete-employee/${person_id}`,
+        {
+          headers: {
+            Authorization: "Bearer " + auth.access_token,
+          },
+        }
+      );
+
+      alert("Employee deleted successfully!");
+
+      // Update local state to reflect the deleted employee
+      const updatedEmployees = employees.filter(
+        (employee) => employee.person_id !== person_id
+      );
+      setEmployees(updatedEmployees);
+      setFilteredEmployees(updatedEmployees);
+    } catch (error) {
+      // Handle and display error
+      console.error("Error deleting employee:", error);
+      alert("Failed to delete employee...");
     }
   };
 
