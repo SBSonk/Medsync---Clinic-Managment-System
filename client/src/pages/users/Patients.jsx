@@ -280,8 +280,6 @@ const Patients = () => {
     },
   };
 
-  console.log(patients);
-
   return (
     <MainLayout title="Patients">
       <div className="searchBar">

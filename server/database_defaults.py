@@ -157,10 +157,13 @@ def populate_patients(db):
 
         emergency_person = random.choice(all_people)
         all_people.remove(emergency_person)
-        random_patient.emergency_contact = models.EmergencyContact(
+        emergency_contact = models.EmergencyContact(
             person_id = emergency_person.id,
             relation = random.choice(relationship_types)
         )
+        
+        random_patient.emergency_contact = emergency_contact
+        
         session.add(random_patient)
 
     session.commit()

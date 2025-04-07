@@ -66,7 +66,7 @@ def patients():
             "next_appointment_id": p.next_appointment_id,
             # Include emergency contact if it exists
             "emergency_contact_person_id": p.emergency_contact.person_id if p.emergency_contact else None,
-            "emergency_contact_person_relation": p.emergency_contact.person_id if p.emergency_contact else None
+            "emergency_contact_person_relation": p.emergency_contact.relation if p.emergency_contact else None
         }
         for p in all_patients
     ]
@@ -201,7 +201,7 @@ def get_patient_info(id):
         # Include emergency contact if it exists
         if p.emergency_contact:
             response["emergency_contact_person_id"] = p.emergency_contact.person_id
-            response["emergency_contact_person_relation"] = p.emergency_contact.person_id
+            response["emergency_contact_person_relation"] = p.emergency_contact.relation
 
         return jsonify(response), 200
     else:

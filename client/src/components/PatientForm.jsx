@@ -7,12 +7,9 @@ import DatePicker from "react-datepicker";
 import "../styles/FormLayout.css";
 import { useAuth } from "../AuthProvider";
 
-function formatDate(date) {
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
-  const day = String(date.getDate()).padStart(2, "0");
-  const year = date.getFullYear();
-
-  return `${day}-${month}-${year}`;
+function extractDate(dateTime) {
+  // Extract date portion "YYYY-MM-DD"
+  return dateTime.split("-")[0]; // "2025-04-06"
 }
 
 const PatientForm = () => {
@@ -68,20 +65,20 @@ const PatientForm = () => {
         const personData = personRes.data;
 
         // Fetch emergency contact details
-        const emergencyContactRes = await axios.get(
-          `http://localhost:8080/api/get-emergency-contact/${patient_id}`,
-          {
-            headers: { Authorization: "Bearer " + auth.access_token },
-          }
-        );
-        const emergencyContactData = emergencyContactRes.data;
+        if (patientData.emergency_contact_person_id) {
+          reset({
+            emergencyContact: patientData.emergency_contact_person_id || "",
+            emergencyRelation: patientData.emergency_contact_person_relation || ""
+          })
+        }
+        
 
         reset({
           firstName: personData.first_name || "",
           lastName: personData.last_name || "",
           gender: personData.gender || "",
           dateOfBirth: personData.date_of_birth
-            ? formatDate(new Date(personData.date_of_birth))
+            ? new Date(extractDate(personData.date_of_birth))
             : null,
           contactNo: personData.contact_no || "",
           address: personData.address || "",
@@ -91,9 +88,6 @@ const PatientForm = () => {
           allergies: patientData.allergies || "",
           medicalHistory: patientData.medical_history || "",
           familyHistory: patientData.family_history || "",
-          emergencyContact: emergencyContactData?.person_id || "",
-          emergencyRelation:
-            emergencyContactData?.emergency_contact_person_relation || "",
         });
 
         setIsEditing(true); // Set to edit mode
@@ -121,12 +115,12 @@ const PatientForm = () => {
           allergies: data.allergies,
           medical_history: data.medicalHistory,
           family_history: data.familyHistory,
-          emergency_contact: {
-            emergency_contact_person_id: data.emergencyContact,
-            emergency_contact_person_relation: data.emergencyRelation,
-          },
+          emergency_contact_person_id: Number(data.emergencyContact),
+          emergency_contact_relation: data.emergencyRelation,
           person_id: selectedPersonID, // Link selected person ID
         };
+
+        console.log(newPatient);
 
         await axios.post(
           "http://localhost:8080/api/create-patient",
@@ -147,10 +141,8 @@ const PatientForm = () => {
           allergies: data.allergies,
           medical_history: data.medicalHistory,
           family_history: data.familyHistory,
-          emergency_contact: {
-            emergency_contact_person_id: data.emergencyContact,
-            emergency_contact_person_relation: data.emergencyRelation,
-          },
+          emergency_contact_person_id: data.emergencyContact,
+          emergency_contact_relation: data.emergencyRelation,
         };
 
         // Update patient data
@@ -202,7 +194,7 @@ const PatientForm = () => {
                           gender: selectedPerson.gender || "",
                           dateOfBirth: selectedPerson.date_of_birth
                             ? new Date(selectedPerson.date_of_birth)
-                            : null,
+                            : "00-00-00",
                           contactNo: selectedPerson.contact_no || "",
                           address: selectedPerson.address || "",
                           height: "0", // Clear patient-specific fields
