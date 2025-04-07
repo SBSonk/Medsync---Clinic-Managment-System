@@ -40,7 +40,9 @@ function dateToStr(dateStr) {
   const date = new Date(dateStr);
   const options = { month: "short", day: "numeric", year: "numeric" };
 
-  const [month, day, year] = date.toLocaleDateString("en-US", options).split(" ");
+  const [month, day, year] = date
+    .toLocaleDateString("en-US", options)
+    .split(" ");
   return `${month.replace(",", "")}, ${day.replace(",", "")}, ${year}`;
 }
 
@@ -188,7 +190,7 @@ const People = () => {
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-      width: "25%",
+      width: "15%",
       center: true,
     },
   ];

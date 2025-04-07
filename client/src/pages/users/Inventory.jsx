@@ -203,7 +203,7 @@ const Inventory = () => {
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-      width: "25%",
+      width: "15%",
       center: true,
     },
   ];

@@ -141,6 +141,7 @@ const Employees = () => {
       name: "Person ID",
       selector: (row) => row.person_id,
       width: "15%",
+      center: true,
       sortable: true,
     },
     {
@@ -152,16 +153,20 @@ const Employees = () => {
     {
       name: "Occupation",
       selector: (row) => row.occupation,
+      center: true,
       sortable: true,
     },
     {
       name: "Department",
       selector: (row) => row.department,
+      center: true,
       sortable: true,
     },
     {
       name: "Schedule",
       selector: (row) => row.schedule,
+      width: "20%",
+      center: true,
       sortable: true,
     },
     {
@@ -185,7 +190,7 @@ const Employees = () => {
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-      width: "25%",
+      width: "15%",
       center: true,
     },
   ];

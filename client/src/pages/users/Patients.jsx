@@ -177,14 +177,14 @@ const Patients = () => {
     {
       name: "ID",
       selector: (row) => row.id,
-      width: "10%",
+      width: "8%",
       center: true,
       sortable: true,
     },
     {
       name: "Person ID",
       selector: (row) => row.person_id,
-      width: "10%",
+      width: "8%",
       center: true,
       sortable: true,
     },
@@ -205,7 +205,7 @@ const Patients = () => {
     {
       name: "Blood Type",
       selector: (row) => row.blood_type,
-      width: "15%",
+      width: "10%",
       center: true,
       sortable: true,
     },
