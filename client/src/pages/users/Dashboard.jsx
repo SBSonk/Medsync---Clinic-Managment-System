@@ -205,7 +205,7 @@ const Dashboard = () => {
         setUserName(response.data["username"]);
       } catch (error) {
         setUserName("err");
-        console.error("Error username Inventory:", error);
+        console.error("Error fetching ame username:", error);
       }
     };
 
@@ -232,7 +232,7 @@ const Dashboard = () => {
 
   const recentAppointmentsTable = [
     {
-      name: "Patient ID",
+      name: "Patient Name",
       selector: (row) => getFullNameFromPatient(row.patient_id),
       width: "10%",
       center: true,

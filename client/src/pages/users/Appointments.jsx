@@ -215,7 +215,7 @@ const Appointments = () => {
       sortable: true,
     },
     {
-      name: "Patient ID",
+      name: "Patient Name/ID",
       selector: (row) =>
         getFullNameFromPatient(row.patient_id) + "/" + row.patient_id,
       width: "20%",
