@@ -66,7 +66,34 @@ iconify-icon {
 }
 
 label {
+  display: block;
+} 
+.columnsContainer {
+  display: flex;
+  justify-content: space-between; /* Distributes columns evenly */
+  gap: 40px; /* Space between the columns */
+}
+
+.column {
+  flex: 1; /* Makes columns take equal width */
+}
+
+input,
+select,
+textarea {
+  width: 100%; /* Ensures inputs stay within the container */
+  box-sizing: border-box; /* Prevents padding from affecting width */
+  margin-bottom: 20px; /* Adds space between fields */
+  padding: 10px; /* Internal padding for better readability */
+  border-radius: 4px; /* Optional: Rounds the corners */
+  border: 1px solid #ccc; /* Adds a subtle border */
+}
+
+textarea {
+  resize: none; /* Prevents manual resizing */
+  background-color: white;
   color: black;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .mainContainer {
