@@ -24,7 +24,7 @@ const exportToPDF = (columns, data) => {
   const dateStr = now.toLocaleString();
   const fileNameDate = now.toISOString().split("T")[0]; // YYYY-MM-DD
 
-  const title = `Appointments Report - ${dateStr}`;
+  const title = `Inventory Report - ${dateStr}`;
   doc.text(title, 14, 15);
 
   autoTable(doc, {
@@ -33,7 +33,7 @@ const exportToPDF = (columns, data) => {
     startY: 25,
   });
 
-  doc.save(`Appointments Report - ${fileNameDate}.pdf`);
+  doc.save(`Inventory Report - ${fileNameDate}.pdf`);
 };
 
 function formatDate(dateStr) {
