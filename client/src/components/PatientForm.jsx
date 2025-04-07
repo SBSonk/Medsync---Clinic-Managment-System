@@ -92,7 +92,8 @@ const PatientForm = () => {
           medicalHistory: patientData.medical_history || "",
           familyHistory: patientData.family_history || "",
           emergencyContact: emergencyContactData?.person_id || "",
-          emergencyRelation: emergencyContactData?.relation || "",
+          emergencyRelation:
+            emergencyContactData?.emergency_contact_person_relation || "",
         });
 
         setIsEditing(true); // Set to edit mode
@@ -120,8 +121,10 @@ const PatientForm = () => {
           allergies: data.allergies,
           medical_history: data.medicalHistory,
           family_history: data.familyHistory,
-          emergency_contact_person_id: data.emergencyContact,
-          emergency_contact_relation: data.emergencyRelation,
+          emergency_contact: {
+            emergency_contact_person_id: data.emergencyContact,
+            emergency_contact_person_relation: data.emergencyRelation,
+          },
           person_id: selectedPersonID, // Link selected person ID
         };
 
@@ -144,8 +147,10 @@ const PatientForm = () => {
           allergies: data.allergies,
           medical_history: data.medicalHistory,
           family_history: data.familyHistory,
-          emergency_contact_person_id: data.emergencyContact,
-          emergency_contact_relation: data.emergencyRelation,
+          emergency_contact: {
+            emergency_contact_person_id: data.emergencyContact,
+            emergency_contact_person_relation: data.emergencyRelation,
+          },
         };
 
         // Update patient data
@@ -285,12 +290,22 @@ const PatientForm = () => {
                 {...register("weight")}
                 disabled={!isEditing && !isCreating}
               />
+
               <label>Blood Type:</label>
-              <input
-                type="text"
-                {...register("bloodType")}
+              <select
+                {...register("bloodType", { required: true })}
                 disabled={!isEditing && !isCreating}
-              />
+              >
+                <option value="">-- Select Blood Type --</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
 
               <label>Allergies:</label>
               <input
@@ -312,18 +327,33 @@ const PatientForm = () => {
               />
 
               <label>Emergency Contact:</label>
-              <input
-                type="text"
-                {...register("emergencyContact")}
+              <select
+                {...register("emergencyContact", { required: true })}
+                defaultValue={watch("emergencyContact") || ""}
                 disabled={!isEditing && !isCreating}
-              />
+              >
+                <option value="">-- Select Emergency Contact --</option>
+                {people.map((person) => (
+                  <option key={person.id} value={person.id}>
+                    {person.first_name} {person.last_name} (ID: {person.id})
+                  </option>
+                ))}
+              </select>
 
               <label>Relation:</label>
-              <input
-                type="text"
-                {...register("emergencyRelation")}
+              <select
+                {...register("emergencyRelation", { required: true })}
                 disabled={!isEditing && !isCreating}
-              />
+              >
+                <option value="">-- Select Relationship --</option>
+                <option value="Spouse">Spouse</option>
+                <option value="Parent">Parent</option>
+                <option value="Sibling">Sibling</option>
+                <option value="Child">Child</option>
+                <option value="Friend">Friend</option>
+                <option value="Guardian">Guardian</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
           </div>
           {isCreating ? (

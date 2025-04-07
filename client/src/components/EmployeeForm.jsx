@@ -81,7 +81,7 @@ const EmployeeForm = () => {
 
           setValue("occupation", employeeData.occupation || "");
           setValue("department", employeeData.department || "");
-
+          setValue("schedule", employeeData.schedule || "");
           console.log(employeeData);
         }
       } catch (error) {
@@ -127,7 +127,8 @@ const EmployeeForm = () => {
         const employeeData = {
           person_id: person_id, // Keep the same ID
           occupation: data.occupation,
-          department: data.department,  
+          department: data.department,
+          schedule: data.schedule,
         };
 
         const personData = {
@@ -158,7 +159,6 @@ const EmployeeForm = () => {
         setIsEditing(false);
       }
       navigate("/admin/employees"); // Redirect after submission
-
     } catch (error) {
       console.error("Error updating employee:", error);
     }
@@ -182,33 +182,50 @@ const EmployeeForm = () => {
             ))}
           </select>
 
-            <label>Occupation:</label>
-            <input
-              type="text"
-              {...register("occupation", {
-                required: true,
-                maxLength: 50,
-              })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Occupation:</label>
+          <input
+            type="text"
+            {...register("occupation", {
+              required: true,
+              maxLength: 50,
+            })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            <label>Department:</label>
-            <input
-              type="text"
-              {...register("department", {
-                required: true,
-                maxLength: 50,
-              })}
-              disabled={!isEditing && !isCreating}
-            />
+          <label>Department:</label>
+          <input
+            type="text"
+            {...register("department", {
+              required: true,
+              maxLength: 50,
+            })}
+            disabled={!isEditing && !isCreating}
+          />
 
-            {isCreating ? (
-              <button type="submit">Create Employee</button>
-            ) : (
-              <>
-                <button type="button" onClick={() => setIsEditing(!isEditing)}>
-                  {isEditing ? "Cancel" : "Edit"}
-                </button>
+          <label>Schedule:</label>
+          <input
+            type="text"
+            {...register("schedule", {
+              required: true,
+              maxLength: 50,
+              pattern: {
+                value:
+                  /^[A-Za-z]+ to [A-Za-z]+, [0-9]{1,2} (AM|PM) to [0-9]{1,2} (AM|PM)$/,
+                message:
+                  "Invalid format. Use 'Monday to Friday, 9 AM to 5 PM'.",
+              },
+            })}
+            placeholder="e.g. Monday to Friday, 9 AM to 5 PM"
+            disabled={!isEditing && !isCreating}
+          />
+
+          {isCreating ? (
+            <button type="submit">Create Employee</button>
+          ) : (
+            <>
+              <button type="button" onClick={() => setIsEditing(!isEditing)}>
+                {isEditing ? "Cancel" : "Edit"}
+              </button>
 
               {isEditing && <button type="submit">Save Changes</button>}
             </>

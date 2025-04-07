@@ -257,11 +257,19 @@ const AppointmentForm = () => {
           />
 
           <label>Status:</label>
-          <input
-            type="text"
-            {...register("status", { required: true, maxLength: 31 })}
-            disabled={!isEditing && !isCreating} // Disabled unless editing or creating
-          />
+          <select
+            {...register("status", { required: true })}
+            disabled={!isEditing && !isCreating}
+          >
+            <option value="">-- Select Status --</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+            <option value="Canceled">Canceled</option>
+            <option value="Rescheduled">Rescheduled</option>
+            <option value="No Show">No Show</option>
+          </select>
 
           <label>Note:</label>
           <input

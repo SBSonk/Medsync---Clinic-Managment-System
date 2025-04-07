@@ -205,7 +205,7 @@ const Dashboard = () => {
         setUserName(response.data["username"]);
       } catch (error) {
         setUserName("err");
-        console.error("Error fetching ame username:", error);
+        console.error("Error fetching username:", error);
       }
     };
 

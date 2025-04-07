@@ -142,18 +142,20 @@ const Patients = () => {
 
         const fetchPeople = async () => {
           try {
-            const response = await axios.get("http://localhost:8080/api/people", {
-              headers: {
-                Authorization: "Bearer " + auth.access_token,
-              },
-            });
+            const response = await axios.get(
+              "http://localhost:8080/api/people",
+              {
+                headers: {
+                  Authorization: "Bearer " + auth.access_token,
+                },
+              }
+            );
             setPeople(response.data);
-            setFilteredPeople(response.data);
           } catch (error) {
             console.error("Error fetching People:", error);
           }
         };
-    
+
         fetchPeople();
         setIsAdmin(auth.role === "admin");
       } catch (error) {
@@ -223,15 +225,25 @@ const Patients = () => {
     },
     {
       name: "Emergency Contact/ID",
-      selector: (row) => getFullNameFromPerson(row.emergency_contact_person_id) + "/" + row.emergency_contact_person_id || "N/A",
+      selector: (row) =>
+        getFullNameFromPerson(row.emergency_contact_person_id) +
+          "/" +
+          row.emergency_contact_person_id || "N/A",
       width: "15%",
+      center: true,
+      sortable: true,
+    },
+    {
+      name: "Relation",
+      selector: (row) => row.emergency_contact_person_relation || "N/A",
+      width: "10%",
       center: true,
       sortable: true,
     },
     {
       name: "Next Appointment ID",
       selector: (row) => row.next_appointment_id || "N/A",
-      width: "20%",
+      width: "15%",
       center: true,
       sortable: true,
     },
@@ -250,7 +262,7 @@ const Patients = () => {
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-      width: "25%",
+      width: "15%",
       center: true,
     },
   ];
@@ -267,6 +279,8 @@ const Patients = () => {
       style: { maxHeight: "450px", overflowY: "auto", overflowX: "auto" },
     },
   };
+
+  console.log(patients);
 
   return (
     <MainLayout title="Patients">

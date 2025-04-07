@@ -246,7 +246,7 @@ def get_employee_info(person_id):
             200,
         )
     else:
-        return jsonify({"message": f"employee with id ({id}) not found."}), 404
+        return jsonify({"message": f"employee with id ({person_id}) not found."}), 404
 
 
 @get.route("/api/get-inventory-info/<inventory_id>", methods=["GET"])
