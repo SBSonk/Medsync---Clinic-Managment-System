@@ -40,6 +40,7 @@ const exportToPDF = (columns, data) => {
 const Patients = () => {
   const auth = useAuth();
   const [patients, setPatients] = useState([]);
+  const [people, setPeople] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState(patients);
   const [searchQuery, setSearchQuery] = useState("");
   const [isAdmin, setIsAdmin] = useState([]);
@@ -47,6 +48,11 @@ const Patients = () => {
 
   const handleReport = () => {
     exportToPDF(columns, filteredPatients);
+  };
+
+  const getFullNameFromPerson = (person_id) => {
+    const person = people.find((p) => p.id === person_id);
+    return person ? `${person.first_name} ${person.last_name}` : "Unknown";
   };
 
   const handleSearchInputChange = (text) => {
@@ -57,15 +63,9 @@ const Patients = () => {
         : patients.filter((patient) => {
             return (
               patient.full_name.toLowerCase().includes(text.toLowerCase()) ||
-              (patient.allergies)
-                .toLowerCase()
-                .includes(text.toLowerCase()) ||
-              (patient.blood_type)
-                .toLowerCase()
-                .includes(text.toLowerCase()) ||
-              (patient.family_history)
-                .toLowerCase()
-                .includes(text.toLowerCase())
+              patient.allergies.toLowerCase().includes(text.toLowerCase()) ||
+              patient.blood_type.toLowerCase().includes(text.toLowerCase()) ||
+              patient.family_history.toLowerCase().includes(text.toLowerCase())
             );
           });
     setFilteredPatients(filtered);
@@ -139,8 +139,23 @@ const Patients = () => {
 
         setPatients(patientsWithDetails);
         setFilteredPatients(patientsWithDetails);
+
+        const fetchPeople = async () => {
+          try {
+            const response = await axios.get("http://localhost:8080/api/people", {
+              headers: {
+                Authorization: "Bearer " + auth.access_token,
+              },
+            });
+            setPeople(response.data);
+            setFilteredPeople(response.data);
+          } catch (error) {
+            console.error("Error fetching People:", error);
+          }
+        };
+    
+        fetchPeople();
         setIsAdmin(auth.role === "admin");
-        console.log(patientsWithDetails);
       } catch (error) {
         console.error("Error fetching patients:", error);
       }
@@ -202,6 +217,13 @@ const Patients = () => {
     {
       name: "Family History",
       selector: (row) => row.family_history || "N/A",
+      width: "15%",
+      center: true,
+      sortable: true,
+    },
+    {
+      name: "Emergency Contact/ID",
+      selector: (row) => getFullNameFromPerson(row.emergency_contact_person_id) + "/" + row.emergency_contact_person_id || "N/A",
       width: "15%",
       center: true,
       sortable: true,

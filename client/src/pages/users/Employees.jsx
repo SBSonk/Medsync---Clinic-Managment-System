@@ -160,6 +160,11 @@ const Employees = () => {
       sortable: true,
     },
     {
+      name: "Schedule",
+      selector: (row) => row.schedule,
+      sortable: true,
+    },
+    {
       name: "Actions",
       cell: (row) => (
         <div className="action-buttons">
